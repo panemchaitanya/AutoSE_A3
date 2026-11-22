@@ -1,0 +1,121 @@
+name: autose-review
+
+# Stage 6, isolated on purpose (ADR-008): separate workflow, minimal
+# permissions (contents: read - the reviewer cannot push), fresh agent
+# context, inputs limited to the issue, the diff and the repo at the PR head.
+#
+# Invoked as a reusable workflow from autose.yml after every release, or
+# manually with workflow_dispatch. It never merges; a human decides.
+
+on:
+  workflow_call:
+    inputs:
+      issue:
+        required: true
+        type: number
+  workflow_dispatch:
+    inputs:
+      issue:
+        required: true
+        type: number
+      pr_number:
+        required: false
+        type: number
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  actions: write # to dispatch the bounded continuation run
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Locate the PR and check out its head
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ inputs.issue || github.event.inputs.issue }}
+        run: |
+          set -e
+          BRANCH="autose/issue-$ISSUE"
+          PR=$(gh pr list --head "$BRANCH" --json number,headRefOid --jq '.[0] | "\(.number) \(.headRefOid)"')
+          if [ -z "$PR" ]; then
+            echo "No open PR for $BRANCH; nothing to review."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "$PR" | { read N SHA; echo "pr=$N" >> "$GITHUB_OUTPUT"; echo "sha=$SHA" >> "$GITHUB_OUTPUT"; }
+        id: locate
+      - name: Check out PR head
+        if: steps.locate.outputs.skip != 'true'
+        run: git checkout ${{ steps.locate.outputs.sha }}
+      - run: python -m pip install -e . pytest pytest-cov
+        if: steps.locate.outputs.skip != 'true'
+      - name: Load review round budget from state.json
+        if: steps.locate.outputs.skip != 'true'
+        id: budget
+        run: |
+          ROUNDS=$(jq '.review_rounds // 0' .autose/state.json)
+          echo "rounds=$ROUNDS" >> "$GITHUB_OUTPUT"
+          if [ "$ROUNDS" -ge 2 ]; then
+            echo "exhausted=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Review rounds used up - hand to a human
+        if: steps.locate.outputs.skip != 'true' && steps.budget.outputs.exhausted == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ steps.locate.outputs.pr }} --body "AutoSE reviewer: two review rounds have been used. The budget is exhausted by design (ADR-009); a human now decides whether to merge or close this PR."
+      - name: Stage 6 - Independent review (Reviewer agent)
+        if: steps.locate.outputs.skip != 'true' && steps.budget.outputs.exhausted != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/${{ inputs.issue || github.event.inputs.issue }} \
+            --jq '{number: .number, title: .title, body: (.body // "")}' > .autose/issue.json
+          python workflow/agent/run_stage.py --stage review --repo . \
+            --issue-file .autose/issue.json --pr-number ${{ steps.locate.outputs.pr }}
+      - name: Post the review on the PR
+        if: steps.locate.outputs.skip != 'true' && steps.budget.outputs.exhausted != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: post
+        run: |
+          set -e
+          PR=${{ steps.locate.outputs.pr }}
+          VERDICT=$(jq -r '.verdict' .autose/artifacts/review_verdict.json)
+          if [ "$VERDICT" = "approve" ]; then
+            gh pr review "$PR" --approve --body-file .autose/artifacts/review.md
+            echo "verdict=approve" >> "$GITHUB_OUTPUT"
+          else
+            gh pr review "$PR" --request-changes --body-file .autose/artifacts/review.md
+            echo "verdict=request_changes" >> "$GITHUB_OUTPUT"
+            echo "classification=$(jq -r '.classification' .autose/artifacts/review_verdict.json)" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Route review feedback back into the pipeline (bounded)
+        if: steps.post.outputs.verdict == 'request_changes'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR=${{ steps.locate.outputs.pr }}
+          ISSUE=${{ inputs.issue || github.event.inputs.issue }}
+          ROUNDS=${{ steps.budget.outputs.rounds }}
+          CLASS=${{ steps.post.outputs.classification }}
+          NEXT_ROUND=$((ROUNDS + 1))
+          if [ "$CLASS" = "approach" ]; then ENTRY="design"; else ENTRY="implementation"; fi
+          gh pr comment "$PR" --body "AutoSE reviewer requested changes (round $NEXT_ROUND of 2, classification: $CLASS). Sending work back to the **$ENTRY** stage."
+          gh workflow run autose.yml -f issue="$ISSUE" -f entry="$ENTRY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autose-issue-${{ inputs.issue || github.event.inputs.issue }}-review
+          path: .autose/artifacts/

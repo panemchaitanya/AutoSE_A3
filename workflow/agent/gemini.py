@@ -1,0 +1,141 @@
+"""Minimal Gemini REST client (stdlib only).
+
+Why no SDK (ADR-005): the harness must run anywhere with zero install, and a
+hand-rolled client makes retries, fallbacks and token accounting explicit.
+
+The API key is read from the GEMINI_API_KEY environment variable and is never
+printed, logged or embedded in a URL (it travels in the x-goog-api-key
+header). Token usage is taken from the API's own usageMetadata so the cost
+reporting required by the assignment is measured, not estimated.
+"""
+
+import json
+import os
+import time
+import urllib.error
+import urllib.request
+
+import config
+
+API_BASE = "https://generativelanguage.googleapis.com/v1beta/models"
+
+
+class QuotaExhausted(Exception):
+    """Raised when every retry and the fallback tier are rate-limited."""
+
+
+class BudgetExhausted(Exception):
+    """Raised when the per-run token budget (ADR-009) would be exceeded."""
+
+
+class Usage:
+    """Cumulative token accounting for one workflow run."""
+
+    def __init__(self, prior=None):
+        prior = prior or {}
+        self.prompt_tokens = prior.get("prompt_tokens", 0)
+        self.completion_tokens = prior.get("completion_tokens", 0)
+        self.total_tokens = prior.get("total_tokens", 0)
+        self.calls = prior.get("calls", 0)
+        self.fallbacks = prior.get("fallbacks", 0)
+
+    def record(self, metadata):
+        self.prompt_tokens += metadata.get("promptTokenCount", 0)
+        self.completion_tokens += metadata.get("candidatesTokenCount", 0)
+        self.total_tokens += metadata.get("totalTokenCount", 0)
+        self.calls += 1
+
+    def as_dict(self):
+        return {
+            "prompt_tokens": self.prompt_tokens,
+            "completion_tokens": self.completion_tokens,
+            "total_tokens": self.total_tokens,
+            "calls": self.calls,
+            "fallbacks": self.fallbacks,
+        }
+
+
+def _post(model, payload, api_key):
+    url = f"{API_BASE}/{model}:generateContent"
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "x-goog-api-key": api_key,
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=300) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", "replace")[:500]
+        if e.code == 429:
+            raise _RateLimited(body)
+        raise RuntimeError(f"Gemini API error {e.code}: {body}")
+
+
+class _RateLimited(Exception):
+    pass
+
+
+def generate(model, system_prompt, contents, usage, temperature=0.2):
+    """One generateContent call with retries, fallback and budget checks.
+
+    contents: list of {"role": "user"|"model", "parts": [{"text": ...}]}
+    Returns the reply text. Raises BudgetExhausted / QuotaExhausted.
+    """
+    if usage.total_tokens >= config.MAX_TOKENS_PER_RUN:
+        raise BudgetExhausted(
+            f"token budget {config.MAX_TOKENS_PER_RUN} reached "
+            f"({usage.total_tokens} used)"
+        )
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY is not set")
+
+    payload = {
+        "system_instruction": {"parts": [{"text": system_prompt}]},
+        "contents": contents,
+        "generationConfig": {
+            "temperature": temperature,
+            "maxOutputTokens": config.MAX_OUTPUT_TOKENS,
+        },
+    }
+
+    # Try the primary model, then one tier down (ADR-006), each with retries.
+    models_to_try = [model]
+    if model != config.MODEL_FALLBACK:
+        models_to_try.append(config.MODEL_FALLBACK)
+
+    last_err = None
+    for active_model in models_to_try:
+        for attempt in range(config.API_RETRIES + 1):
+            try:
+                data = _post(active_model, payload, api_key)
+                usage.record(data.get("usageMetadata", {}))
+                if active_model != model:
+                    usage.fallbacks += 1
+                candidates = data.get("candidates") or []
+                if not candidates:
+                    raise RuntimeError(
+                        f"Gemini returned no candidates: {str(data)[:300]}"
+                    )
+                parts = candidates[0].get("content", {}).get("parts", [])
+                text = "".join(p.get("text", "") for p in parts)
+                if not text.strip():
+                    raise RuntimeError("Gemini returned an empty reply")
+                return text
+            except _RateLimited as e:
+                last_err = e
+                if attempt < config.API_RETRIES:
+                    time.sleep(
+                        config.API_BACKOFF_SECONDS[
+                            min(attempt, len(config.API_BACKOFF_SECONDS) - 1)
+                        ]
+                    )
+        # primary exhausted its retries: fall through to the fallback tier
+    raise QuotaExhausted(
+        f"rate-limited on all model tiers; last error: {last_err}"
+    )

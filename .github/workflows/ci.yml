@@ -1,0 +1,23 @@
+name: ci
+
+# Plain CI for human activity (pushes/PRs by people). Runs started by the
+# bot (GITHUB_TOKEN pushes/PRs) do not re-trigger workflows - GitHub's
+# recursion guard - so pipeline runs execute this same pytest suite inside
+# the release job of autose.yml and post it as the ci/pytest commit status.
+
+on:
+  push:
+    branches: [main, "autose/**"]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e . pytest pytest-cov
+      - run: python -m pytest -q
