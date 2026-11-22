@@ -82,12 +82,30 @@ def main():
         "body": issue.get("body", "") or "",
     }
 
+    prior_tip = None
     if entry is None:
         # start mode: fresh branch from main, fresh state
         sh("git", "fetch", "origin", "main")
+        sh("git", "fetch", "origin", branch, check=False)
+        prior = sh("git", "ls-remote", "--heads", "origin",
+                   branch).stdout.split()
+        if prior:
+            prior_tip = prior[0]
+            author = sh("git", "show", "-s", "--format=%ae",
+                        prior_tip).stdout.strip()
+            if author != "autose-bot@users.noreply.github.com":
+                print(f"gate REFUSED: remote {branch} tip {prior_tip} was "
+                      f"written by {author}, not the autose bot. A fresh "
+                      "start would supersede human or parallel work; "
+                      "resolve the branch manually.")
+                sys.exit(1)
         sh("git", "checkout", "-B", branch, "origin/main")
         state = controller.init_state(issue_number, branch)
         controller.record(state, f"triggered by {actor} via {event_name}")
+        if prior_tip:
+            # the old tip stays reachable in git history and on its
+            # Actions runs; record exactly what this restart supersedes
+            controller.record(state, f"fresh start supersedes {prior_tip}")
     else:
         # continue mode: a review round sends us back to design/implementation
         sh("git", "fetch", "origin", branch)
@@ -108,11 +126,13 @@ def main():
        "user.email=autose-bot@users.noreply.github.com",
        "commit", "-m", f"autose: gate ({'start' if entry is None else 'continue -> ' + entry}) for issue #{issue_number}",
        check=False)
-    if entry is None:
-        # start mode rebuilds the branch from origin/main, so the remote
-        # branch of any previous attempt is no longer an ancestor
-        sh("git", "fetch", "origin", branch, check=False)
-        sh("git", "push", "-u", "--force-with-lease", "origin", branch)
+    if prior_tip:
+        # explicit lease: the push only lands if the remote tip is still
+        # the bot commit we validated above, so a racing push by anyone
+        # else makes the gate fail instead of being overwritten
+        sh("git", "push", "-u",
+           f"--force-with-lease=refs/heads/{branch}:{prior_tip}",
+           "origin", branch)
     else:
         sh("git", "push", "-u", "origin", branch)
 
