@@ -108,7 +108,13 @@ def main():
        "user.email=autose-bot@users.noreply.github.com",
        "commit", "-m", f"autose: gate ({'start' if entry is None else 'continue -> ' + entry}) for issue #{issue_number}",
        check=False)
-    sh("git", "push", "-u", "origin", branch)
+    if entry is None:
+        # start mode rebuilds the branch from origin/main, so the remote
+        # branch of any previous attempt is no longer an ancestor
+        sh("git", "fetch", "origin", branch, check=False)
+        sh("git", "push", "-u", "--force-with-lease", "origin", branch)
+    else:
+        sh("git", "push", "-u", "origin", branch)
 
     output("ok", "true")
     output("issue", str(issue_number))
