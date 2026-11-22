@@ -101,6 +101,10 @@ def generate(model, system_prompt, contents, usage, temperature=0.2):
         "generationConfig": {
             "temperature": temperature,
             "maxOutputTokens": config.MAX_OUTPUT_TOKENS,
+            # Agent replies are JSON objects by contract (TOOL_CONTRACT);
+            # without this, gemini-3.5-flash-lite answers with
+            # finishReason=MALFORMED_FUNCTION_CALL and an empty text part.
+            "responseMimeType": "application/json",
         },
     }
 
