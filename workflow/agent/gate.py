@@ -127,6 +127,11 @@ def main():
        "commit", "-m", f"autose: gate ({'start' if entry is None else 'continue -> ' + entry}) for issue #{issue_number}",
        check=False)
     if prior_tip:
+        # durable retention BEFORE any rewrite: archive the superseded tip
+        # under its own ref so the attempt stays fetchable forever,
+        # independent of Actions-run linkage (which is not git retention)
+        sh("git", "push", "origin",
+           f"{prior_tip}:refs/autose-archive/{branch}-{prior_tip[:12]}")
         # explicit lease: the push only lands if the remote tip is still
         # the bot commit we validated above, so a racing push by anyone
         # else makes the gate fail instead of being overwritten
