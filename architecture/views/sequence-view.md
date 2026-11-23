@@ -36,14 +36,14 @@ sequenceDiagram
     R->>GH: push branch, open PR, write pr.md
     GH->>CI: pull_request opened
     CI->>CI: run pytest suite
-    W->>V: reusable workflow call after release
+    W->>V: workflow_dispatch after release
     V->>V: Stage 6 Review: fresh context,<br/>sees issue + diff + repo @ PR head only
     alt changes requested, round <= 2
-        V-->>GH: PR review: request changes<br/>classified: approach issue or code issue<br/>+ human-readable comment
+        V-->>GH: COMMENT review: request_changes verdict<br/>classified: approach issue or code issue<br/>+ human-readable comment
         V->>W: gh workflow run autose.yml<br/>(workflow_dispatch: issue, entry stage)
         W->>W: gate: continue mode, entry stage from classification,<br/>review_rounds + 1
     else approve, or rounds used up
-        V-->>GH: PR review: approve (or rounds exhausted note)
+        V-->>GH: COMMENT review: approve verdict (or rounds exhausted note)
         V->>H: human decides merge or close
     end
 ```
@@ -54,7 +54,7 @@ sequenceDiagram
   job** (cheap, no new run) up to 3 cycles; after that the run stops and
   `test_report.md` says why.
 - Reviewer feedback loops back **across workflows**: the review lives in a
-  different workflow with different (read-only) permissions, so it cannot
+  different workflow with different permissions (source read-only, review/comment and dispatch writes), so it cannot
   push state; it dispatches a continuation run of the main workflow instead
   (workflow_dispatch is exempt from GitHub's recursion guard; a bot's PR
   comment would not re-trigger anything) and leaves a comment for humans.
@@ -63,3 +63,11 @@ sequenceDiagram
 - Every stage boundary is a checkpoint: artifacts and `state.json` are
   committed to the branch, so a restarted run resumes instead of repeating
   work (and repeating cost).
+
+## Observed run, not one uninterrupted execution
+
+Issue 2 reached release in run 45185960683, opening PR 7. Independent
+review run 45188199175 posted COMMENT approve review 6022889438. Earlier
+failed attempts are retained in results/runs.md. The COMMENT verdict is
+not formal GitHub approval: GitHub rejected self-approval for an
+Actions-created PR. No merge occurred.

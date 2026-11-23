@@ -134,3 +134,21 @@ review, plus per-stage pass rates and token usage (results.csv).
   future release state writes. API usage now records actual responding
   models per cumulative run, not just requested role defaults. Older logs
   remain the model evidence where this field did not exist.
+
+- Issue 2 recovered: pipeline 45185960683 passed through release and
+  automatic reviewer dispatch. PR https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/7
+  Review 45188199175 succeeded with COMMENT approve verdict:
+  https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/7#pullrequestreview-6022889438
+  This completes issue 2 across attempts; earlier failures remain.
+
+- Issue 3 45194826873 and issue 5 45196194239 again failed on HTTP503.
+  ORION's existing Gemini project was live-verified Free tier before
+  replacing Alt's assignment secret. First dispatch definitely after that
+  change: issue 3 resume 45197403640. No paid fallback or new billing.
+
+## Complete hosted run index
+
+Machine-readable snapshot: `results/hosted-runs.csv`, including CI and failed
+agent attempts. URLs are API-returned GitHub run URLs. Earlier per-attempt
+notes above explain recovery and harness changes. Not a claim of one-pass
+completion.

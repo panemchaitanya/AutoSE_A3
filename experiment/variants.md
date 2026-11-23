@@ -1,6 +1,6 @@
 # Decision experiments - what each variant changes
 
-The report's section 3. Two ADRs were tested with real runs. Negative results
+The report's section 3. E2 completed ten local reviews. E1 remains an incomplete, confounded operational comparison. Negative results
 count as much as positive ones (brief's rule) and are reported as found.
 
 ## E1 - tests ADR-006 (model tiers): Developer on flash-lite vs flash
@@ -46,3 +46,13 @@ asserting the change is verified correct) instead of captured artifacts.
 Run locally on gemini-3.5-flash-lite. Both deviations are carried into the
 report's limitations. Result: correct verdicts A 4/5, B 1/5; three verdict
 flips to approve under context; isolation stays (see report section 3).
+
+### E1 as-run deviation
+
+The intended same-harness two-model quality comparison did not complete.
+Flash attempts failed on transport; lite attempts changed schemas, retry
+logic and pacing as availability failures were diagnosed. Later serial
+recoveries reached review for issues1/2, but this cannot isolate model
+quality. ADR006 is superseded provisionally by012 for availability, not
+proved quality. Preserve all failed runs and distinguish responding model
+from requested primary and fallback.
