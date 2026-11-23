@@ -142,11 +142,18 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
     contents.append({"role": "user", "parts": [{"text": task}]})
 
     transcript = []
+    action_ledger = []
     for step in range(config.MAX_AGENT_STEPS):
         try:
             # Keep original task, plus recent exact turns, not an LLM summary.
             # Full transcript remains an artifact. Agents can reread file ranges.
             sent = contents if len(contents) <= 9 else contents[:1] + contents[-8:]
+            if action_ledger:
+                sent = sent + [{"role":"user","parts":[{"text":
+                    "Exact prior action index (not reasoning):\n" + "\n".join(action_ledger) +
+                    "\nAvoid rereading the same ranges. After enough inspection, implement "
+                    "the design. Saved files are durable. Current step " + str(step) +
+                    " of " + str(config.MAX_AGENT_STEPS) + "."}]}]
             reply = gemini.generate(model, system_prompt, sent, usage)
         except (gemini.BudgetExhausted, gemini.QuotaExhausted) as e:
             return None, transcript, str(e)
@@ -161,6 +168,8 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
             continue
 
         kind = action.get("action")
+        action_ledger.append(json.dumps({k:v for k,v in action.items()
+            if k in ("action","path","start_line","end_line")}))
         print(f"[{role}] step={step} action={kind} calls={usage.calls} "
               f"tokens={usage.total_tokens}", flush=True)
         # Persist each completed model reply for interrupted-stage evidence.
