@@ -181,9 +181,11 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
         if kind == "finish":
             result = action.get("result")
             if role == "Developer" and isinstance(result, dict) and not result.get("blocked"):
-                if not result.get("files_changed"):
+                actual = subprocess.run(["git","diff","origin/main","--","tinydb"],
+                    cwd=repo_root,capture_output=True,text=True).stdout
+                if not result.get("files_changed") or not actual.strip():
                     contents.append({"role":"user","parts":[{"text":
-                        "Finish rejected: no changed files reported. Implement the design, "
+                        "Finish rejected: no actual source diff exists. Implement the design, "
                         "edit source using write_file or a short Python command, verify "
                         "the source diff and build, then finish with files_changed. "
                         "Do not merely inspect status."}]})
@@ -208,6 +210,23 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
                 else:
                     obs = _tool_write_file(repo_root, action.get("path", ""),
                                            action["content"])
+        elif kind == "edit_file":
+            if read_only:
+                obs = "ERROR: reviewer cannot edit files"
+            else:
+                path = action.get("path", "")
+                full = _safe_path(repo_root, path)
+                old = action.get("old_text", "")
+                new = action.get("new_text", "")
+                if not full or not os.path.isfile(full) or not old:
+                    obs = "ERROR: edit requires existing file and nonempty old_text"
+                else:
+                    with open(full, encoding="utf-8") as f:
+                        text = f.read()
+                    if text.count(old) != 1:
+                        obs = "ERROR: old_text must match exactly once; read correct range"
+                    else:
+                        obs = _tool_write_file(repo_root, path, text.replace(old, new, 1))
         elif kind == "run_shell":
             obs = _tool_run_shell(repo_root, action.get("command", ""))
         else:
