@@ -135,7 +135,10 @@ def generate(model, system_prompt, contents, usage, temperature=0.2):
                 parts = candidates[0].get("content", {}).get("parts", [])
                 text = "".join(p.get("text", "") for p in parts)
                 if not text.strip():
-                    raise _Transient("Gemini returned an empty reply")
+                    finish_reason = candidates[0].get("finishReason", "unknown")
+                    raise _Transient(
+                        f"empty model reply (finishReason={finish_reason})"
+                    )
                 return text
             except (_RateLimited, _Transient) as e:
                 last_err = e
@@ -147,5 +150,5 @@ def generate(model, system_prompt, contents, usage, temperature=0.2):
                     )
         # primary exhausted its retries: fall through to the fallback tier
     raise QuotaExhausted(
-        f"rate-limited on all model tiers; last error: {last_err}"
+        f"model retries exhausted; last error type={type(last_err).__name__}: {last_err}"
     )

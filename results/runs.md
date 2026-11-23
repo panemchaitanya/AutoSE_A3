@@ -2,7 +2,7 @@
 
 Status: IN PROGRESS. Graded runs land on the submission repository
 (https://github.com/panemchaitanya/AutoSE_A3). The development repository
-(https://github.com/panemchaitanya/AutoSE_A3_Alt, private) holds the
+(https://github.com/panemchaitanya/AutoSE_A3_Alt, public after approval) holds the
 iteration history below; nothing failed was deleted or hidden.
 
 ## Development runs (AutoSE_A3_Alt)
@@ -42,8 +42,10 @@ review, plus per-stage pass rates and token usage (results.csv).
 - Run 45169083482 (issue #1, fresh): gate PASS, requirements PASS
   (spec.md + transcript in artifact 14816202090), design FAILED after 5m15s:
   "rate-limited on all model tiers; last error: Gemini returned an empty
-  reply". Gemini key verified healthy via direct local probe minutes later;
-  failure attributed to transient provider-side rate pressure, not code.
+  reply". A small local probe returned text, but did not validate this
+  stage's prompt. The client's generic failure label conflates empty
+  replies with rate limits, so the root cause is unresolved. Diagnostics
+  now retain the finish reason and error class.
   https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45169083482
 - Run 45171521123 (issue #1, continuation entry=design): dispatched 17:38 IST.
   https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45171521123
