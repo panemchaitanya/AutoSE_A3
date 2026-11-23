@@ -11,11 +11,27 @@
       "ts": "2026-11-23T16:16:21.268936+00:00"
     },
     {
-      "ts": "2026-11-23T16:16:31.349572+00:00",
+      "event": "requirements -> running",
+      "ts": "2026-11-23T16:16:31.349572+00:00"
+    },
+    {
+      "event": "requirements -> failed (agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n)",
+      "ts": "2026-11-23T16:18:13.388964+00:00"
+    },
+    {
+      "event": "operational recovery: no reviewer verdict exists",
+      "ts": "2026-11-23T16:42:48.362964+00:00"
+    },
+    {
+      "ts": "2026-11-23T16:42:56.637183+00:00",
+      "event": "Full A1 validation required; downstream checkpoints invalidated"
+    },
+    {
+      "ts": "2026-11-23T16:42:56.637198+00:00",
       "event": "requirements -> running"
     },
     {
-      "ts": "2026-11-23T16:18:13.388964+00:00",
+      "ts": "2026-11-23T16:43:54.710112+00:00",
       "event": "requirements -> failed (agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n)"
     }
   ],
@@ -32,8 +48,8 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "failed",
-      "reason": "agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
+      "reason": "agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "status": "failed"
     },
     "review": {
       "status": "pending"
