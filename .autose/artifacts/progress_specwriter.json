@@ -1,0 +1,1 @@
+{"transcript": [{"step": 0, "role": "SpecWriter", "reply": "{\n  \"action\": \"list_files\",\n  \"path\": \".\"\n}"}], "usage": {"prompt_tokens": 5933, "completion_tokens": 19, "total_tokens": 5952, "calls": 1, "fallbacks": 0, "models": {"gemini-3.5-flash-lite": 1}}}
