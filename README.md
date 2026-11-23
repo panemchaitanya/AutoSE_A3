@@ -62,9 +62,12 @@ harness and prompts, as the brief asks.
 
 An AI coding assistant provided substantial help with the workflow code,
 prompts, architecture drafts, ADR drafts, experiments and report drafts.
-The repository records actual runs and failures. Student review of the
-architecture reasoning and generated material is required before submission;
-this disclosure does not claim unaided authorship.
+The repository records actual runs and failures. The student discussed D1,
+D2, D4 and D8, endorsed the assistant-proposed regression-test rationale,
+and accepted the newer reasoning-review sheet choices. Other explanations
+remain AI-drafted, not independently student-originated reasoning. This
+disclosure does not claim unaided authorship or that every course authorship
+requirement is met.
 
 ## Notes for maintainers
 
@@ -73,9 +76,11 @@ this disclosure does not claim unaided authorship.
 
 ## Current evidence and prototype limits
 
-This development repository is AutoSE_A3_Alt. Submission target is AutoSE_A3,
-which must have its own real runs. At the interim evidence snapshot the
-transfer is not complete. Do not treat this README as completion evidence.
+Development started in AutoSE_A3_Alt. Submission target is AutoSE_A3.
+At21:32IST the owner approved transferring partial work before Alt completion.
+Protected bootstrap PR1 was merged under that direction; generated issue PRs
+remain unmerged. A3 has its own real run attempts. The first failed at
+requirements503. Do not treat transfer as completion.
 
 Operational recovery preserves passed stages; multiple runs may contribute
 to one issue. COMMENT reviews carry explicit verdicts but are not formal
