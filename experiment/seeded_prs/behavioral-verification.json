@@ -1,0 +1,36 @@
+{
+  "timing": "post-E2 reproducibility check",
+  "results": [
+    {
+      "seed": "sp1",
+      "expected": 1,
+      "actual": 2,
+      "defect_confirmed": true
+    },
+    {
+      "seed": "sp2",
+      "expected": "missing",
+      "actual": null,
+      "defect_confirmed": true
+    },
+    {
+      "seed": "sp3",
+      "expected": 1.5,
+      "actual": 1,
+      "defect_confirmed": true
+    },
+    {
+      "seed": "sp4",
+      "expected_remaining": 0,
+      "actual_remaining": 1,
+      "removed": [],
+      "defect_confirmed": true
+    },
+    {
+      "seed": "sp5",
+      "expected": 2,
+      "actual": 0,
+      "defect_confirmed": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "expected_verdict": "request_changes",
+  "file": "tinydb/table.py",
+  "planted_defect": "partial fix: default is honored only in the doc_id path; the cond path still returns None when nothing matches",
+  "must_mention": [
+    "default"
+  ]
+}

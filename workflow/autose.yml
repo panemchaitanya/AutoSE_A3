@@ -1,0 +1,238 @@
+name: autose
+
+# Main pipeline: issue -> spec -> design -> implementation -> testing ->
+# release (PR). The review lives in autose-review.yml and is invoked as a
+# reusable workflow after release (ADR-002, ADR-008).
+#
+# Triggers (ADR-010):
+#   - label "autose" added to an issue
+#   - comment "/autose" on an issue
+#   - workflow_dispatch from the review workflow (review rounds) or a human
+on:
+  issues:
+    types: [labeled]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: "Issue number"
+        required: true
+        type: number
+      entry:
+        description: "Continuation stage (design|implementation|resume); empty = fresh start"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write # review workflow dispatches the bounded continuation run
+  statuses: write # post the tested branch status
+
+concurrency:
+  group: autose-provider-queue
+  cancel-in-progress: false
+
+env:
+  MODEL_SPEC: ${{ vars.MODEL_SPEC || 'gemini-3.5-flash-lite' }}
+  MODEL_DESIGN: ${{ vars.MODEL_DESIGN || 'gemini-3.5-flash-lite' }}
+  MODEL_DEVELOP: ${{ vars.MODEL_DEVELOP || 'gemini-3.5-flash' }}
+  MODEL_TEST: ${{ vars.MODEL_TEST || 'gemini-3.5-flash-lite' }}
+  MODEL_REVIEW: ${{ vars.MODEL_REVIEW || 'gemini-3.5-flash' }}
+  MODEL_JUDGE: ${{ vars.MODEL_JUDGE || 'gemini-3.5-flash-lite' }}
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      ok: ${{ steps.gate.outputs.ok }}
+      issue: ${{ steps.gate.outputs.issue }}
+      branch: ${{ steps.gate.outputs.branch }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - id: gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_ISSUE: ${{ inputs.issue }}
+          INPUT_ENTRY: ${{ inputs.entry }}
+        run: python workflow/agent/gate.py
+
+  requirements:
+    needs: gate
+    if: needs.gate.outputs.ok == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.gate.outputs.branch }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Stage 1 - Requirements (SpecWriter)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python workflow/agent/run_stage.py --stage requirements --repo . --issue-file .autose/issue.json
+      - name: Commit state and artifacts
+        run: |
+          git config user.name autose-bot
+          git config user.email autose-bot@users.noreply.github.com
+          git add .autose
+          git commit -m "autose: requirements stage for issue #${{ needs.gate.outputs.issue }}" || true
+          git push
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autose-issue-${{ needs.gate.outputs.issue }}-requirements
+          path: .autose/artifacts/
+
+  design:
+    needs: [gate, requirements]
+    if: needs.gate.outputs.ok == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.gate.outputs.branch }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Stage 2 - Design (Designer)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python workflow/agent/run_stage.py --stage design --repo . --issue-file .autose/issue.json
+      - name: Commit state and artifacts
+        run: |
+          git config user.name autose-bot
+          git config user.email autose-bot@users.noreply.github.com
+          git add .autose
+          git commit -m "autose: design stage for issue #${{ needs.gate.outputs.issue }}" || true
+          git push
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autose-issue-${{ needs.gate.outputs.issue }}-design
+          path: .autose/artifacts/
+
+  develop:
+    needs: [gate, design]
+    if: needs.gate.outputs.ok == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.gate.outputs.branch }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e . pytest pytest-cov
+      - name: Stages 3+4 - Implementation and Testing (bounded fix loop)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python workflow/agent/run_stage.py --stage develop --repo . --issue-file .autose/issue.json
+      - name: Commit code, tests, state and artifacts
+        if: always()
+        run: |
+          git config user.name autose-bot
+          git config user.email autose-bot@users.noreply.github.com
+          git add -A
+          git commit -m "autose: implementation + tests for issue #${{ needs.gate.outputs.issue }}" || true
+          git push
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autose-issue-${{ needs.gate.outputs.issue }}-develop
+          path: .autose/artifacts/
+
+  release:
+    needs: [gate, develop]
+    if: needs.gate.outputs.ok == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.gate.outputs.branch }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e . pytest pytest-cov
+      - name: CI gate - full test suite on the branch head
+        id: ci
+        run: python -m pytest -q
+      - name: Stage 5 - Release (scripted, no LLM)
+        run: |
+          set -e
+          git config user.name autose-bot
+          git config user.email autose-bot@users.noreply.github.com
+          git fetch origin main
+          git diff origin/main...HEAD > .autose/artifacts/diff.patch
+          ISSUE="${{ needs.gate.outputs.issue }}"
+          BRANCH="${{ needs.gate.outputs.branch }}"
+          PR_URL=$(gh pr list --head "$BRANCH" --json url --jq '.[0].url' || true)
+          if [ -z "$PR_URL" ]; then
+            TITLE=$(jq -r '.title' .autose/issue.json)
+            gh pr create --base main --head "$BRANCH" \
+              --title "autose: $TITLE" \
+              --body "Automated PR for issue #$ISSUE. Pipeline artifacts are on this branch under .autose/artifacts/. A human decides whether to merge (never auto-merged)." \
+              > /tmp/pr_url.txt
+            PR_URL=$(cat /tmp/pr_url.txt)
+          fi
+          {
+            echo "# Release"
+            echo
+            echo "- Issue: #$ISSUE"
+            echo "- Branch: $BRANCH"
+            echo "- Pull request: $PR_URL"
+            echo "- CI (pytest on branch head): passed in this job"
+          } > .autose/artifacts/pr.md
+          python -c "import sys; sys.path.insert(0, 'workflow/agent'); import controller; s=controller.load_state('.'); controller.set_stage(s, 'release', 'passed', artifact='.autose/artifacts/pr.md'); controller.save_state('.', s)"
+          git add .autose
+          git commit -m "autose: release stage for issue #$ISSUE" || true
+          git push
+          gh issue comment "$ISSUE" --body "AutoSE pipeline: PR ready for review: $PR_URL"
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+        id: release
+      - name: Post commit status (ci/pytest)
+        if: always()
+        run: |
+          SHA=$(git rev-parse HEAD)
+          STATE=${{ steps.ci.outcome == 'success' && 'success' || 'failure' }}
+          gh api "repos/${{ github.repository }}/statuses/$SHA" \
+            -f state="$STATE" -f context="ci/pytest" \
+            -f description="pytest on branch head (autose.yml release job)" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: autose-issue-${{ needs.gate.outputs.issue }}-release
+          path: .autose/artifacts/
+    outputs:
+      pr_url: ${{ steps.release.outputs.pr_url }}
+
+  review:
+    needs: [gate, release]
+    if: needs.gate.outputs.ok == 'true'
+    name: Dispatch independent review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start the independent review workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ needs.gate.outputs.issue }}
+        run: gh workflow run autose-review.yml --ref main -f issue="$ISSUE"

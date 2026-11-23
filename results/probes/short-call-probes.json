@@ -1,0 +1,72 @@
+[
+  {
+    "label": "minimal",
+    "seconds": 0.69,
+    "response": {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": "{\"action\": \"read_file\", \"path\": \"tinydb/table.py\"}",
+                "thoughtSignature": "Eo4BCosBAWkUfRNJY0/AbPRahWerOw17gSfrwGlENX7ecepb5H37qs6+Pmkfr5Q8iCsdsjVkSQZiNT0ynvvY4NRWKgUKLV5C/OKB8RSye82XSkM8wMLVwR/0QIH3ri8SlqAncigleQ5sr2D0bTe18wGFiw6DNr4ufPYsOYXUlw8NUO7s2ZwbhFLhD752P61oJw=="
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 39,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 59,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 39
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "modelVersion": "gemini-3.5-flash-lite",
+      "responseId": "yVkEa73HHceR0PEPx_SxsQ8"
+    }
+  },
+  {
+    "label": "short-role",
+    "seconds": 0.65,
+    "response": {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": "{\"action\": \"read_file\", \"path\": \"tinydb/table.py\"}",
+                "thoughtSignature": "Eo4BCosBAWkUfROx7HNTn6UwwvR3BeR0OwqzCssb/fdt3k8vuAp8i0A+qlB5nKI+/WGTtEJW/k82AvhJzzbZGpsJ49qLSPJt73j7xozpCcluuClXDr+TS+f9kHbj1qA0qyk1lsIUe+daRFZkxfEeJBkX8RFopHDdrE1o1AkS7p4NoM2yi/CtqGa1b4LeWRWG9Q=="
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 64,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 84,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 64
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "modelVersion": "gemini-3.5-flash-lite",
+      "responseId": "z1kEa_uHCYi4n88Preyd-Qw"
+    }
+  }
+]

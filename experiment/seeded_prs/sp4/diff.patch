@@ -1,0 +1,17 @@
+diff --git a/tinydb/table.py b/tinydb/table.py
+index 76470aa..3413d54 100644
+--- a/tinydb/table.py
++++ b/tinydb/table.py
+@@ -462,7 +462,11 @@ class Table:
+             # (see issue #591). The list of *actually* updated IDs is
+             # determined inside the updater so it reflects the table state at
+             # write time.
+-            requested_ids = list(doc_ids)
++            # Accept IDs given as strings by normalizing numeric strings
++            requested_ids = [
++                int(i) if isinstance(i, str) and i.isdigit() else i
++                for i in doc_ids
++            ]
+             updated_ids: list[int] = []
+ 
+             def updater(table: dict):

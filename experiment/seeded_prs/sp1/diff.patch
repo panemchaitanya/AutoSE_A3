@@ -1,0 +1,31 @@
+diff --git a/tinydb/table.py b/tinydb/table.py
+index 76470aa..40f5386 100644
+--- a/tinydb/table.py
++++ b/tinydb/table.py
+@@ -246,7 +246,7 @@ class Table:
+ 
+         return list(iter(self))
+ 
+-    def search(self, cond: QueryLike) -> list[Document]:
++    def search(self, cond: QueryLike, limit: Optional[int] = None) -> list[Document]:
+         """
+         Search for all documents matching a 'where' cond.
+ 
+@@ -256,6 +256,7 @@ class Table:
+         read-only, since mutating one (a key or a nested value) corrupts
+         what a later identical search returns.
+ 
++        :param limit: if set, return at most this many matches
+         :param cond: the condition to check against
+         :returns: list of matching documents
+         """
+@@ -275,6 +276,9 @@ class Table:
+             if cond(doc)
+         ]
+ 
++        if limit is not None:
++            docs = docs[:limit + 1]
++
+         # Only cache cacheable queries.
+         #
+         # This weird `getattr` dance is needed to make MyPy happy as

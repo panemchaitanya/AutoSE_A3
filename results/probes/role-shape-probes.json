@@ -1,0 +1,42 @@
+[
+  {
+    "name": "full-role-no-schema",
+    "status": 503,
+    "error": "{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
+  },
+  {
+    "name": "full-role-schema",
+    "seconds": 0.88,
+    "response": {
+      "candidates": [
+        {
+          "content": {
+            "parts": [
+              {
+                "text": "{\n  \"action\": \"read_file\",\n  \"path\": \"tests/test_tables.py\"\n}",
+                "thoughtSignature": "Eo4BCosBAWkUfRNFzpJFFziYiwORZtbGG5qcD/0P6AmATuRm7C5UJOlDPp5CVvvca6erlw8l2vOn4G5kmbFmqTWBZjNA1rOzsynnXRW5DiNa3WgSOm+36YGfZI8JD5umj1fCZLaQQqwNQwhnCNPsAWB8Rskn02S1Gcb7l1Sp/R7FnzDpj5e/NcIIYfViHqrVeQ=="
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      ],
+      "usageMetadata": {
+        "promptTokenCount": 428,
+        "candidatesTokenCount": 27,
+        "totalTokenCount": 455,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 428
+          }
+        ],
+        "serviceTier": "standard"
+      },
+      "modelVersion": "gemini-3.5-flash-lite",
+      "responseId": "8FkEa7PuBcvz0PEP657G4QU"
+    }
+  }
+]

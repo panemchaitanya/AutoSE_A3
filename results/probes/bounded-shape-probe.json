@@ -1,0 +1,31 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"action\": \"read_file\", \"path\": \"tinydb/table.py\", \"start_line\": 330}",
+            "thoughtSignature": "Eo4BCosBAWkUfRN1St3ElN4ZiFMx+zNov2SWgzlsNNkDf9M7JkzUQCtMvo2hyjOilV9akJ+U4owMvzhLcXpo09Fu+4tapQb8x2mzQ8uZG8STe3aJ2QIrCPf253n19pnah6D5TPQy1P7feyUFcqrikpJrhy1/o5OSZmkU5CFFfJb4r4mT8/e7RNHow2czDjIFpQ=="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 509,
+    "candidatesTokenCount": 30,
+    "totalTokenCount": 539,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 509
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "H1oEa4f9Ceze0PEP0_aQsAw"
+}

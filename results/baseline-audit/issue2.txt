@@ -1,0 +1,113 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tmp/baseline-audit-60ucsdpv
+configfile: pytest.ini
+plugins: cov-7.1.0, platformdirs-4.12.4, anyio-4.16.0
+collected 3 items
+
+tests_autose/test_operations_missing.py FFF                              [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_increment_missing_field _________________________
+
+db = <TinyDB tables=['_default'], tables_count=1, default_table_documents_count=1, all_tables_documents_count=['_default=1']>
+
+    def test_increment_missing_field(db):
+        """Given a document without a target field, When increment(field, n) is applied, Then the resulting document contains the field with value equal to n (defaulting n to 1 if omitted)."""
+>       db.update(increment('count'), where('name') == 'a')
+
+tests_autose/test_operations_missing.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/table.py:508: in update
+    self._update_table(updater)
+tinydb/table.py:840: in _update_table
+    updater(table)
+tinydb/table.py:505: in updater
+    perform_update(table, doc_id)
+tinydb/table.py:452: in perform_update
+    fields(table[doc_id])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+doc = {'name': 'a'}
+
+    def transform(doc: MutableMapping):
+>       doc[field] += 1
+E       KeyError: 'count'
+
+tinydb/operations.py:63: KeyError
+____________________________ test_add_missing_field ____________________________
+
+db = <TinyDB tables=['_default'], tables_count=1, default_table_documents_count=1, all_tables_documents_count=['_default=1']>
+
+    def test_add_missing_field(db):
+        """Given a document without a target field, When add(field, n) is applied, Then the resulting document contains the field with value equal to n."""
+>       db.update(add('count', 5), where('name') == 'a')
+
+tests_autose/test_operations_missing.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/table.py:508: in update
+    self._update_table(updater)
+tinydb/table.py:840: in _update_table
+    updater(table)
+tinydb/table.py:505: in updater
+    perform_update(table, doc_id)
+tinydb/table.py:452: in perform_update
+    fields(table[doc_id])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+doc = {'name': 'a'}
+
+    def transform(doc: MutableMapping):
+>       doc[field] += n
+E       KeyError: 'count'
+
+tinydb/operations.py:33: KeyError
+_________________________ test_subtract_missing_field __________________________
+
+db = <TinyDB tables=['_default'], tables_count=1, default_table_documents_count=1, all_tables_documents_count=['_default=1']>
+
+    def test_subtract_missing_field(db):
+        """Given a document without a target field, When subtract(field, n) is applied, Then the resulting document contains the field with value equal to -n."""
+>       db.update(subtract('count', 3), where('name') == 'a')
+
+tests_autose/test_operations_missing.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/table.py:508: in update
+    self._update_table(updater)
+tinydb/table.py:840: in _update_table
+    updater(table)
+tinydb/table.py:505: in updater
+    perform_update(table, doc_id)
+tinydb/table.py:452: in perform_update
+    fields(table[doc_id])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+doc = {'name': 'a'}
+
+    def transform(doc: MutableMapping):
+>       doc[field] -= n
+E       KeyError: 'count'
+
+tinydb/operations.py:43: KeyError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.10.12-final-0 _______________
+
+Name                    Stmts   Miss Branch BrPart  Cover
+---------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     17     10      0    60%
+tinydb/middlewares.py      44     44     14      0     0%
+tinydb/mypy_plugin.py      26     26      2      0     0%
+tinydb/operations.py       26      9      0      0    65%
+tinydb/queries.py         130     64     30      5    46%
+tinydb/storages.py         57     30      8      0    42%
+tinydb/table.py           241    136    104     19    37%
+tinydb/utils.py            78     32     18      5    53%
+tinydb/version.py           1      0      0      0   100%
+---------------------------------------------------------
+TOTAL                     661    358    186     29    40%
+=========================== short test summary info ============================
+FAILED tests_autose/test_operations_missing.py::test_increment_missing_field
+FAILED tests_autose/test_operations_missing.py::test_add_missing_field - KeyE...
+FAILED tests_autose/test_operations_missing.py::test_subtract_missing_field
+============================== 3 failed in 0.15s ===============================
