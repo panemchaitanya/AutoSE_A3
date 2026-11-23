@@ -73,11 +73,17 @@ def _post(model, payload, api_key):
         body = e.read().decode("utf-8", "replace")[:500]
         if e.code == 429:
             raise _RateLimited(body)
+        if 500 <= e.code < 600:
+            raise _Transient(f"Gemini API error {e.code}: {body}")
         raise RuntimeError(f"Gemini API error {e.code}: {body}")
 
 
 class _RateLimited(Exception):
     pass
+
+
+class _Transient(Exception):
+    """Retryable 5xx from the API, or an empty/candidate-less reply."""
 
 
 def generate(model, system_prompt, contents, usage, temperature=0.2):
@@ -123,15 +129,15 @@ def generate(model, system_prompt, contents, usage, temperature=0.2):
                     usage.fallbacks += 1
                 candidates = data.get("candidates") or []
                 if not candidates:
-                    raise RuntimeError(
+                    raise _Transient(
                         f"Gemini returned no candidates: {str(data)[:300]}"
                     )
                 parts = candidates[0].get("content", {}).get("parts", [])
                 text = "".join(p.get("text", "") for p in parts)
                 if not text.strip():
-                    raise RuntimeError("Gemini returned an empty reply")
+                    raise _Transient("Gemini returned an empty reply")
                 return text
-            except _RateLimited as e:
+            except (_RateLimited, _Transient) as e:
                 last_err = e
                 if attempt < config.API_RETRIES:
                     time.sleep(
