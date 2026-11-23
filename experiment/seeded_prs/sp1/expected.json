@@ -1,0 +1,8 @@
+{
+  "expected_verdict": "request_changes",
+  "file": "tinydb/table.py",
+  "planted_defect": "off-by-one: docs[:limit + 1] returns one more document than the requested limit",
+  "must_mention": [
+    "limit"
+  ]
+}

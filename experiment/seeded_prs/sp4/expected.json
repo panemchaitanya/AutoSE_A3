@@ -1,0 +1,8 @@
+{
+  "expected_verdict": "request_changes",
+  "file": "tinydb/table.py",
+  "planted_defect": "partial fix: string doc_ids are normalized in update() only; remove(doc_ids=[...]) with string ids still silently does nothing",
+  "must_mention": [
+    "remove"
+  ]
+}

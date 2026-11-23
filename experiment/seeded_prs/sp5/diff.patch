@@ -1,0 +1,27 @@
+diff --git a/tinydb/table.py b/tinydb/table.py
+index 76470aa..ab3110e 100644
+--- a/tinydb/table.py
++++ b/tinydb/table.py
+@@ -246,7 +246,7 @@ class Table:
+ 
+         return list(iter(self))
+ 
+-    def search(self, cond: QueryLike) -> list[Document]:
++    def search(self, cond: QueryLike, limit: Optional[int] = None) -> list[Document]:
+         """
+         Search for all documents matching a 'where' cond.
+ 
+@@ -269,9 +269,12 @@ class Table:
+         # Perform the search by applying the query to all documents.
+         # Then, only if the document matches the query, convert it
+         # to the document class and document ID class.
++        items = list(self._read_table().items())
++        if limit is not None:
++            items = items[:limit]
+         docs = [
+             self.document_class(doc, self.document_id_class(doc_id))
+-            for doc_id, doc in self._read_table().items()
++            for doc_id, doc in items
+             if cond(doc)
+         ]
+ 

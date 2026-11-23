@@ -1,8 +1,11 @@
 # Seeded PRs for experiment E2 (reviewer isolation)
 
-Each seeded PR is a real diff produced by a pipeline run, with exactly one
-defect planted by hand afterwards. `expected.json` records the ground truth
-the reviewer is scored against. The planted defects are chosen to be the
+Each seeded PR is a unified diff against the pinned commit (edff96a) with
+exactly one defect planted by hand, written in the style of the pipeline's
+own patches. Every diff is verified to apply cleanly with `git apply
+--check` and its planted defect is verified behaviorally (a short probe
+script per seed; see expected.json). `expected.json` records the ground
+truth the reviewer is scored against. The planted defects are chosen to be the
 kind a reviewer can only catch by reading the code, not the pipeline's
 claims:
 

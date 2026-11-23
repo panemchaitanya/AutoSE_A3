@@ -1,0 +1,8 @@
+{
+  "expected_verdict": "request_changes",
+  "file": "tinydb/operations.py",
+  "planted_defect": "wrong type for float fields: int(doc.get(field, 0)) truncates an existing float value (0.5 becomes 0) before incrementing",
+  "must_mention": [
+    "int"
+  ]
+}

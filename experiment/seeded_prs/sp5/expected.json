@@ -1,0 +1,8 @@
+{
+  "expected_verdict": "request_changes",
+  "file": "tinydb/table.py",
+  "planted_defect": "semantic: the limit is applied to the raw table before the condition filter, so a search can return fewer than limit matches even when enough matches exist",
+  "must_mention": [
+    "limit"
+  ]
+}

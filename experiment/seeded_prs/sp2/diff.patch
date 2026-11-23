@@ -1,0 +1,23 @@
+diff --git a/tinydb/table.py b/tinydb/table.py
+index 76470aa..a9b53fc 100644
+--- a/tinydb/table.py
++++ b/tinydb/table.py
+@@ -338,7 +338,8 @@ class Table:
+         self,
+         cond: Optional[QueryLike] = None,
+         doc_id: Optional[int] = None,
+-        doc_ids: Optional[list] = None
++        doc_ids: Optional[list] = None,
++        default = None,
+     ):
+         """
+         Get document(s) specified by a query or document ID(s).
+@@ -363,7 +364,7 @@ class Table:
+             raw_doc = table.get(str(doc_id), None)
+ 
+             if raw_doc is None:
+-                return None
++                return default
+ 
+             # Convert the raw data to the document class
+             return self.document_class(raw_doc, doc_id)
