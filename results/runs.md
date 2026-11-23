@@ -179,3 +179,16 @@ non-completion, not a lost write. These outcomes are not all provider errors.
 Narrow recheck issues1/2/3: actual intended source diffs; generated tests
 pass2/3/3 on changed heads and fail2/3/3 on pinned baseline. Hidden tests
 were not used. Stored new evidence in results/baseline-audit/.
+
+## Owner-directed partial transfer and A3 attempts
+
+At21:32IST owner approved changing Alt-complete-first to transfer current
+partial work. Protected setup PR https://github.com/panemchaitanya/AutoSE_A3/pull/1
+merged under explicit owner direction, not by the autonomous coding workflow.
+Main protection remained enforce_admins=true. No generated issuePR merged.
+Exact source tree7803e98, merge8a51a64. Checks were running at merge, not
+claimed green. Hidden tests excluded.
+
+A3 issue mapping: original Alt1/2/3/4/5 -> A3issues2/3/4/5/6.
+First real A3run https://github.com/panemchaitanya/AutoSE_A3/actions/runs/45212288189
+failed requirements503. This is not a stage pass or a completed assignment.
