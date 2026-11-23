@@ -142,6 +142,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python workflow/agent/run_stage.py --stage develop --repo . --issue-file .autose/issue.json
       - name: Commit code, tests, state and artifacts
+        if: always()
         run: |
           git config user.name autose-bot
           git config user.email autose-bot@users.noreply.github.com
