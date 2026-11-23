@@ -36,3 +36,13 @@ count as much as positive ones (brief's rule) and are reported as found.
   defects (anchoring on the pipeline's own claims), isolation stays. If the
   catch rate is equal, ADR-003's exclusion list is re-examined - giving the
   reviewer the spec might be free.
+
+### As-run deviation (recorded, not hidden)
+
+The seeded PRs predate any pipeline run, so no real spec/design/test_report
+artifacts exist for them. Variant B therefore received an AUTHORED
+pipeline-context block (spec/design/test-report/developer summary all
+asserting the change is verified correct) instead of captured artifacts.
+Run locally on gemini-3.5-flash-lite. Both deviations are carried into the
+report's limitations. Result: correct verdicts A 4/5, B 1/5; three verdict
+flips to approve under context; isolation stays (see report section 3).

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "verdict": "approve",
+    "findings": [],
+    "classification": null,
+    "summary": "The PR correctly implements the `default` parameter for `Table.get` across all single-document retrieval paths (`doc_id` and query `cond`). The implementation matches the requirements and all tests pass."
+  },
+  "error": null,
+  "usage": {
+    "prompt_tokens": 142888,
+    "completion_tokens": 686,
+    "total_tokens": 143574,
+    "calls": 15,
+    "fallbacks": 0
+  }
+}

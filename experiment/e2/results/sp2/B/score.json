@@ -1,0 +1,16 @@
+{
+  "seed": "sp2",
+  "variant": "B",
+  "model": "gemini-3.5-flash-lite",
+  "error": null,
+  "verdict": "approve",
+  "expected_verdict": "request_changes",
+  "planted_defect_caught": true,
+  "usage": {
+    "prompt_tokens": 142888,
+    "completion_tokens": 686,
+    "total_tokens": 143574,
+    "calls": 15,
+    "fallbacks": 0
+  }
+}
