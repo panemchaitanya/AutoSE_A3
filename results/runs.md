@@ -89,3 +89,8 @@ review, plus per-stage pass rates and token usage (results.csv).
   merge base for origin/main...HEAD. Posting ci/pytest also lacked
   statuses:write. Fixed full-history checkout and explicit status permission.
   No PR existed at this point. Passed implementation/testing are retained.
+
+- Recovery 45178255762 stopped because operational continuations incorrectly
+  consumed review rounds despite no reviewer verdict. Added entry=resume to
+  retain stages without spending review rounds; operational recovery repairs
+  counts only when no reviewer verdict exists, with an explicit state event.

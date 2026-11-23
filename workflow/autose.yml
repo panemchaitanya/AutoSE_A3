@@ -20,7 +20,7 @@ on:
         required: true
         type: number
       entry:
-        description: "Continuation entry stage (design|implementation); empty = fresh start"
+        description: "Continuation stage (design|implementation|resume); empty = fresh start"
         required: false
         default: ""
         type: string
