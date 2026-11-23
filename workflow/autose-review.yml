@@ -28,6 +28,9 @@ permissions:
   issues: write
   actions: write # to dispatch the bounded continuation run
 
+env:
+  MODEL_REVIEW: ${{ vars.MODEL_REVIEW || 'gemini-3.5-flash' }}
+
 jobs:
   review:
     runs-on: ubuntu-latest
@@ -99,10 +102,12 @@ jobs:
           PR=${{ steps.locate.outputs.pr }}
           VERDICT=$(jq -r '.verdict' .autose/artifacts/review_verdict.json)
           if [ "$VERDICT" = "approve" ]; then
-            gh pr review "$PR" --approve --body-file .autose/artifacts/review.md
+            # GitHub rejects formal self-approval by the same Actions app.
+            # Publish the agent verdict as a COMMENT review, never a human approval.
+            gh pr review "$PR" --comment --body-file .autose/artifacts/review.md
             echo "verdict=approve" >> "$GITHUB_OUTPUT"
           else
-            gh pr review "$PR" --request-changes --body-file .autose/artifacts/review.md
+            gh pr review "$PR" --comment --body-file .autose/artifacts/review.md
             echo "verdict=request_changes" >> "$GITHUB_OUTPUT"
             echo "classification=$(jq -r '.classification' .autose/artifacts/review_verdict.json)" >> "$GITHUB_OUTPUT"
           fi

@@ -105,3 +105,8 @@ review, plus per-stage pass rates and token usage (results.csv).
   separate review 45180126544 ran but failed verdict schema (findings absent).
   Fixed Reviewer result schema to require verdict/findings/classification/
   summary; no missing finding is silently converted into an approval.
+
+- Review 45181202664 produced a valid approve verdict, but GitHub rejected
+  formal approval by the same Actions app that authored the PR. Publish
+  the agent's explicit verdict as a COMMENT review instead; it is not a
+  human approval or an approving GitHub review. Human merge remains required.
