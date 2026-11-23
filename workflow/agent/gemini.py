@@ -10,6 +10,7 @@ reporting required by the assignment is measured, not estimated.
 """
 
 import json
+import http.client
 import os
 import time
 import urllib.error
@@ -67,7 +68,7 @@ def _post(model, payload, api_key):
         method="POST",
     )
     try:
-        with urllib.request.urlopen(req, timeout=300) as resp:
+        with urllib.request.urlopen(req, timeout=60) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", "replace")[:500]
@@ -76,6 +77,9 @@ def _post(model, payload, api_key):
         if 500 <= e.code < 600:
             raise _Transient(f"Gemini API error {e.code}: {body}")
         raise RuntimeError(f"Gemini API error {e.code}: {body}")
+    except (TimeoutError, ConnectionError, urllib.error.URLError,
+            http.client.RemoteDisconnected) as e:
+        raise _Transient(f"transport failure: {type(e).__name__}: {e}") from e
 
 
 class _RateLimited(Exception):

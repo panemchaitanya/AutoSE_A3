@@ -71,3 +71,9 @@ review, plus per-stage pass rates and token usage (results.csv).
   Self-correction now preserves the original task plus concrete feedback.
 - Run 45175065687 (issue 1): requirements and design passed; development
   was in progress at this checkpoint.
+
+- Implementation transport failures: issue 1 run 45175065687 and issue 5
+  run 45175520241 raised TimeoutError; issue 2 run 45175508632 raised
+  RemoteDisconnected. These escaped retries. Added transport-error retry
+  handling and shorter per-call timeouts; primary flash latency is a real
+  E1 completion/availability failure, not a successful code-quality result.
