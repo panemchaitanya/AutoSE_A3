@@ -171,8 +171,11 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
             if read_only:
                 obs = "ERROR: this agent is read-only (write_file unavailable)"
             else:
-                obs = _tool_write_file(repo_root, action.get("path", ""),
-                                       action.get("content", ""))
+                if "content" not in action or not isinstance(action["content"], str):
+                    obs = "ERROR: write_file requires the complete file text in content"
+                else:
+                    obs = _tool_write_file(repo_root, action.get("path", ""),
+                                           action["content"])
         elif kind == "run_shell":
             obs = _tool_run_shell(repo_root, action.get("command", ""))
         else:

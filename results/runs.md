@@ -57,3 +57,10 @@ review, plus per-stage pass rates and token usage (results.csv).
   with a valid JSON action in two probes. Added schema enforcement for
   action agents and a separate judge schema. New runs start fresh so their
   work branches contain the changed client. Earlier run artifacts remain.
+
+- Runs 45173689343 (issue 1) and 45173693188 (issue 2) failed requirements
+  checks: the first schema allowed write_file without content, and the
+  model emitted summaries instead of file text, creating empty specs.
+  Fixed with action-specific anyOf schemas requiring each action's fields,
+  plus runtime rejection of missing write content. A real API write probe
+  returned STOP and a complete Markdown spec with the corrected schema.

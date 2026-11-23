@@ -110,10 +110,17 @@ def response_schema(system_prompt):
         "findings": {"type": "ARRAY", "items": finding},
         "classification": {"type": "STRING", "nullable": True},
     })
-    return obj({"action": {"type": "STRING", "enum": [
-        "list_files", "read_file", "write_file", "run_shell", "finish"]},
-        "path": string, "content": string, "command": string,
-        "result": result}, ("action",))
+    def action(name, fields):
+        return obj({"action": {"type": "STRING", "enum": [name]},
+                    **fields}, ("action", *fields))
+    return {"anyOf": [
+        action("list_files", {"path": string}),
+        action("read_file", {"path": string}),
+        action("write_file", {"path": string, "content": string}),
+        action("run_shell", {"command": string}),
+        action("finish", {"result": result}),
+    ]}
+
 
 
 def generate(model, system_prompt, contents, usage, temperature=0.2):
