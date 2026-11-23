@@ -64,3 +64,10 @@ review, plus per-stage pass rates and token usage (results.csv).
   Fixed with action-specific anyOf schemas requiring each action's fields,
   plus runtime rejection of missing write content. A real API write probe
   returned STOP and a complete Markdown spec with the corrected schema.
+
+- Run 45175070006 (issue 2): requirements passed; design failed its
+  semantic check for generic function names. Inspection found retry prompts
+  dropped the original spec/architecture when starting a fresh agent.
+  Self-correction now preserves the original task plus concrete feedback.
+- Run 45175065687 (issue 1): requirements and design passed; development
+  was in progress at this checkpoint.

@@ -103,6 +103,7 @@ def stage_requirements(repo_root, state, issue):
             + prompts.untrusted("ISSUE TITLE", issue.get("title", ""))
             + prompts.untrusted("ISSUE BODY", issue.get("body", "")))
 
+    original_task = task
     for attempt in (1, 2):
         result, transcript, err = agent.run_agent(
             "SpecWriter", config.MODEL_SPEC, system, task, repo_root, usage)
@@ -130,7 +131,7 @@ def stage_requirements(repo_root, state, issue):
                                  summary=result.get("summary", ""))
             return True
         problems = problems + ([f"judge: {jreason}"] if not jok else [])
-        task = ("The specification failed its checks. Fix spec.md and finish."
+        task = (original_task + "\nThe specification failed its checks. Read the existing spec.md, fix it, and finish."
                 "\nProblems:\n- " + "\n- ".join(problems))
     write_transcript(repo_root, stage, transcript)
     return fail(repo_root, state, stage,
@@ -155,6 +156,7 @@ def stage_design(repo_root, state, issue):
             "Explore the repo with list_files/read_file, then write "
             ".autose/artifacts/design.md and finish.")
 
+    original_task = task
     for attempt in (1, 2):
         result, transcript, err = agent.run_agent(
             "Designer", config.MODEL_DESIGN, system, task, repo_root, usage)
@@ -181,7 +183,7 @@ def stage_design(repo_root, state, issue):
                                  summary=result.get("summary", ""))
             return True
         problems = problems + ([f"judge: {jreason}"] if not jok else [])
-        task = ("The design failed its checks. Fix design.md and finish."
+        task = (original_task + "\nThe design failed its checks. Read the existing design.md, fix it, and finish."
                 "\nProblems:\n- " + "\n- ".join(problems))
     write_transcript(repo_root, stage, transcript)
     return fail(repo_root, state, stage,
