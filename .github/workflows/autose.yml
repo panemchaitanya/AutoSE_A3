@@ -32,7 +32,7 @@ permissions:
   actions: write # review workflow dispatches the bounded continuation run
 
 concurrency:
-  group: autose-${{ github.event.issue.number || inputs.issue }}
+  group: autose-provider-queue
   cancel-in-progress: false
 
 env:

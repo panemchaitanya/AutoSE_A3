@@ -77,3 +77,9 @@ review, plus per-stage pass rates and token usage (results.csv).
   RemoteDisconnected. These escaped retries. Added transport-error retry
   handling and shorter per-call timeouts; primary flash latency is a real
   E1 completion/availability failure, not a successful code-quality result.
+
+- Flash Developer runs for issue 3 (45175512084) and issue 4 (45175516167)
+  also timed out. Lite run issue 2 (45177093956) hit a real HTTP 429:
+  the provider reported 15 free requests/minute. Parallel issue runs shared
+  that bucket. Changed future workflows to a serial provider queue, paced
+  client requests at least five seconds apart, and lengthened 429 backoff.
