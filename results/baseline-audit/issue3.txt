@@ -1,0 +1,71 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tmp/baseline-audit-rp1dhto5
+configfile: pytest.ini
+plugins: cov-7.1.0, platformdirs-4.12.4, anyio-4.16.0
+collected 3 items
+
+tests_autose/test_search_limit.py FFF                                    [100%]
+
+=================================== FAILURES ===================================
+________________________________ test_ac_001_1 _________________________________
+
+db = <Table name='test', total=100, storage=<tinydb.storages.MemoryStorage object at 0x7f5a5f7c3820>>
+
+    def test_ac_001_1(db):
+        """Given a table containing 100 documents matching a condition, when db.search(cond, limit=10) is invoked, then exactly 10 documents are returned in ascending document ID order."""
+        cond = Query().val == 1
+>       results = db.search(cond, limit=10)
+E       TypeError: Table.search() got an unexpected keyword argument 'limit'
+
+tests_autose/test_search_limit.py:16: TypeError
+________________________________ test_ac_001_2 _________________________________
+
+db = <Table name='test', total=100, storage=<tinydb.storages.MemoryStorage object at 0x7f5a5f7947c0>>
+
+    def test_ac_001_2(db):
+        """Given a table containing matching documents, when db.search(cond) or db.search(cond, limit=None) is invoked, then all matching documents are returned in ascending document ID order."""
+        cond = Query().val == 1
+        results_default = db.search(cond)
+>       results_none = db.search(cond, limit=None)
+E       TypeError: Table.search() got an unexpected keyword argument 'limit'
+
+tests_autose/test_search_limit.py:27: TypeError
+________________________________ test_ac_001_3 _________________________________
+
+db = <Table name='test', total=100, storage=<tinydb.storages.MemoryStorage object at 0x7f5a5f76d720>>
+
+    def test_ac_001_3(db):
+        """Given a table containing 5 documents matching a condition, when db.search(cond, limit=10) is invoked, then all 5 documents are returned."""
+        # Create a table with only 5 matches
+        db2 = TinyDB(storage=MemoryStorage)
+        table = db2.table('small')
+        for i in range(1, 6):
+            table.insert({'val': 2})
+    
+>       results = table.search(Query().val == 2, limit=10)
+E       TypeError: Table.search() got an unexpected keyword argument 'limit'
+
+tests_autose/test_search_limit.py:41: TypeError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.10.12-final-0 _______________
+
+Name                    Stmts   Miss Branch BrPart  Cover
+---------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     21     10      1    52%
+tinydb/middlewares.py      44     44     14      0     0%
+tinydb/mypy_plugin.py      26     26      2      0     0%
+tinydb/operations.py       26     26      0      0     0%
+tinydb/queries.py         130     65     30      5    45%
+tinydb/storages.py         57     30      8      0    42%
+tinydb/table.py           241    137    104     15    36%
+tinydb/utils.py            78     24     18      8    65%
+tinydb/version.py           1      0      0      0   100%
+---------------------------------------------------------
+TOTAL                     661    373    186     29    38%
+=========================== short test summary info ============================
+FAILED tests_autose/test_search_limit.py::test_ac_001_1 - TypeError: Table.se...
+FAILED tests_autose/test_search_limit.py::test_ac_001_2 - TypeError: Table.se...
+FAILED tests_autose/test_search_limit.py::test_ac_001_3 - TypeError: Table.se...
+============================== 3 failed in 0.18s ===============================

@@ -165,3 +165,17 @@ completion.
 - Exported results/usage-snapshots.csv records cumulative progress values
   where present. Do not sum snapshots; older failures lack this evidence.
   Future stages export usage.json/state_snapshot.json/full pytest output.
+
+## Issue4 gate correction,21:01IST
+
+The earlier implementation-passed checkpoint was invalid: no tinydb source
+change, syntax-invalid generated test stub. Local pytest caught collection
+failure. We canceled45205859843, reset implementation/testing pending with
+an explicit audit event, and required a real source diff. The corrected
+45206324141 then failed for no source change rather than falsely passing.
+Its22Developer turns contained no editing action, so this was model
+non-completion, not a lost write. These outcomes are not all provider errors.
+
+Narrow recheck issues1/2/3: actual intended source diffs; generated tests
+pass2/3/3 on changed heads and fail2/3/3 on pinned baseline. Hidden tests
+were not used. Stored new evidence in results/baseline-audit/.
