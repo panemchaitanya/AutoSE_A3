@@ -83,3 +83,9 @@ review, plus per-stage pass rates and token usage (results.csv).
   the provider reported 15 free requests/minute. Parallel issue runs shared
   that bucket. Changed future workflows to a serial provider queue, paced
   client requests at least five seconds apart, and lengthened 429 backoff.
+
+- Serial continuation 45177637212 passed implementation and testing;
+  release CI passed but release failed because shallow checkout had no
+  merge base for origin/main...HEAD. Posting ci/pytest also lacked
+  statuses:write. Fixed full-history checkout and explicit status permission.
+  No PR existed at this point. Passed implementation/testing are retained.
