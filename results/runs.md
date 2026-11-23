@@ -49,3 +49,11 @@ review, plus per-stage pass rates and token usage (results.csv).
   https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45169083482
 - Run 45171521123 (issue #1, continuation entry=design): dispatched 17:38 IST.
   https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45171521123
+
+- Continuation 45171521123 also failed at design with an empty reply.
+  Exact-prompt local probes on lite and flash returned
+  MALFORMED_FUNCTION_CALL despite JSON mode. Disabling native tool calls
+  alone did not fix it; adding an explicit response schema returned STOP
+  with a valid JSON action in two probes. Added schema enforcement for
+  action agents and a separate judge schema. New runs start fresh so their
+  work branches contain the changed client. Earlier run artifacts remain.

@@ -86,6 +86,36 @@ class _Transient(Exception):
     """Retryable 5xx from the API, or an empty/candidate-less reply."""
 
 
+
+def response_schema(system_prompt):
+    """Constrain JSON-as-data actions; no native provider tools are used."""
+    string = {"type": "STRING"}
+    strings = {"type": "ARRAY", "items": string}
+    boolean = {"type": "BOOLEAN"}
+    def obj(properties, required=()):
+        return {"type": "OBJECT", "properties": properties,
+                "required": list(required)}
+    if '"pass": true|false' in system_prompt:
+        return obj({"pass": boolean, "reasons": strings}, ("pass", "reasons"))
+    finding = obj({"file": string, "line": {"type": "INTEGER"},
+                   "issue": string, "severity": string})
+    failure = obj({"criterion": string, "error": string})
+    result = obj({
+        "summary": string, "files": strings, "files_changed": strings,
+        "acceptance_criteria": strings, "assumptions": strings,
+        "blocked": boolean, "reason": string, "notes_for_tester": string,
+        "tests_written": strings, "all_pass": boolean,
+        "failures": {"type": "ARRAY", "items": failure},
+        "criteria_untestable": strings, "verdict": string,
+        "findings": {"type": "ARRAY", "items": finding},
+        "classification": {"type": "STRING", "nullable": True},
+    })
+    return obj({"action": {"type": "STRING", "enum": [
+        "list_files", "read_file", "write_file", "run_shell", "finish"]},
+        "path": string, "content": string, "command": string,
+        "result": result}, ("action",))
+
+
 def generate(model, system_prompt, contents, usage, temperature=0.2):
     """One generateContent call with retries, fallback and budget checks.
 
@@ -111,6 +141,7 @@ def generate(model, system_prompt, contents, usage, temperature=0.2):
             # without this, gemini-3.5-flash-lite answers with
             # finishReason=MALFORMED_FUNCTION_CALL and an empty text part.
             "responseMimeType": "application/json",
+            "responseSchema": response_schema(system_prompt),
         },
     }
 
