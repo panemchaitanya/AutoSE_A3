@@ -152,3 +152,16 @@ Machine-readable snapshot: `results/hosted-runs.csv`, including CI and failed
 agent attempts. URLs are API-returned GitHub run URLs. Earlier per-attempt
 notes above explain recovery and harness changes. Not a claim of one-pass
 completion.
+
+- Issue3 operational resume45197403640 passed hosted implementation/testing/
+  release and opened https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/8 .
+  Hosted release full suite:230passed,1skipped. New generated tests were
+  checked separately by the stage gate. Prior local replay231passed is a
+  different environment, not the hosted count.
+  Independent review45199274608 posted COMMENT approve:
+  https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/8#pullrequestreview-6023844081
+  Issue4 next definite post-key-change resume45199798143.
+
+- Exported results/usage-snapshots.csv records cumulative progress values
+  where present. Do not sum snapshots; older failures lack this evidence.
+  Future stages export usage.json/state_snapshot.json/full pytest output.
