@@ -94,3 +94,14 @@ review, plus per-stage pass rates and token usage (results.csv).
   consumed review rounds despite no reviewer verdict. Added entry=resume to
   retain stages without spending review rounds; operational recovery repairs
   counts only when no reviewer verdict exists, with an explicit state event.
+
+- Run 45178413455 passed through release CI; PR creation was denied because
+  repository Actions permissions disabled PR creation/approval. Enabled
+  that setting (keeping default workflow permission read; explicit workflow
+  grants still apply). Run 45179045717 retries release through resume.
+
+- Issue 1 PR https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/6 opened
+  in 45179045717 after release CI passed. Reusable review did not instantiate;
+  separate review 45180126544 ran but failed verdict schema (findings absent).
+  Fixed Reviewer result schema to require verdict/findings/classification/
+  summary; no missing finding is silently converted into an approval.

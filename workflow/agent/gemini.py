@@ -118,6 +118,16 @@ def response_schema(system_prompt):
         "findings": {"type": "ARRAY", "items": finding},
         "classification": {"type": "STRING", "nullable": True},
     })
+    if "You are the Reviewer agent" in system_prompt:
+        result = obj({
+            "verdict": {"type": "STRING", "enum": ["approve", "request_changes"]},
+            "findings": {"type": "ARRAY", "items": obj({
+                "file": string, "line": {"type": "INTEGER"}, "issue": string,
+                "severity": {"type": "STRING", "enum": ["blocker", "major", "minor"]}},
+                ("file", "line", "issue", "severity"))},
+            "classification": {"type": "STRING", "nullable": True},
+            "summary": string,
+        }, ("verdict", "findings", "classification", "summary"))
     def action(name, fields):
         return obj({"action": {"type": "STRING", "enum": [name]},
                     **fields}, ("action", *fields))
