@@ -110,3 +110,13 @@ review, plus per-stage pass rates and token usage (results.csv).
   formal approval by the same Actions app that authored the PR. Publish
   the agent's explicit verdict as a COMMENT review instead; it is not a
   human approval or an approving GitHub review. Human merge remains required.
+
+- Issue 1 review completed successfully in 45182313423. Posted COMMENT
+  review with explicit approve verdict (not formal/human approval):
+  https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/6#pullrequestreview-6022345553
+  Pipeline stages passed across recovery runs; no single uninterrupted
+  end-to-end success is claimed. Issue 2 operational resume launched next.
+
+- Issue 2 resume 45182917832 failed design after exhausted HTTP 503 retries.
+  Kept the run and moved to issue 3 operational resume 45183839092 rather
+  than immediately repeating the same unavailable call.
