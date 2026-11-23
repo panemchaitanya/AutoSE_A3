@@ -125,3 +125,12 @@ review, plus per-stage pass rates and token usage (results.csv).
   Issue 4 resume 45184875593 launched next. Changed the automatic review
   hand-off to explicit workflow_dispatch, the same separate-workflow path
   already verified for issue 1, rather than the unresolved reusable-call path.
+
+- Issue 4 resume 45184875593 failed implementation HTTP503. Verified
+  gemini-3.1-flash-lite with a real Developer-contract probe and switched
+  current role overrides without changing the free/no-billing project.
+  Issue 2 resume 45185960683 passed design and reached development.
+- Earlier state lacked a release-passed update despite PR creation; fixed
+  future release state writes. API usage now records actual responding
+  models per cumulative run, not just requested role defaults. Older logs
+  remain the model evidence where this field did not exist.

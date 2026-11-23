@@ -199,6 +199,7 @@ jobs:
             echo "- Pull request: $PR_URL"
             echo "- CI (pytest on branch head): passed in this job"
           } > .autose/artifacts/pr.md
+          python -c "import sys; sys.path.insert(0, 'workflow/agent'); import controller; s=controller.load_state('.'); controller.set_stage(s, 'release', 'passed', artifact='.autose/artifacts/pr.md'); controller.save_state('.', s)"
           git add .autose
           git commit -m "autose: release stage for issue #$ISSUE" || true
           git push
