@@ -1,6 +1,6 @@
 issue,run_url,pr_url,requirements,design,implementation,testing,release,review,fix_cycles,review_rounds,review_verdict,hidden_tests_passed,hidden_tests_total,total_tokens,wall_time_min,notes
 1,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,4,TBD,TBD,bug: string doc_ids in update/remove
-2,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,3,TBD,TBD,bug: increment KeyError on missing field
-3,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,3,TBD,TBD,feature: search limit parameter
-4,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,3,TBD,TBD,feature: get default value
-5,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,3,TBD,TBD,vague: cache aliasing on returned docs
+2,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,4,TBD,TBD,bug: increment KeyError on missing field
+3,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,4,TBD,TBD,feature: search limit parameter
+4,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,4,TBD,TBD,feature: get default value
+5,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,TBD,4,TBD,TBD,vague: cache aliasing on returned docs
