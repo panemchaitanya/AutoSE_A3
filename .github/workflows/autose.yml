@@ -225,8 +225,12 @@ jobs:
   review:
     needs: [gate, release]
     if: needs.gate.outputs.ok == 'true'
-    name: Stage 6 - Independent review
-    uses: ./.github/workflows/autose-review.yml
-    secrets: inherit
-    with:
-      issue: ${{ needs.gate.outputs.issue }}
+    name: Dispatch independent review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start the independent review workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ needs.gate.outputs.issue }}
+        run: gh workflow run autose-review.yml --ref main -f issue="$ISSUE"

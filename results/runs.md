@@ -120,3 +120,8 @@ review, plus per-stage pass rates and token usage (results.csv).
 - Issue 2 resume 45182917832 failed design after exhausted HTTP 503 retries.
   Kept the run and moved to issue 3 operational resume 45183839092 rather
   than immediately repeating the same unavailable call.
+
+- Issue 3 resume 45183839092 failed implementation after HTTP503 retries.
+  Issue 4 resume 45184875593 launched next. Changed the automatic review
+  hand-off to explicit workflow_dispatch, the same separate-workflow path
+  already verified for issue 1, rather than the unresolved reusable-call path.
