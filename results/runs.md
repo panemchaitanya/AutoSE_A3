@@ -36,3 +36,14 @@ iteration history below; nothing failed was deleted or hidden.
 
 TBD: the five issues run on AutoSE_A3 with links to each run, PR and
 review, plus per-stage pass rates and token usage (results.csv).
+
+## 2026-11-23 (post-public, hosted dev runs on Alt)
+
+- Run 45169083482 (issue #1, fresh): gate PASS, requirements PASS
+  (spec.md + transcript in artifact 14816202090), design FAILED after 5m15s:
+  "rate-limited on all model tiers; last error: Gemini returned an empty
+  reply". Gemini key verified healthy via direct local probe minutes later;
+  failure attributed to transient provider-side rate pressure, not code.
+  https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45169083482
+- Run 45171521123 (issue #1, continuation entry=design): dispatched 17:38 IST.
+  https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45171521123
