@@ -23,8 +23,8 @@ count as much as positive ones (brief's rule) and are reported as found.
 
 - **Question:** does hiding the pipeline's artifacts from the reviewer
   actually change what it catches - or is isolation ceremony?
-- **Material:** the five seeded PRs in `experiment/seeded_prs/` - real diffs
-  from pipeline runs, each with one defect planted by hand (see the label
+- **Material:** the five seeded PRs in `experiment/seeded_prs/` - authored diffs
+  against the pinned repository, each with one defect planted by hand (see the label
   file per seeded PR).
 - **Variant A (control, my design):** reviewer sees issue + diff + repo at
   the PR head only.

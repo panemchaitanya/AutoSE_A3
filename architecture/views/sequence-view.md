@@ -36,7 +36,7 @@ sequenceDiagram
     R->>GH: push branch, open PR, write pr.md
     GH->>CI: pull_request opened
     CI->>CI: run pytest suite
-    GH->>V: trigger (pull_request: opened, branch autose/**)
+    W->>V: reusable workflow call after release
     V->>V: Stage 6 Review: fresh context,<br/>sees issue + diff + repo @ PR head only
     alt changes requested, round <= 2
         V-->>GH: PR review: request changes<br/>classified: approach issue or code issue<br/>+ human-readable comment

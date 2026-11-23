@@ -57,9 +57,11 @@ harness and prompts, as the brief asks.
 
 ## AI use (course policy)
 
-I used an AI coding assistant substantially while building the workflow code
-and scaffolding. I reviewed everything it generated; the architecture
-decisions, the ADRs and the reasoning in the report are my own.
+An AI coding assistant provided substantial help with the workflow code,
+prompts, architecture drafts, ADR drafts, experiments and report drafts.
+The repository records actual runs and failures. Student review of the
+architecture reasoning and generated material is required before submission;
+this disclosure does not claim unaided authorship.
 
 ## Notes for maintainers
 
