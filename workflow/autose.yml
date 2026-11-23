@@ -29,18 +29,19 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  actions: write # review workflow dispatches the bounded continuation run
 
 concurrency:
   group: autose-${{ github.event.issue.number || inputs.issue }}
   cancel-in-progress: false
 
 env:
-  MODEL_SPEC: ${{ vars.MODEL_SPEC || 'gemini-2.5-flash' }}
-  MODEL_DESIGN: ${{ vars.MODEL_DESIGN || 'gemini-2.5-flash' }}
-  MODEL_DEVELOP: ${{ vars.MODEL_DEVELOP || 'gemini-2.5-pro' }}
-  MODEL_TEST: ${{ vars.MODEL_TEST || 'gemini-2.5-flash' }}
-  MODEL_REVIEW: ${{ vars.MODEL_REVIEW || 'gemini-2.5-pro' }}
-  MODEL_JUDGE: ${{ vars.MODEL_JUDGE || 'gemini-2.5-flash' }}
+  MODEL_SPEC: ${{ vars.MODEL_SPEC || 'gemini-3.5-flash-lite' }}
+  MODEL_DESIGN: ${{ vars.MODEL_DESIGN || 'gemini-3.5-flash-lite' }}
+  MODEL_DEVELOP: ${{ vars.MODEL_DEVELOP || 'gemini-3.5-flash' }}
+  MODEL_TEST: ${{ vars.MODEL_TEST || 'gemini-3.5-flash-lite' }}
+  MODEL_REVIEW: ${{ vars.MODEL_REVIEW || 'gemini-3.5-flash' }}
+  MODEL_JUDGE: ${{ vars.MODEL_JUDGE || 'gemini-3.5-flash-lite' }}
 
 jobs:
   gate:
