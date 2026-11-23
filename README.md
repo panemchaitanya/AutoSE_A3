@@ -5,13 +5,15 @@ into a tested, independently reviewed pull request.
 
 - **Fork of:** https://github.com/msiemens/tinydb
 - **Pinned commit:** `edff96aeb2616402e9489d46e90a592c05565621`
-  (`edff96a`, 2026-10-15). All issues, runs and PRs are against this commit's
+  (`edff96a`). All issues, runs and PRs start from this commit's
   code as it stands in this fork.
 - **Models (free-tier Gemini API key, repo secret `GEMINI_API_KEY`):**
   gemini-3.5-flash-lite for SpecWriter / Designer / Tester / judge,
   gemini-3.5-flash for Developer / Reviewer (ADR-006). Total tokens per run are
-  recorded from the API's usage metadata and reported in
-  `results/results.csv`. The key sits on a free-tier project with no billing
+  recorded from API usage metadata. `results/results.csv` distinguishes
+  branch-cumulative counts from attempts and separate reviews; it is not yet
+  the total usage ledger. Recovery overrides use 3.1-flash-lite with a
+  3.5-flash-lite fallback, so defaults are not responding-model evidence. The key sits on a free-tier project with no billing
   attached, so spend is hard-capped at the free quota.
 
 ## How to trigger the workflow
@@ -27,8 +29,9 @@ into a tested, independently reviewed pull request.
 4. The run ends with a PR reviewed by the independent reviewer. Only a human
    merges or closes - the workflow never merges.
 
-Only the repository owner can trigger runs (ADR-010). `main` is protected:
-changes land through pull requests.
+Label/comment starts require the repository owner. Workflow dispatch requires
+write access. `main` protection was configured, but owner/admin bootstrap
+pushes occurred; do not read protection as proof that every change used a PR.
 
 ## Layout
 
@@ -39,7 +42,7 @@ demo.mp4             # demo video link (see results/runs.md)
 ARCHITECTURE.md      # my A2 architecture document, feeds the Designer
 architecture/
   views/             # component view, sequence view, stage map
-  decisions/         # ADR-001.md ... ADR-010.md (Nygard format)
+  decisions/         # ADR-001.md ... ADR-013.md (Nygard format)
 workflow/            # copy of .github/workflows/ + all agent code + prompts
 experiment/
   issues/            # the 5 issue texts
@@ -67,3 +70,17 @@ this disclosure does not claim unaided authorship.
 
 - `.autose/` on a PR branch is pipeline metadata; drop it when merging.
 - Generated tests live in `tests_autose/` and are part of the reviewed diff.
+
+## Current evidence and prototype limits
+
+This development repository is AutoSE_A3_Alt. Submission target is AutoSE_A3,
+which must have its own real runs. At the interim evidence snapshot the
+transfer is not complete. Do not treat this README as completion evidence.
+
+Operational recovery preserves passed stages; multiple runs may contribute
+to one issue. COMMENT reviews carry explicit verdicts but are not formal
+GitHub approvals. Hidden tests stay outside both repositories until final
+runs in both finish. E1's intended model-quality comparison is incomplete
+and confounded; E2 has ten local single-model reviews with authored context.
+Python shell access is arbitrary execution: path/prefix checks are not a
+sandbox. This prototype is not suitable for hostile repositories/secrets.
