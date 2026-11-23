@@ -67,7 +67,7 @@ def make_diff(repo_root, base_ref=None):
 def judge(repo_root, usage, question, document):
     """Advisory LLM judge for the two semantic checks (ADR-007)."""
     task = (f"Property to verify: {question}\n\n"
-            f"Document under review:\n```markdown\n{document[:20000]}\n```\n\n"
+            f"Document under review:\n```markdown\n{document}\n```\n\n"
             f"Answer with one JSON object.")
     try:
         reply = gemini.generate(config.MODEL_JUDGE, prompts.JUDGE_SYSTEM,

@@ -1,12 +1,13 @@
 """Mechanical minimum A1 deliverable checks. Semantic validation remains a judge duty."""
 import glob,os,re
+from pathlib import Path
 
 def check_a1_bundle(root):
     errors=[];docs={}
     for kind in ('SRS','REGISTER','VALIDATION'):
         paths=sorted(glob.glob(os.path.join(root,'.autose','artifacts',f'*_{kind}_v*.md')))
         if not paths:errors.append(f'missing versioned A1 {kind} artifact');continue
-        docs[kind]=open(paths[-1],encoding='utf-8').read()
+        docs[kind]=Path(paths[-1]).read_text(encoding='utf-8')
         if len(docs[kind].strip())<160:errors.append(f'A1 {kind} artifact is too short to contain required sections')
     expected={'SRS':['purpose','actors','constraints','functional requirements','non-functional','acceptance criteria','dependencies','traceability'],
               'REGISTER':['source statements','ambiguous','open questions','assumptions','conflicts','evidence','coverage','change log'],
