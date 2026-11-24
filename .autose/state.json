@@ -13,6 +13,18 @@
     {
       "event": "fresh start supersedes 7907c3d725674d80558d485d88bd5fd046b59a4f",
       "ts": "2026-11-24T01:18:20.941794+00:00"
+    },
+    {
+      "event": "Full A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T01:18:29.542179+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-24T01:18:29.542193+00:00"
+    },
+    {
+      "event": "requirements -> failed (checks failed after self-correction: A1 semantic validation: FR-002 is marked with basis INFERRED and gate READY, but the property requires that ASSUMED/INFERRED items cannot be READY.; NFR-001 is marked with basis ASSUMED, but its source is Q-1 (an open question whose default is assumed), violating the strict rule that non-STATED/fact-based items with assumptions/inferences cannot be fully ready without proper grounding.)",
+      "ts": "2026-11-24T02:27:05.998959+00:00"
     }
   ],
   "issue": 3,
@@ -28,7 +40,8 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "pending"
+      "reason": "checks failed after self-correction: A1 semantic validation: FR-002 is marked with basis INFERRED and gate READY, but the property requires that ASSUMED/INFERRED items cannot be READY.; NFR-001 is marked with basis ASSUMED, but its source is Q-1 (an open question whose default is assumed), violating the strict rule that non-STATED/fact-based items with assumptions/inferences cannot be fully ready without proper grounding.",
+      "status": "failed"
     },
     "review": {
       "status": "pending"
@@ -37,5 +50,15 @@
       "status": "pending"
     }
   },
-  "usage": {}
+  "usage": {
+    "calls": 22,
+    "completion_tokens": 11527,
+    "fallbacks": 14,
+    "models": {
+      "gemini-3.5-flash": 8,
+      "gemini-3.5-flash-lite": 14
+    },
+    "prompt_tokens": 159450,
+    "total_tokens": 173450
+  }
 }
