@@ -1,15 +1,12 @@
 digraph G {
- graph [rankdir=LR,bgcolor="white",pad="0.2",nodesep="0.3",ranksep="0.27"];
- node [shape=box,style="rounded,filled",fillcolor="#edf3f1",color="#69978b",fontname="Helvetica",fontsize=11];
- edge [color="#777777",fontname="Helvetica",fontsize=10];
- A [label="Issue 3: search(limit)\nRequirements + design passed in earlier attempt"];
- B [label="Failed implementation/testing attempts retained\nExact generated files replayed locally: 231 passed\nLocal pass was NOT a hosted pass"];
- C [label="Operational resume 45197403640\nDefinite post-ORION-key dispatch"];
- D [label="Requirements + design skipped as passed\nHosted implementation + testing passed"];
- E [label="Release reran pytest and opened PR 8\nNo merge"];
- F [label="Historical review 45199274608\nREADME context flaw: NOT fully independent"];
- H [label="Posted COMMENT approve: 6023844081\nNot formal GitHub approval"];
- {rank=same;A;B;C;}
- {rank=same;D;E;F;H;}
- A->B->C->D->E->F->H;
+ graph [rankdir=TB,bgcolor=white,nodesep=.25,ranksep=.22];
+ node [shape=box,style="rounded,filled",fillcolor="#f4efec",fontname=Helvetica,fontsize=11];
+ edge [fontname=Helvetica,fontsize=9];
+ A [label="A3 issue4 owner dispatch 45313024154\nA1 verified09:03 -> Design09:28 -> Developer timeout10:29"];
+ B [label="45331022168 bounded continuation\nDeveloper20->39 finish accepted -> Tester0 timeout"];
+ C [label="45338808975 Tester continuation\nTester1->12 finish;4AC pass; stale harness suite fails;fixcycle1"];
+ D [label="45346906399 mechanical recheck,0modelcalls\nSuite/build/baseline contrast passed -> PR31 open"];
+ E [label="45347087697 separate reviewer\nCorrected filtered checkout -> approve body, COMMENTED state"];
+ F [label="Frozen PR31 head e28b1b5eec8a\nHuman merge decision, no automatic merge"];
+ A->B->C->D->E->F;
 }

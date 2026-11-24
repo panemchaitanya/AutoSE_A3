@@ -1,0 +1,143 @@
+{
+  "evaluated_at": "2026-11-24T18:43+05:30",
+  "protocol": "One sealed acceptance file per issue (4 tests each) copied into repo root of the exact frozen commit (detached checkout) and run alone with pytest; repo pytest.ini overridden (-c /dev/null) to avoid coverage plugin. Mapping by GitHub issue title: Alt issue N -> acceptance set N; A3 issue N -> set N-1.",
+  "environment": "Linux sandbox, system python3 in fresh venv with pytest and pytest-cov, no CI, single pass, no retries, no repo writes",
+  "integrity": "ciphertext, wrapped key, archive and all 5 inner file hashes matched manifests",
+  "results": [
+    {
+      "repository": "panemchaitanya/AutoSE_A3",
+      "branch": "main",
+      "commit": "44776fe0815d6ca563549e4ef3b0a6e1435d690b",
+      "role": "main (baseline, not an evaluated target)"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3",
+      "branch": "autose/issue-2",
+      "commit": "bc09fa14da711993ef17c24c535f99ec276f7a5c",
+      "acceptance_set": 1,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "total": 4,
+      "result": "FAIL"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3",
+      "branch": "autose/issue-3",
+      "commit": "17bb34ee8c7f8958b77e10efca69543c7c270844",
+      "acceptance_set": 2,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "total": 4,
+      "result": "FAIL"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3",
+      "branch": "autose/issue-4",
+      "commit": "e28b1b5eec8a978e4db029fe39cae227d3526c36",
+      "acceptance_set": 3,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "total": 4,
+      "result": "PASS"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3",
+      "branch": "autose/issue-5",
+      "commit": "b2a36e4a86b76f56f98d2b583190bc299e9af652",
+      "acceptance_set": 4,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "total": 4,
+      "result": "FAIL"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3",
+      "branch": "autose/issue-6",
+      "commit": "ac9916f4509bc0d9ce18d2ba7434e61d3e9b0417",
+      "acceptance_set": 5,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "total": 4,
+      "result": "FAIL"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3_Alt",
+      "branch": "main",
+      "commit": "426c86830903adb0334bb6fda908e5389f53eb01",
+      "role": "main (baseline, not an evaluated target)"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3_Alt",
+      "branch": "autose/issue-1",
+      "commit": "5381a924395537b0e5bd470bfa9c6551918dbfe6",
+      "acceptance_set": 1,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "total": 4,
+      "result": "PASS"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3_Alt",
+      "branch": "autose/issue-2",
+      "commit": "155f5172a69feddfb8a92c5ddb6de03e3dd33f26",
+      "acceptance_set": 2,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "total": 4,
+      "result": "PASS"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3_Alt",
+      "branch": "autose/issue-3",
+      "commit": "7382d593cd39118b72b6fb8c7de4d899fa99678c",
+      "acceptance_set": 3,
+      "passed": 4,
+      "failed": 0,
+      "errors": 0,
+      "total": 4,
+      "result": "PASS"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3_Alt",
+      "branch": "autose/issue-4",
+      "commit": "9b560110cb007fd60c53d558669ebb9033207594",
+      "acceptance_set": 4,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "total": 4,
+      "result": "FAIL"
+    },
+    {
+      "repository": "panemchaitanya/AutoSE_A3_Alt",
+      "branch": "autose/issue-5",
+      "commit": "f708d999753e82da8b11816ab5bd96d8c86bcd41",
+      "acceptance_set": 5,
+      "passed": 1,
+      "failed": 3,
+      "errors": 0,
+      "total": 4,
+      "result": "FAIL"
+    }
+  ],
+  "mains_baseline": "each main fails 3 of 4 on four acceptance sets and 4 of 4 on one; main commits listed below",
+  "qualifications": [
+    "Only the 4 sealed tests per issue; not the full suite or code quality",
+    "Branches at baseline (1 of 4) show no improvement over main",
+    "No error or checkout failures",
+    "Hidden test content and names not included"
+  ],
+  "summary": {
+    "branches_evaluated": 10,
+    "fully_passing": 4,
+    "failing": 6,
+    "errors": 0
+  }
+}

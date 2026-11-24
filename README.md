@@ -2,13 +2,13 @@
 
 A GitHub Actions prototype that takes a TinyDB issue through requirements, design, implementation, testing, pull-request creation and a separate review job. The workflow does **not** merge generated pull requests.
 
-> **Status: incomplete assignment, working prototype.** The pipeline and its offline checks are implemented. No issue has completed the entire corrected A1 requirements contract plus corrected independent-review boundary. Historical passes below are real, but are not equivalent to corrected end-to-end completion. This README is a project guide, not a completion certificate.
+> **Final artifact package, partial workflow outcomes.** Autonomous work stopped on24November2026at18:42IST. A3issue4 alone completed the corrected six-stage chain across disclosed recoveries. Limited sealed evaluation passed4/4checks on4of10frozen branches, not all ten. E1 remains unanswered; the recovered demo and late work are grading limitations.
 
 ## Start here
 
 | Item | Location |
 | --- | --- |
-| Assignment report, seven pages | [report.pdf](report.pdf) |
+| Assignment report, eight pages | [report.pdf](report.pdf) |
 | Recorded recovered-chain demo, 3m47s | [demo.mp4](demo.mp4) |
 
 The demo shows the actual issue4 outcome across disclosed timeout continuations and a mechanical test recheck. It is not one uninterrupted Actions attempt, so the literal single-run demo requirement remains a grading caveat. The posted review has an approve verdict in its body, GitHub state COMMENTED, and the generated PR remains open and unmerged.
@@ -17,10 +17,10 @@ The demo shows the actual issue4 outcome across disclosed timeout continuations 
 | Experiment issues and definitions | [experiment/](experiment/) |
 | Hosted run index, including failures | [results/hosted-index.md](results/hosted-index.md) |
 | Results and measurement caveats | [results/](results/) |
-| Latest checkpoint and remaining work | [results/checkpoint-2357.md](results/checkpoint-2357.md) |
+| Final frozen summary | [results/final-summary.md](results/final-summary.md) |
 | Original TinyDB documentation | [README.rst](README.rst), [docs/](docs/) |
 
-The recording shows live navigation of historical GitHub evidence. It is not a recording of a newly completed corrected run. Its captions identify the earlier requirements gap and review-context leak.
+The recording shows actual issue4 evidence, including the accepted full requirements bundle, timeout continuations, passing mechanical recheck and separate posted review. It is not an uninterrupted execution recording.
 
 ## Repositories and baseline
 
@@ -86,7 +86,7 @@ Latest local combined validation: **241 tests passed**, with **94% measured aggr
 3. Enable GitHub Actions, read/write workflow permissions and permission to create pull requests. The YAML declares its required contents, pull-request, issue, action and status scopes.
 4. Protect `main`: require pull requests, include administrators, disallow force pushes and deletion. Support/artifact updates use protected pull requests. Generated issue PRs remain unmerged.
 5. Set optional repository variables `MODEL_SPEC`, `MODEL_DESIGN`, `MODEL_DEVELOP`, `MODEL_TEST`, `MODEL_REVIEW` and `MODEL_JUDGE`. Defaults and fallback behavior are in [config.py](workflow/agent/config.py). Overrides are requests, not proof of which model answered.
-6. Confirm that any selected model is available on the free tier. The late recovery trial uses `gemini-3.8-flash` for Alt requirements and judge, with the existing `gemini-3.5-flash-lite` fallback. Other role overrides remain `gemini-3.5-flash-lite`. A3 has its own settings.
+6. Confirm current free-tier availability before any future use. At freeze,A3requested`gemini-3.5-flash`for all roles. Alt requested flash for SpecWriter/Judge and flash-lite for other roles. Fallback responses may differ. No further autonomous runs are part of this submission.
 
 Provider pricing reference: https://ai.google.dev/gemini-api/docs/pricing . Free-tier availability does not guarantee an individual request will succeed. Repeated HTTP 503 responses are recorded as failures, not passes.
 
@@ -123,20 +123,18 @@ COMMENT reviews contain explicit verdicts; they are not formal human GitHub appr
 
 ## Evidence and current results
 
-| Area | Established | Not established |
+| Area | Final established outcome | Limitation |
 | --- | --- | --- |
-| Local application/harness | 241 local tests passed in the final offline invocation | Autonomous feature correctness or hidden-test results |
-| Historical Alt issues 1-3 | Real generated PRs, tests, release stages and COMMENT verdicts across recovery attempts | Corrected A1 compliance or fully isolated historical reviews |
-| Corrected requirements | Full original skill restored, three outputs required, checks and invalidation tested offline | Any full corrected end-to-end issue outcome |
-| Reviewer boundary | README and pipeline artifacts excluded; offline regression coverage | New corrected-boundary hosted review outcome |
-| A3 attempts | Separate real hosted attempts, including actual requirements 503 failures | Five successful submission-repository runs |
-| E1 | Recorded attempts and exploratory availability probes | Valid completed controlled model-quality comparison |
-| E2 | Ten local single-model reviews, five paired authored-context cases | Causal/general accuracy conclusion or hosted isolation proof |
-| Hidden evaluation | Tests kept outside both repositories during final autonomous work | Final hidden-test evaluation, currently not run/revealed |
+| A3 corrected full chain | issue4, PR31, across recovered attempts and zero-call recheck | Not one uninterrupted run; other4issues not completed |
+| Alt corrected upstream | issue1 requirements/design passed; Developer exhausted40steps | No corrected full chain |
+| Final hidden evaluation | A3:1,1,4,1,1 /4. Alt:4,4,4,1,1 /4 | Four limited tests per task, not full suite or code quality |
+| E1 model tiers | No controlled comparison completed | Quality question unanswered |
+| E2 reviewer context | Ten local reviews: A4/5correct verdicts, B1/5 | Authored stimulus, smallN, not causal or final-hosted proof |
+| Usage | Source cumulative snapshots retained, separate reviewer unallocated | Complete lifetime total unavailable |
 
-Historical Alt PRs: [#6](https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/6), [#7](https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/7), [#8](https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/8). Historical issue 3 workflow: https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45197403640 . Historical review: https://github.com/panemchaitanya/AutoSE_A3_Alt/pull/8#pullrequestreview-6023844081 . These are qualified historical evidence, not full-compliance results.
+[Final summary](results/final-summary.md), [frozen targets](results/final-autonomous-targets.json), [final evaluation](results/final-evaluation-results.json), [recent selected runs](results/runs-final.csv), [full workflow inventory](results/final-workflow-inventory.json).
 
-Late corrected trial on the alternate free route, failed at requirements after two real replies and provider 503: https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45236463146 . Consult the checkpoint for its observed state; a queued or running job is not success.
+PR31: https://github.com/panemchaitanya/AutoSE_A3/pull/31 . Separate actual review: https://github.com/panemchaitanya/AutoSE_A3/pull/31#pullrequestreview-6035246293 . Approve verdict in body, GitHub state COMMENTED. AltPR6/7/8and A3PR31remain open, unmerged. Historical Alt behavior passes are not corrected full-chain completion.
 
 ## Budgets, costs and measurement
 
@@ -157,7 +155,7 @@ Late recovery improvement: [ADR017](architecture/decisions/ADR-017.md) checkpoin
 
 This is a research prototype, **not a secure sandbox for hostile repositories**. Allowed Python/shell commands can execute arbitrary code despite prefix/path checks. Reviewer context restrictions reduce information flow but do not make malicious source execution safe. Never run it with unrelated secrets or broad production credentials.
 
-Hidden tests remain excluded until the final autonomous attempts in **both** repositories finish. The compact A1 adaptation is retained as an unused experiment artifact; it is not the active requirements skill.
+All autonomous runs ended before final sealed evaluation. Only aggregate results entered the final artifacts; no implementation changed afterward. The compact A1 adaptation is retained as an unused experiment artifact; it is not the active requirements skill.
 
 ## Documentation, chronology and authorship
 
