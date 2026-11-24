@@ -1,0 +1,18 @@
+{
+ "spec": "sB",
+ "arm": "F",
+ "trial": "2",
+ "model": "gemini-3.5-flash-lite",
+ "handoff_chars": 1689,
+ "error": null,
+ "seconds": 52,
+ "calls": 5,
+ "total_tokens": 18894,
+ "design_written": true,
+ "check_pass": true,
+ "problems": [],
+ "named_identifiers": 7,
+ "identifiers_in_named_files": 6,
+ "ac_total": 4,
+ "ac_keyword_covered": 4
+}
