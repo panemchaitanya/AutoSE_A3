@@ -1,0 +1,1 @@
+{"spec":"sA","arm":"C","trial":"3","model":"gemini-3.5-flash-lite","outcome":"timeout_600s_cap","design_written":false,"check_pass":false,"note":"provider call stalled, wall cap exceeded, no design"}
