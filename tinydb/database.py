@@ -272,3 +272,13 @@ class TinyDB(TableBase):
         Return an iterator for the default table's documents.
         """
         return iter(self.table(self.default_table_name))
+
+    def search(self, cond: QueryLike, limit: Optional[int] = None) -> list[Document]:
+        """
+        Search for all documents matching a 'where' cond in the default table.
+
+        :param cond: the condition to check against
+        :param limit: an optional limit on the number of documents to return
+        :returns: list of matching documents
+        """
+        return self.table(self.default_table_name).search(cond, limit=limit)

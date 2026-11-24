@@ -246,7 +246,7 @@ class Table:
 
         return list(iter(self))
 
-    def search(self, cond: QueryLike) -> list[Document]:
+    def search(self, cond: QueryLike, limit: Optional[int] = None) -> list[Document]:
         """
         Search for all documents matching a 'where' cond.
 
@@ -257,42 +257,38 @@ class Table:
         what a later identical search returns.
 
         :param cond: the condition to check against
+        :param limit: an optional limit on the number of documents to return
         :returns: list of matching documents
         """
 
         # First, we check the query cache to see if it has results for this
-        # query
-        cached_results = self._query_cache.get(cond)
-        if cached_results is not None:
-            return cached_results[:]
+        # query (only when limit is None, or we could handle caching, but
+        # let's check how cache handles it: if limit is not None, we can still
+        # use the cache if we slice it, or skip caching when limit is provided).
+        # Wait, if limit is None, we check/update cache.
+        if limit is None:
+            cached_results = self._query_cache.get(cond)
+            if cached_results is not None:
+                return cached_results[:]
 
         # Perform the search by applying the query to all documents.
         # Then, only if the document matches the query, convert it
         # to the document class and document ID class.
-        docs = [
-            self.document_class(doc, self.document_id_class(doc_id))
-            for doc_id, doc in self._read_table().items()
-            if cond(doc)
-        ]
+        docs = []
+        for doc_id, doc in self._read_table().items():
+            if cond(doc):
+                docs.append(
+                    self.document_class(doc, self.document_id_class(doc_id))
+                )
+                if limit is not None and len(docs) >= limit:
+                    break
 
-        # Only cache cacheable queries.
-        #
-        # This weird `getattr` dance is needed to make MyPy happy as
-        # it doesn't know that a query might have a `is_cacheable` method
-        # that is not declared in the `QueryLike` protocol due to it being
-        # optional.
-        # See: https://github.com/python/mypy/issues/1424
-        #
-        # Note also that by default we expect custom query objects to be
-        # cacheable (which means they need to have a stable hash value).
-        # This is to keep consistency with TinyDB's behavior before
-        # `is_cacheable` was introduced which assumed that all queries
-        # are cacheable.
-        is_cacheable: Callable[[], bool] = getattr(cond, 'is_cacheable',
-                                                   lambda: True)
-        if is_cacheable():
-            # Update the query cache
-            self._query_cache[cond] = docs[:]
+        if limit is None:
+            is_cacheable: Callable[[], bool] = getattr(cond, 'is_cacheable',
+                                                       lambda: True)
+            if is_cacheable():
+                # Update the query cache
+                self._query_cache[cond] = docs[:]
 
         return docs
 
