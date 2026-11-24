@@ -23,7 +23,13 @@ hidden test content has been read or used for this series.
 |---|---|---|---|---|
 | 21:12 | #37 | 45428682833 | FAILED at Stage 1 (requirements) | Gemini API 503, model retries exhausted after 4 SpecWriter steps. Stage checks never ran. Repo secret then held the earlier key. |
 | 21:38 | #37 | 45433683809 | FAILED at Stage 1 (requirements) | Same cause: Gemini API 503 after 7 SpecWriter steps, retries exhausted. Repo secret now the student's AI Studio key (free tier). |
-| 21:59 | #37 | 45437784982 | in progress when written | Retriggered by removing and re-adding the `autose` label. |
+| 21:59 | #37 | 45437784982 | FAILED at Stage 1 | Same cause, Gemini 503, retries exhausted. |
+| 22:26 | #37 | 45442883647 | FAILED at Stage 1 | flash-lite for all roles; calls.jsonl: 2 successes then four 503 attempts in about 4.5 min, no alternate tier (primary equals fallback). |
+| 22:59 | #37 | 45449108458 | FAILED at Stage 1 (27 min) | ADR-021 patience (about 15 min per call). 7 SpecWriter calls, then 503 retries exhausted. AI Studio key. |
+| 23:29 | #37 | 45454572048 | FAILED at Stage 1 (16 min) | Same configuration. 2 calls, then 503 retries exhausted. |
+| 23:59 | #37 | 45460110589 | FAILED at Stage 1 (24 min) | Same configuration (started before ADR-022 merged). 7 calls, then 503. |
+| 00:26 | #37 | 45464842567 | FAILED at Stage 1 (31 min) | ADR-022 fallback tier gemini-3-flash-preview engaged; final error HTTP 429 free-tier quota on the AI Studio project. AI Studio key. |
+| 00:59 | #37 | 45470790181 | in progress when written | Repo secret switched to the student's ORION project key (different project and quota), flash-lite primary, preview fallback. |
 
 ## Run environment change (not a harness change)
 
@@ -39,3 +45,13 @@ after), `gemini-3.5-flash-lite` 3 of 4 ok; AI Studio key `gemini-3.5-flash` 4 of
 4 ok, flash-lite 2 of 4 ok (503 twice). Large-prompt probe at 21:58: flash and
 flash-lite 3 of 3 ok. Conclusion: 503 and 429 are bursty provider effects, not a
 request-shape fault. This does not measure coding quality.
+
+## Run environment change 2, 00:59 IST (not a harness change)
+
+After the fallback tier returned 429 on the AI Studio project, one probe call per
+model showed the ORION project key answering 200 for flash-lite, preview and
+gemini-3.5-flash, while the AI Studio key's gemini-3.5-flash is at its 20 per day
+free limit until about 13:30 IST. The `GEMINI_API_KEY` secret was set to the ORION
+key. Configuration for run 45470790181 and later: ORION key, flash-lite primary,
+gemini-3-flash-preview fallback (ADR-022), ADR-021 patience. This is a separate
+configuration from the eight earlier runs. No billing is involved.
