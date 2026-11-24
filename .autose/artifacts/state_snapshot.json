@@ -1,0 +1,63 @@
+{
+  "branch": "autose/issue-37",
+  "fix_cycles": 0,
+  "history": [
+    {
+      "event": "run created",
+      "ts": "2026-11-24T21:01:43.319506+00:00"
+    },
+    {
+      "event": "triggered by panemchaitanya via issues",
+      "ts": "2026-11-24T21:01:43.319529+00:00"
+    },
+    {
+      "event": "fresh start supersedes a338ee4bbfc7faf951fbef886c69bca5518763ad",
+      "ts": "2026-11-24T21:01:43.319534+00:00"
+    },
+    {
+      "ts": "2026-11-24T21:01:53.561021+00:00",
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated"
+    },
+    {
+      "ts": "2026-11-24T21:01:53.561035+00:00",
+      "event": "requirements -> running"
+    },
+    {
+      "ts": "2026-11-24T21:15:21.372435+00:00",
+      "event": "requirements -> failed (checks failed after self-correction: A1 semantic validation: NFR-001 has basis ASSUMED but its gate is set to CLARIFY, which violates validation rule E2 ('No READY item has basis INFERRED or ASSUMED', though here it is CLARIFY, but SRS table says NFR-001 is linked to an ASSUMED basis while rule E5 says every default applied is an ASM linked to a Q).; NFR-001's basis is ASSUMED, yet it is linked to S-02 in the traceability and source table, which conflicts with Basis definitions where ASSUMED is a default chosen so work can continue, not directly a STATED quote.; Q-1 blocks FR-003 according to the open question section, but FR-003 is marked as READY in the SRS table, violating rule C4 ('Every open question lists the ids it blocks. If an ambiguous term appears in a requirement but its question blocks nothing, add that requirement to the question's blocks and lower its gate').)"
+    }
+  ],
+  "issue": 37,
+  "review_rounds": 0,
+  "stages": {
+    "design": {
+      "status": "pending"
+    },
+    "implementation": {
+      "status": "pending"
+    },
+    "release": {
+      "status": "pending"
+    },
+    "requirements": {
+      "status": "failed",
+      "reason": "checks failed after self-correction: A1 semantic validation: NFR-001 has basis ASSUMED but its gate is set to CLARIFY, which violates validation rule E2 ('No READY item has basis INFERRED or ASSUMED', though here it is CLARIFY, but SRS table says NFR-001 is linked to an ASSUMED basis while rule E5 says every default applied is an ASM linked to a Q).; NFR-001's basis is ASSUMED, yet it is linked to S-02 in the traceability and source table, which conflicts with Basis definitions where ASSUMED is a default chosen so work can continue, not directly a STATED quote.; Q-1 blocks FR-003 according to the open question section, but FR-003 is marked as READY in the SRS table, violating rule C4 ('Every open question lists the ids it blocks. If an ambiguous term appears in a requirement but its question blocks nothing, add that requirement to the question's blocks and lower its gate')."
+    },
+    "review": {
+      "status": "pending"
+    },
+    "testing": {
+      "status": "pending"
+    }
+  },
+  "usage": {
+    "prompt_tokens": 243795,
+    "completion_tokens": 5703,
+    "total_tokens": 249498,
+    "calls": 30,
+    "fallbacks": 0,
+    "models": {
+      "gemini-3.5-flash-lite": 30
+    }
+  }
+}
