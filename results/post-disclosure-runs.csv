@@ -11,3 +11,4 @@ run_id,issue,started_ist,furthest_stage,outcome,cause,config,scope
 45479843730,37,2026-11-25 01:50,requirements,failed,A1 validation failed on both attempts (VALIDATION lacks topic gate; NFR-001 INFERRED but READY); no provider error,ADR-022 fallback; ORION key; pre-ADR-023 prompt,post-disclosure
 45486818027,37,2026-11-25 02:31,requirements,failed,structural A1 passed after correction; model-based semantic validation failed attempt 2 (C4 FR-003/Q-1; judge findings on NFR-001); no provider error,ADR-023 prompt; ORION key; ADR-022 fallback,post-disclosure
 45490367204,37,2026-11-25 02:51,implementation,failed,requirements and design passed; Developer step cap 40 reached (repeated identical edit; ADR-025),ADR-022+023+024; ORION key,post-disclosure
+45497498216,37,2026-11-25 03:34,requirements,failed,rerun on branch with existing v1 bundle; v2 written without REGISTER and VALIDATION lines; no provider error,ADR-022..025; ORION key,post-disclosure
