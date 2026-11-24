@@ -1,7 +1,7 @@
 {
   "a1_bundle_verified": true,
   "branch": "autose/issue-4",
-  "fix_cycles": 0,
+  "fix_cycles": 1,
   "history": [
     {
       "event": "run created",
@@ -50,6 +50,26 @@
     {
       "event": "operational recovery: no reviewer verdict exists",
       "ts": "2026-11-24T06:13:15.226935+00:00"
+    },
+    {
+      "event": "implementation -> passed",
+      "ts": "2026-11-24T06:13:58.333762+00:00"
+    },
+    {
+      "event": "recovered accepted Developer finish from same-run Tester provenance; build rechecked; Tester spent steps and usage retained",
+      "ts": "2026-11-24T06:13:58.333778+00:00"
+    },
+    {
+      "event": "testing -> running",
+      "ts": "2026-11-24T06:13:58.334448+00:00"
+    },
+    {
+      "event": "fix cycle 1",
+      "ts": "2026-11-24T06:51:26.812947+00:00"
+    },
+    {
+      "event": "implementation -> running",
+      "ts": "2026-11-24T06:51:26.813190+00:00"
     }
   ],
   "issue": 4,
@@ -61,7 +81,8 @@
       "summary": "Designed the implementation plan to add an optional limit parameter to Table.search and TinyDB.search."
     },
     "implementation": {
-      "status": "running"
+      "status": "running",
+      "summary": "Implemented the optional limit parameter in Table.search and TinyDB.search, fully satisfying all requirements and acceptance criteria, verified with pytest."
     },
     "release": {
       "status": "pending"
@@ -75,18 +96,18 @@
       "status": "pending"
     },
     "testing": {
-      "status": "pending"
+      "status": "running"
     }
   },
   "usage": {
-    "calls": 70,
-    "completion_tokens": 26447,
-    "fallbacks": 45,
+    "calls": 88,
+    "completion_tokens": 29133,
+    "fallbacks": 61,
     "models": {
-      "gemini-3.5-flash": 25,
-      "gemini-3.5-flash-lite": 45
+      "gemini-3.5-flash": 27,
+      "gemini-3.5-flash-lite": 61
     },
-    "prompt_tokens": 666287,
-    "total_tokens": 696769
+    "prompt_tokens": 797652,
+    "total_tokens": 830906
   }
 }
