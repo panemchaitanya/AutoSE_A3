@@ -30,10 +30,10 @@ MAX_OUTPUT_TOKENS = int(os.environ.get("MAX_OUTPUT_TOKENS", "4096"))
 # Per-tier patience stays short so a flapping tier falls through to the
 # alternate tier promptly instead of holding a failed model.
 # Sleeps cost no tokens; per-run token and step budgets above still apply.
-API_RETRIES = int(os.environ.get("API_RETRIES", "3"))
+API_RETRIES = int(os.environ.get("API_RETRIES", "6"))
 API_BACKOFF_SECONDS = [
     int(x)
-    for x in os.environ.get("API_BACKOFF_SECONDS", "30,60,120").split(",")
+    for x in os.environ.get("API_BACKOFF_SECONDS", "30,60,120,180,240,300").split(",")
 ]
 
 # --- Paths (relative to the work-branch checkout) ---
