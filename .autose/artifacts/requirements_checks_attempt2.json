@@ -1,0 +1,32 @@
+{
+  "stage": "requirements",
+  "attempt": 2,
+  "passed": false,
+  "problems": [
+    "A1 SRS missing for selected bundle tinydb_issue38 v2; components are never mixed across versions",
+    "A1 REGISTER missing for selected bundle tinydb_issue38 v2; components are never mixed across versions",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for C1",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for C2",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for C3",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for C4",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for K1",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for K2",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for K3",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for R-1",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for R-2",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for R-3",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for F1",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for F2",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for T1",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for T2",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for T3",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for T4",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for E1",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for E2",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for E3",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for E4",
+    "VALIDATION lacks explicit PASS/FAIL/N/A result for E5",
+    "VALIDATION lacks readiness verdict",
+    "A1 semantic validation: A1 structural checks failed"
+  ]
+}
