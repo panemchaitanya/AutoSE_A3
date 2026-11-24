@@ -66,3 +66,16 @@ A1 structural checks failed. Stage 1 failed on content after the correction boun
 as designed. Checks and bound unchanged. ADR-023 (merged 01:53 IST, after this run
 checked out main) states these validator requirements in the prompt. The next run
 is the first with ADR-023.
+
+## Run 45486818027 (#37), 02:31 IST, ADR-023 prompt
+
+Started 21:01:35Z (02:31:35 IST), failed 21:15:25Z (02:45:25 IST), 14 min, 28 model
+calls, no provider error. First run where the structural A1 checks passed after
+correction: attempt 1 failed only on "NFR-001 INFERRED but READY"; after the
+correction attempt the structural checks passed. Attempt 2 failed the model-based
+A1 semantic validation with three findings: NFR-001 ASSUMED with gate CLARIFY said
+to violate E2 (the finding itself notes CLARIFY is not READY, so this one reads as a
+judge inconsistency), NFR-001 ASSUMED yet linked to source S-02, and Q-1 blocks
+FR-003 while FR-003 is READY (rule C4, plausibly a real defect). Stage failed after the
+correction bound, as designed. Checks and bound unchanged. This run carried ADR-023
+but not ADR-024 (merged after it checked out main). Artifact: autose-issue-37-requirements.
