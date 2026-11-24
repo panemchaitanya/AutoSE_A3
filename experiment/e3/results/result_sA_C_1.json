@@ -1,0 +1,20 @@
+{
+ "spec": "sA",
+ "arm": "C",
+ "trial": "1",
+ "model": "gemini-3.5-flash-lite",
+ "handoff_chars": 685,
+ "error": null,
+ "seconds": 89,
+ "calls": 6,
+ "total_tokens": 28184,
+ "design_written": true,
+ "check_pass": false,
+ "problems": [
+  "design.md names no functions or classes to change"
+ ],
+ "named_identifiers": 3,
+ "identifiers_in_named_files": 2,
+ "ac_total": 4,
+ "ac_keyword_covered": 4
+}
