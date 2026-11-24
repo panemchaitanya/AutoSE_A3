@@ -43,6 +43,7 @@ env:
   MODEL_TEST: ${{ vars.MODEL_TEST || 'gemini-3.5-flash-lite' }}
   MODEL_REVIEW: ${{ vars.MODEL_REVIEW || 'gemini-3.5-flash' }}
   MODEL_JUDGE: ${{ vars.MODEL_JUDGE || 'gemini-3.5-flash-lite' }}
+  MODEL_FALLBACK: ${{ vars.MODEL_FALLBACK || 'gemini-3.5-flash-lite' }}
 
 jobs:
   gate:
