@@ -306,9 +306,11 @@ def stage_requirements(repo_root, state, issue):
                 "Read spec.md AND the selected versioned SRS, REGISTER and VALIDATION "
                 "under .autose/artifacts/. Fix each named defect in the actual failing "
                 "document(s), reconcile all four artifacts, and finish. Editing only "
-                "spec.md cannot repair a defect in SRS/REGISTER/VALIDATION. Preserve "
-                "earlier version history without adding a conflicting slug. Do not "
-                "claim PASS for unresolved defects.\nProblems:\n- " + "\n- ".join(problems))
+                "spec.md cannot repair a defect in SRS/REGISTER/VALIDATION. Correct the "
+                "existing files of the CURRENT version IN PLACE (edit the same "
+                "SRS, REGISTER and VALIDATION file names); do NOT start a new "
+                "version number, because a partial new version fails the bundle "
+                "check. Do not claim PASS for unresolved defects.\nProblems:\n- " + "\n- ".join(problems))
         if attempt < CORRECTION_MAX_ATTEMPTS:
             save_correction(repo_root, {
                 "schema": CORRECTION_SCHEMA, "stage": stage,
