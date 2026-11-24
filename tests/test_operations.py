@@ -32,6 +32,26 @@ def test_increment(db):
     assert db.get(where('char') == 'a')['int'] == 2
 
 
+def test_increment_missing(db):
+    db.update(increment('count'), where('char') == 'a')
+    assert db.get(where('char') == 'a')['count'] == 1
+
+
+def test_increment_missing_n(db):
+    db.update(increment('count', n=5), where('char') == 'a')
+    assert db.get(where('char') == 'a')['count'] == 5
+
+
+def test_add_missing(db):
+    db.update(add('val', 5), where('char') == 'a')
+    assert db.get(where('char') == 'a')['val'] == 5
+
+
+def test_subtract_missing(db):
+    db.update(subtract('val', 3), where('char') == 'a')
+    assert db.get(where('char') == 'a')['val'] == -3
+
+
 def test_decrement(db):
     db.update(decrement('int'), where('char') == 'a')
     assert db.get(where('char') == 'a')['int'] == 0

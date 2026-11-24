@@ -1,0 +1,132 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0
+rootdir: /tmp/autose-baseline-w94z5kfd/repo
+configfile: pytest.ini
+plugins: cov-7.1.0
+collected 4 items
+
+tests_autose/test_increment_missing.py FFFF                              [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_increment_missing_field _________________________
+
+    def test_increment_missing_field():
+        """Given a document without a 'count' field, when db.update(increment('count'), doc_ids=[1]) is executed, then the document shall be updated to include 'count': 1."""
+        db = TinyDB(storage=MemoryStorage)
+        db.insert({})
+        from tinydb.operations import increment
+>       db.update(increment('count'), doc_ids=[1])
+
+tests_autose/test_increment_missing.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/table.py:479: in update
+    self._update_table(updater)
+tinydb/table.py:840: in _update_table
+    updater(table)
+tinydb/table.py:476: in updater
+    perform_update(table, doc_id)
+tinydb/table.py:452: in perform_update
+    fields(table[doc_id])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+doc = {}
+
+    def transform(doc: MutableMapping):
+>       doc[field] += 1
+        ^^^^^^^^^^
+E       KeyError: 'count'
+
+tinydb/operations.py:63: KeyError
+_____________________ test_increment_missing_field_with_n ______________________
+
+    def test_increment_missing_field_with_n():
+        """Given a document without a 'count' field, when db.update(increment('count', n=5), doc_ids=[1]) is executed, then the document shall be updated to include 'count': 5."""
+        db = TinyDB(storage=MemoryStorage)
+        db.insert({})
+        from tinydb.operations import increment
+>       db.update(increment('count', n=5), doc_ids=[1])
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: increment() got an unexpected keyword argument 'n'
+
+tests_autose/test_increment_missing.py:17: TypeError
+____________________________ test_add_missing_field ____________________________
+
+    def test_add_missing_field():
+        """Given a document without a 'val' field, when db.update(add('val', 5), doc_ids=[1]) is executed, then the document shall be updated to include 'val': 5."""
+        db = TinyDB(storage=MemoryStorage)
+        db.insert({})
+        from tinydb.operations import add
+>       db.update(add('val', 5), doc_ids=[1])
+
+tests_autose/test_increment_missing.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/table.py:479: in update
+    self._update_table(updater)
+tinydb/table.py:840: in _update_table
+    updater(table)
+tinydb/table.py:476: in updater
+    perform_update(table, doc_id)
+tinydb/table.py:452: in perform_update
+    fields(table[doc_id])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+doc = {}
+
+    def transform(doc: MutableMapping):
+>       doc[field] += n
+        ^^^^^^^^^^
+E       KeyError: 'val'
+
+tinydb/operations.py:33: KeyError
+_________________________ test_subtract_missing_field __________________________
+
+    def test_subtract_missing_field():
+        """Given a document without a 'val' field, when db.update(subtract('val', 3), doc_ids=[1]) is executed, then the document shall be updated to include 'val': -3."""
+        db = TinyDB(storage=MemoryStorage)
+        db.insert({})
+        from tinydb.operations import subtract
+>       db.update(subtract('val', 3), doc_ids=[1])
+
+tests_autose/test_increment_missing.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/table.py:479: in update
+    self._update_table(updater)
+tinydb/table.py:840: in _update_table
+    updater(table)
+tinydb/table.py:476: in updater
+    perform_update(table, doc_id)
+tinydb/table.py:452: in perform_update
+    fields(table[doc_id])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+doc = {}
+
+    def transform(doc: MutableMapping):
+>       doc[field] -= n
+        ^^^^^^^^^^
+E       KeyError: 'val'
+
+tinydb/operations.py:43: KeyError
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.16-final-0 _______________
+
+Name                    Stmts   Miss Branch BrPart  Cover
+---------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     19     10      0    57%
+tinydb/middlewares.py      44     44     14      0     0%
+tinydb/mypy_plugin.py      26     26      2      0     0%
+tinydb/operations.py       26      9      0      0    65%
+tinydb/queries.py         130     89     30      2    27%
+tinydb/storages.py         57     30      8      0    42%
+tinydb/table.py           241    142    104     18    34%
+tinydb/utils.py            78     37     18      1    44%
+tinydb/version.py           1      0      0      0   100%
+---------------------------------------------------------
+TOTAL                     661    396    186     21    34%
+=========================== short test summary info ============================
+FAILED tests_autose/test_increment_missing.py::test_increment_missing_field - KeyError: 'count'
+FAILED tests_autose/test_increment_missing.py::test_increment_missing_field_with_n - TypeError: increment() got an unexpected keyword argument 'n'
+FAILED tests_autose/test_increment_missing.py::test_add_missing_field - KeyError: 'val'
+FAILED tests_autose/test_increment_missing.py::test_subtract_missing_field - KeyError: 'val'
+============================== 4 failed in 0.16s ===============================
