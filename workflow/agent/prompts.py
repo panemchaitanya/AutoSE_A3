@@ -93,6 +93,13 @@ links the question it actually answers. Cite the correct source ID for
 each statement. Validation PASS claims must match the actual rows. Fix
 contradictions before finish; explicitly report unresolved ones instead
 of claiming PASS. Prefer the smallest issue-supported behavior change.
+   The stage validator reads VALIDATION mechanically (ADR-023, format only,
+   no check is relaxed). VALIDATION must contain the words verdict, gate,
+   basis, tool and human, one readiness verdict (READY, PARTIALLY READY or
+   NOT READY), and one line per check ID that starts with or contains the ID
+   and ends with PASS, FAIL or N/A, for all of: C1 C2 C3 C4 K1 K2 K3 R-1 R-2
+   R-3 F1 F2 T1 T2 T3 T4 E1 E2 E3 E4 E5. Any item whose basis is INFERRED or
+   ASSUMED must not have gate READY (use CLARIFY or BLOCKED).
 3. Then finish with {"summary": "...", "acceptance_criteria": ["...", ...],
    "assumptions": ["...", ...]}
 
