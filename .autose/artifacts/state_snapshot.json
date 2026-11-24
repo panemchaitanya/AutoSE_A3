@@ -28,20 +28,24 @@
       "ts": "2026-11-24T03:33:02.970868+00:00"
     },
     {
-      "ts": "2026-11-24T03:33:12.193442+00:00",
-      "event": "design -> running"
+      "event": "design -> running",
+      "ts": "2026-11-24T03:33:12.193442+00:00"
     },
     {
-      "ts": "2026-11-24T03:58:37.503709+00:00",
-      "event": "design -> passed"
+      "event": "design -> passed",
+      "ts": "2026-11-24T03:58:37.503709+00:00"
+    },
+    {
+      "event": "operational recovery: no reviewer verdict exists",
+      "ts": "2026-11-24T05:07:14.125719+00:00"
     }
   ],
   "issue": 4,
   "review_rounds": 0,
   "stages": {
     "design": {
-      "status": "passed",
       "artifact": ".autose/artifacts/design.md",
+      "status": "passed",
       "summary": "Designed the implementation plan to add an optional limit parameter to Table.search and TinyDB.search."
     },
     "implementation": {
@@ -63,14 +67,14 @@
     }
   },
   "usage": {
-    "prompt_tokens": 353240,
-    "completion_tokens": 23557,
-    "total_tokens": 378840,
     "calls": 30,
+    "completion_tokens": 23557,
     "fallbacks": 19,
     "models": {
       "gemini-3.5-flash": 11,
       "gemini-3.5-flash-lite": 19
-    }
+    },
+    "prompt_tokens": 353240,
+    "total_tokens": 378840
   }
 }
