@@ -1,0 +1,4 @@
+# Design: Add a limit parameter to search()
+
+## Approach
+We will update `Table.search` and `TinyDB.search` to accept an optional `limit: Optional[int] = None` parameter. In `Table.search`, when `limit` is provided and is an integer, we slice or stop collecting matching documents once the limit is reached. We also need to consider query caching implications: if a search is performed with a limit, should it use the cache or be cached? Since the query cache is keyed by `cond` (the `QueryInstance`), if we cache results based on `cond` alone, caching a limited result would return a truncated list for subsequent unlimited searches (or vice versa). Therefore, either we include `limit` in the cache lookup/hash or we bypass the cache when `limit` is not `None` (or include `limit` in cache key / handle appropriately). Wait, let's see how `Table.search` is implemented by reading lines 180 to 300 of `tinydb/table.py` first.
