@@ -13,6 +13,18 @@
     {
       "event": "fresh start supersedes 9dfb59b3910d5e1c9601276a10c71a2ffd7050ff",
       "ts": "2026-11-24T22:05:22.983449+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T22:05:32.570338+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-24T22:05:32.570354+00:00"
+    },
+    {
+      "event": "requirements -> failed (checks failed after self-correction: A1 REGISTER missing for selected bundle issue37 v2; components are never mixed across versions; VALIDATION lacks explicit PASS/FAIL/N/A result for C1; VALIDATION lacks explicit PASS/FAIL/N/A result for C2; VALIDATION lacks explicit PASS/FAIL/N/A result for C3; VALIDATION lacks explicit PASS/FAIL/N/A result for C4; VALIDATION lacks explicit PASS/FAIL/N/A result for K1; VALIDATION lacks explicit PASS/FAIL/N/A result for K2; VALIDATION lacks explicit PASS/FAIL/N/A result for K3; VALIDATION lacks explicit PASS/FAIL/N/A result for R-1; VALIDATION lacks explicit PASS/FAIL/N/A result for R-2; VALIDATION lacks explicit PASS/FAIL/N/A result for R-3; VALIDATION lacks explicit PASS/FAIL/N/A result for F1; VALIDATION lacks explicit PASS/FAIL/N/A result for F2; VALIDATION lacks explicit PASS/FAIL/N/A result for T1; VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for T4; VALIDATION lacks explicit PASS/FAIL/N/A result for E1; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; VALIDATION lacks explicit PASS/FAIL/N/A result for E5; VALIDATION lacks readiness verdict; A1 semantic validation: A1 structural checks failed)",
+      "ts": "2026-11-24T22:24:58.677416+00:00"
     }
   ],
   "issue": 37,
@@ -28,7 +40,8 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "pending"
+      "reason": "checks failed after self-correction: A1 REGISTER missing for selected bundle issue37 v2; components are never mixed across versions; VALIDATION lacks explicit PASS/FAIL/N/A result for C1; VALIDATION lacks explicit PASS/FAIL/N/A result for C2; VALIDATION lacks explicit PASS/FAIL/N/A result for C3; VALIDATION lacks explicit PASS/FAIL/N/A result for C4; VALIDATION lacks explicit PASS/FAIL/N/A result for K1; VALIDATION lacks explicit PASS/FAIL/N/A result for K2; VALIDATION lacks explicit PASS/FAIL/N/A result for K3; VALIDATION lacks explicit PASS/FAIL/N/A result for R-1; VALIDATION lacks explicit PASS/FAIL/N/A result for R-2; VALIDATION lacks explicit PASS/FAIL/N/A result for R-3; VALIDATION lacks explicit PASS/FAIL/N/A result for F1; VALIDATION lacks explicit PASS/FAIL/N/A result for F2; VALIDATION lacks explicit PASS/FAIL/N/A result for T1; VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for T4; VALIDATION lacks explicit PASS/FAIL/N/A result for E1; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; VALIDATION lacks explicit PASS/FAIL/N/A result for E5; VALIDATION lacks readiness verdict; A1 semantic validation: A1 structural checks failed",
+      "status": "failed"
     },
     "review": {
       "status": "pending"
@@ -37,5 +50,14 @@
       "status": "pending"
     }
   },
-  "usage": {}
+  "usage": {
+    "calls": 22,
+    "completion_tokens": 8972,
+    "fallbacks": 0,
+    "models": {
+      "gemini-3.5-flash-lite": 22
+    },
+    "prompt_tokens": 169998,
+    "total_tokens": 178970
+  }
 }

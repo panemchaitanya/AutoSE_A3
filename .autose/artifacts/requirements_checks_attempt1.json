@@ -1,0 +1,8 @@
+{
+  "stage": "requirements",
+  "attempt": 1,
+  "passed": false,
+  "problems": [
+    "A1 semantic validation: Section 3.5 of the skill rules specifies that priority must be MUST / SHOULD / COULD as stated by the stakeholder, and if not stated, priority is UNSET and the requirement cannot be READY. In the SRS, requirements FR-001 through FR-004 have their priority listed as 'UNSET' while their gate is simultaneously marked as 'READY', which violates rule 3.5 ('If not stated, priority is UNSET and the requirement cannot be READY')."
+  ]
+}
