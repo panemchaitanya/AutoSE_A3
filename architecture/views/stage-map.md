@@ -1,6 +1,6 @@
 # Stage map
 
-Model labels below are original committed defaults. Current variables request3.5-flash-lite for all roles. ADR015 requires full A1 SRS/REGISTER/VALIDATION plus handoff spec, substantive validation and downstream checkpoint invalidation. Earlier requirements passes were testability-only evidence.
+Model labels below are original committed defaults. Final A3 variables request3.5-flash for all roles; Alt requestsflashforSpecWriter/Judgeandflash-liteforothers. ADR015 requires full A1 SRS/REGISTER/VALIDATION plus handoff spec, substantive validation and downstream checkpoint invalidation. Earlier requirements passes were testability-only evidence.
 
 | # | Stage | Agent (model) | Inputs the agent sees | Artifact | Check before moving on | Who decides pass/fail |
 | --- | --- | --- | --- | --- | --- | --- |

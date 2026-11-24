@@ -1,3 +1,9 @@
+# Final corrected recovered sequence
+
+![Actual A3issue4 recovered chain](sequence.png)
+
+The final corrected chain spans45313024154,45331022168,45338808975,45346906399and separate45347087697. No single uninterrupted execution is claimed. PR31is open. Historical Alt sequence remains below for failure provenance, not final corrected evidence.
+
 # Sequence view: one run from label to review
 
 This is the path of one issue through the system. The concrete instance of

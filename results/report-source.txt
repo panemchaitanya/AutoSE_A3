@@ -1,0 +1,553 @@
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+Issue in, reviewed PR out
+Frozen implementation; honest partial outcomes, not a claim of full rubric compliance
+
+Repository: https://github.com/panemchaitanya/AutoSE_A3. Comparison fork: AutoSE_A3_Alt. Both derive
+from TinyDB pinned at edff96a. The system takes an owner-triggered issue through six fixed stages, leaving the
+generated PR unmerged for a person.
+
+Component view
+Owner label /autose or authorized dispatch -> deterministic gate + branch state
+
+SpecWriter + read/ledger tools -> checked spec / Designer + repo tools -> plan
+
+Developer + edit/shell tools <-> Tester + pytest / bounded fix cycles
+
+Release + GitHub API -> open PR / fresh Reviewer + read/run only -> verdict
+
+The controller, not a language model, chooses transitions. Five model roles handle analysis and code; release is
+scripted. The implementation/testing loop is bounded at three fix cycles and review feedback at two rounds.
+Requirements corrections are bounded and exhaustion stops the lineage; roles have 40 steps and a 1.5M-token
+lineage cap.
+
+State, tools and information boundaries
+Branch .autose/state.json stores stages, counters and events; artifacts retain source documents, transcripts,
+call metadata and failures. Actions uploads are additional copies, not the only durable state. Preparation
+conversations resume only on a matching fingerprint. Developer/Tester timeout continuations preserve
+consumed steps and known usage without replaying prior tool effects.
+Roles can read files, list files, write or exact-edit allowed paths, and run whitelisted shell prefixes. Agents cannot
+write workflow code or push through their normal tools. These are prototype controls, not a hostile-code
+sandbox: arbitrary Python remains possible. The trusted release/gate steps own GitHub mutations.
+
+What was achieved
+One corrected A3 feature, search(limit), reached tested release and a posted independent approve-verdict
+review. It required disclosed timeout continuations and a mechanical recheck. Other issues stopped or retain
+only historical passes. All generated issue PRs remain open. This report records failures rather than converting
+them into successes.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+1
+
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+Stages and an observed sequence
+Requirements/design use checks; runnable outcomes require actual execution
+Stage / owner
+
+Artifact and hand-off check
+
+1 Requirements / SpecWriter
+
+spec.md + versioned SRS, REGISTER, VALIDATION; A1 structure, integrity judge and testable
+ACs
+
+2 Design / Designer
+
+design.md; real files/functions and architecture constraints, checked plan
+
+3 Implementation / Developer
+
+diff.patch; nonempty source change, compile and import
+
+4 Testing / Tester
+
+test_report.md; AC tests and full suite pass, behavioral failure on baseline
+
+5 Release / script
+
+pr.md + open PR; full pytest rerun and ci/pytest status
+
+6 Review / separate role
+
+review.md + posted PR comment; schema-checked verdict and bounded feedback
+
+Observed issue 4 sequence, 24 November IST
+Run
+
+Observed transition
+
+45313024154
+
+08:01 start; spec09:03, design09:28; Developer timeout10:29 after20steps
+
+45331022168
+
+10:37 bounded continuation; Developer finish39 accepted; timeout during Tester step0
+
+45338808975
+
+11:43 Tester resumedstep1; four AC tests passed; stale harness test failed full suite; fix cycle 1 then timeout
+
+45346906399
+
+12:47 mechanical recheck, no provider calls; actual suite/build/baseline checks passed; PR 31 opened
+
+45347087697
+
+Separate reviewer posted approve verdict on PR 31 at12:56:48; GitHub state COMMENTED
+
+Sequence view: each row is the next observed hand-off, not an idealized single run. The reviewer receives only the issue,
+filtered diff and clean source checkout at the PR head, not implementer conversations, .autose, workflow, results,
+architecture or assignment README. Its harness is loaded from trusted main and its job cannot push code. Historical Alt
+reviews leaked README context and are not retroactively upgraded.
+Requested model variables at final freeze: A3 requests gemini-3.5-flash for every role. Alt requests flash for
+SpecWriter/Judge and flash-lite for Designer/Developer/Tester/Reviewer. Fallbacks and provider-returned
+modelVersion can differ; endpoint names and usage bucket labels are not proof of the responding model.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+2
+
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+Decisions and alternatives
+Nygard ADR records remain in architecture/decisions; superseded records are retained
+ADR / area
+
+Chosen; rejected alternative
+
+Reason / status
+
+001 D1
+
+Five model roles + script; one universal agent
+
+Separate responsibilities; accepted
+
+002 D2
+
+Deterministic controller; LLM planner
+
+Explicit bounded transitions; accepted
+
+003 D3
+
+Minimal declared inputs; full shared context
+
+Reduce influence and cost; provisional E2 pilot
+
+004 D4
+
+State/artifacts on branch; artifact-only state
+
+Durable inspection and reruns; amended
+by017
+
+005 D5
+
+Small local tool harness; GitHub MCP server
+
+Small interface, not sandbox; safety
+amended013
+
+006 D6
+
+Flash/lite tiers; strongest everywhere
+
+Cost/ability hypothesis;012 provisional
+availability override
+
+007 D7
+
+Mechanical decisive + judge veto; judge-only
+
+Run executable checks; accepted
+
+008 D8
+
+Fresh separate review; same-agent self-review
+
+Avoid seen reasoning; corrected016
+
+009 D9
+
+Budgets + delimiters; model refusal alone
+
+Bound failures, not hardened isolation;
+amended013
+
+010 D10
+
+Owner starts; public issue triggers
+
+Limit mutation authority; amended011
+
+011 queue
+
+One provider execution; parallel issues
+
+Shared quota and429 observations; accepted
+
+012 models
+
+Available-lite override; fixed unavailable primary
+
+Operational fallback, not quality proof
+
+Decision 1: deterministic control
+A fixed controller exposes exactly which evidence permits a transition. It makes both success and refusal
+inspectable: a confident finish cannot overrule a failing pytest exit code. The cost is recovery complexity. The
+read-only review job cannot update branch state, so feedback must be collected and routed by a trusted gate
+rather than by giving the reviewer push rights.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+3
+
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+What changed after real failures
+Corrections are late work; no failed run is relabeled as passed
+ADR
+
+Choice and consequence
+
+013 safety
+
+Admit arbitrary-Python risk; do not call prefix checks a sandbox
+
+014 context
+
+Bound file reads and recent turns; less context can also lose important observations
+
+015 A1
+
+Compact omission rejected; require complete ledger bundle plus spec
+
+016 reviewer
+
+Exclude assignment README from checkout and diff; preserve upstream README.rst
+
+017 recovery
+
+Fingerprint exact preparation conversations; retain next step and observations
+
+018 retries
+
+Bounded30/60/120 s retries; outages can still exceed patience
+
+019 time
+
+Requirements 90 min; other budgets unchanged, not a guarantee of completion
+
+020 A3 scope
+
+Reuse A1 analysis, do not repeat separate A1 MCP demonstration; keep integrity checks
+
+Decision 2: independent information, not only a new prompt
+Asking the same agent to be objective cannot erase its prior reasoning. The reviewer therefore has a fresh
+filtered copy and a separate prompt/job. An audit found that assignment README still exposed pipeline
+reasoning; ADR016 removed it. Historical verdicts remain labeled boundary-flawed. The later issue 4 review
+used the corrected boundary, but shared model-family blind spots and source-comment influence remain.
+
+Decision 3: mechanical checks decide
+Compile/import, real source diff, full tests and baseline behavioral contrast are executable claims. The reviewer
+and semantic judges are still fallible. Requirements judges can veto untestable criteria or invented readiness,
+but cannot manufacture a pass. This correctly exposed inconsistent ledgers, yet also made the
+generator/checker contract a dominant failure source.
+In an earlier A3 issue 5 attempt, correction was told to fix spec.md while defects lived in the versioned bundle.
+The later correction explicitly named all four documents and passed original issue/skill definitions to the judge.
+That material change did not erase exhausted issue 5. Subsequent issue 6 fixed missing structure but still failed
+semantic consistency. It was not evidence that a prompt repair alone solved the pipeline.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+4
+
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+Recovery is not a clean first pass
+The evidence distinguishes failure preservation from successful continuation
+
+Post-run corrections and their limits
+Support PR 27 preserved20spent Developer steps and cumulative usage. PR 28 recovered an accepted
+Developer-to-Tester transition from actual same-run provenance and kept the consumed Tester step. PR 29
+synchronized matching harness tests and mechanically rechecked an already-finished Tester after a stale test
+fixture failed. PR 30 fixed Windows path separators; PR 33 improved bundle correction feedback. All were
+protected support merges, not generated feature merges.
+The issue 4 stale harness-test failure was an integration defect: current runtime was copied without its
+matching test. The original failure and fix cycle 1/Developer detour remain archived. Full suite, build and
+baseline failure were actually rerun. Alt 1 later exhausted40Developer steps with finish replies missing
+files_changed; that terminal series was not reset.
+
+E1: Developer tier, ADR006
+Question: does a cheaper Developer tier match flash on build/test outcomes under the same issue, prompts,
+harness and limits? The intended controlled quality comparison did not complete. Early flash transport failures,
+lite schema/client repairs and changing pacing confounded model and harness. Later calls also
+returned429/503. These are real negative operational observations, not evidence that one model writes better
+code.
+Condition
+
+Observation
+
+Valid conclusion
+
+Flash / early client
+
+Transport failures
+
+Availability limited these attempts
+
+Lite / changed client
+
+Some historical passes
+
+Model and harness effects inseparable
+
+Later serial recovery
+
+One corrected A3 chain completed
+
+Recovery can work, not tier superiority
+
+A later eight-trial de-confounded protocol was planned but not executed. It is not substituted by two endpoint
+probes or historical branch snapshots. The E1 quality question remains unanswered, an explicit grading limitation.
+No ADR changes are claimed to rest on a valid model-quality A/B.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+5
+
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+Reviewer-context pilot and threats
+E2 tests ADR003/008; local evidence, not a general causal claim
+
+E2 used five authored PR-style diffs, each with one planted defect. A received issue+diff+repo. B additionally
+received authored spec/design/test-report claims that the change was verified. These were not captured
+pipeline artifacts. Ten local reviews used the then-current harness and requested flash-lite. Behavioral seed
+verification was rerun afterward; it was not a preserved preregistration.
+Seed
+
+A isolated verdict
+
+B authored context
+
+Observed contrast
+
+sp1
+
+request_changes
+
+request_changes
+
+Both reject
+
+sp2
+
+request_changes
+
+approve
+
+Verdict flips
+
+sp3
+
+approve
+
+approve
+
+Both miss
+
+sp4
+
+request_changes
+
+approve
+
+Verdict flips
+
+sp5
+
+request_changes
+
+approve
+
+Verdict flips
+
+Correct final verdicts were A 4/5 versus B 1/5. Some B reviews still named the planted defect while approving,
+so defect mention and correct verdict are not interchangeable metrics. The stated catch-based rule is
+ambiguous because keyword-caught rates were 4/5 in both arms, unlike verdict correctness. The result
+supports retaining the fresh-context design as a precaution; one trial per condition cannot isolate an anchoring
+mechanism or estimate general accuracy. Seed sp3 was missed in both conditions.
+
+Side-by-side decisions
+Experiment
+
+Outcome
+
+Design response
+
+E1 model tiers
+
+Incomplete and confounded
+
+Availability override provisional; no quality
+conclusion
+
+E2 context isolation
+
+Local verdict contrast4/5 versus1/5
+
+Retain isolation; final hosted boundary
+separately corrected
+
+Failures and usage qualifications
+The first sp2/B scratch checkout disappeared during a failed attempt; the exception was described but its raw
+failed-attempt record was not retained. That run was repeated once. Existing E2 successful-run usage records
+are distinct from hosted lineage counters. This report does not add cumulative snapshots or infer zero billing
+from missing error-response usage.
+Successful-record usage: A 121,609 tokens / 24 calls; B 475,933 tokens / 55 calls, 3.91x. These are actual
+separate local calls, not hosted cumulative deltas. The two exploratory E1b availability probes returned503 for
+both requested routes. One call per route with no code implementation is not a replacement decision
+experiment. It establishes only those observed failures. Raw records remain under results/probes; no paid
+fallback was enabled.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+6
+
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+Final frozen outcomes
+Final evaluation targets and late failures are retained, not overwritten
+
+One corrected A3 issue reached all six stage outcomes across disclosed recoveries. Alt 1 passed corrected
+requirements/design then exhausted Developer steps. Other corrected attempts failed or remained unverified.
+Historical Alt passes are not corrected-contract passes.
+Corrected stage
+
+A3 /5
+
+Alt /5
+
+Requirements
+
+1/5
+
+1/5
+
+Design
+
+1/5
+
+1/5
+
+Implementation
+
+1/5
+
+0/5
+
+Testing
+
+1/5
+
+0/5
+
+Release
+
+1/5
+
+0/5
+
+Posted corrected review
+
+1/5
+
+0/5
+
+Final hidden acceptance evaluation
+Four of ten frozen issue targets passed all four limited hidden checks. A3 issues 2/3/4/5/6: 1/4, 1/4, 4/4, 1/4, 1/4.
+Alt issues 1/2/3/4/5: 4/4, 4/4, 4/4, 1/4, 1/4. No checkout/evaluation errors. Main baselines passed1/4 for
+non-search tasks,0/4 for search(limit); target1/4 results show no measured improvement. One sealed file per
+task was run alone in a fresh Python environment, not a full CI suite. Targets were each evaluated once after the
+freeze; no implementation followed.
+
+Usage and reviewer outcome
+A3 issue 4 branch-lineage snapshot: 830,906 tokens / 88 responses, excluding the separate reviewer.
+Reviewer logs end 840,811 / 90, but subtracting the carried baseline is not accepted as attributable usage
+without per-call proof. No complete lifetime token total or monetary cost is claimed. Successful responses and
+failed provider attempts are different records.
+PR 31 remained open at its frozen head. Review6035246293 says approve in its body; GitHub state is
+COMMENTED, not native approval. Exact40-characterSHAs are preserved in the frozen manifest. It found no
+defect in this real change. E2 shows an independent reviewer can still miss a planted defect. Four generated
+feature tests passed; the final recovery suite was a separate product+harness scope, not an additive 285 + 4 +
+298 total.
+The 227-second demo shows the actual recovered issue-to-posted-review chain, with visible time cuts, timeouts and
+mechanical recheck. It is not one uninterrupted Actions attempt. Frozen targets, exact runs, per-issue results and final
+evaluation records are in results/. All generated feature PRs remain unmerged.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+7
+
+AUTOSE / ASSIGNMENT 3
+
+LATE WORK / 24 NOVEMBER 2026
+
+What the evidence does not settle
+Submission package complete is different from every workflow or rubric item succeeding
+
+Hindsight
+The first change would be to validate the actual role-to-tool contract before a long issue run. The available
+endpoint, required JSON fields, generator output bundle and checker expectations must agree in one small
+end-to-end test. This project repeatedly spent provider time discovering contract gaps only at finish. A shorter
+acceptance path would have exposed missing files_changed feedback and mismatched harness tests sooner.
+The second change would be to define an evaluation stop rule and artifact closeout early. Repeating
+unchanged failed runs delayed the report and final evaluation without answering a new question. Finalization
+now preserves terminal failures and the unanswered model-quality experiment instead of promising indefinite
+retries. These reflections are AI-assisted drafts, not invented claims of unaided student reasoning.
+
+Limitations and grading risks
+- Only one corrected end-to-end issue outcome completed. Alt 4/5 were not newly corrected; historical passes and
+current code may differ from the strict final contract.
+- E1 did not complete a controlled model-quality comparison. Its operational failures cannot establish relative coding
+quality. E2 is small, local, single-model and uses authored context with one run per condition.
+- The demo shows a recovered multi-run chain rather than a single uninterrupted run. Late work after the deadline is
+timestamped honestly; no extension approval is asserted.
+- Token accounting is incomplete across superseded runs, provider errors and separate review increments. Requested
+models differ from returned identities; no invented total cost is supplied.
+- Judges can miscalibrate readiness and correlated model blind spots remain. Prefix shell checks are not a sandbox;
+arbitrary Python and source-level influence remain risks.
+- Substantial workflow, experiment, ADR and report work used AI assistance. The brief permits coding help but requires
+reviewed output and student-owned ADR reasoning. This package does not assert unaided authorship or invent
+independent student explanations.
+
+Evidence and delivery
+Main repository: github.com/panemchaitanya/AutoSE_A3. Actual issue 4 review: PR 31 / review6035246293. Full
+ADRs001-020, historical failures, experiment materials and frozen target SHAs remain in the repository. report.pdf and
+demo.mp4 are final artifacts. The one-line roll-number submission file contains only the repository URL. Course-platform
+upload is separate from preparing that file.
+
+2025204023 / panemchaitanya/AutoSE_A3 / evidence frozen 24 Nov 2026
+
+8
+
+
