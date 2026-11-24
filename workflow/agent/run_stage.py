@@ -398,6 +398,66 @@ def developer_progress_resume(repo_root, task, state):
     return progress
 
 
+def tester_task(spec, diff):
+    return ("Write tests for this specification's acceptance criteria and "
+            "run the full suite.\n\n"
+            f"--- acceptance criteria (from spec.md) ---\n{spec}\n\n"
+            f"--- the change under test (diff) ---\n{diff[:20000]}\n"
+            "If tests_autose already exists after a failed attempt, inspect "
+            "and retain useful existing tests. Check every acceptance "
+            "criterion, add missing tests, run the suite, then finish. "
+            "Existing files are not proof that the tests pass.")
+
+
+def tester_timeout_recovery(repo_root, state, spec):
+    """Recover accepted implementation only when actual Tester provenance exists.
+    No Developer budget is restarted. Tester spent steps/usage carry forward.
+    """
+    art = Path(repo_root) / config.ARTIFACTS_DIR
+    path = art / 'progress_tester.json'
+    if not path.exists() or state['stages']['testing']['status'] == 'passed':
+        return None
+    progress = json.loads(path.read_text())
+    rows = progress.get('transcript') or []
+    if not rows or [r.get('step') for r in rows] != list(range(len(rows))) or any(r.get('role') != 'Tester' for r in rows):
+        raise ValueError('invalid Tester progress prefix')
+    if len(rows) >= config.MAX_AGENT_STEPS:
+        raise ValueError('Tester preserved step budget exhausted')
+    records = [json.loads(line) for line in (art/'calls.jsonl').read_text().splitlines() if line.strip()]
+    tests = [r for r in records if r.get('role') == 'Tester' and r.get('status') == 'success']
+    old_diff = (art/'diff.patch').read_text()
+    if not tests or tests[-1].get('task_sha256') != _sha(tester_task(spec, old_diff)):
+        raise ValueError('Tester progress task binding failed')
+    dev = json.loads((art/'transcript_implementation.json').read_text())
+    # The written implementation transcript is emitted only after run_agent
+    # returns. Same-run Tester calls additionally prove the build gate passed.
+    if not isinstance(dev, list) or not dev:
+        raise ValueError('missing accepted Developer transcript')
+    result = agent._extract_action(dev[-1]['reply'])
+    if not result or result.get('action') != 'finish' or not isinstance(result.get('result'), dict) or not result['result'].get('files_changed') or result['result'].get('blocked'):
+        raise ValueError('no accepted Developer finish')
+    last_dev = [r for r in records if r.get('role') == 'Developer' and r.get('status') == 'success']
+    if not last_dev or last_dev[-1].get('run_id') != tests[0].get('run_id') or last_dev[-1].get('ts','') >= tests[0].get('ts',''):
+        raise ValueError('Tester not after accepted Developer in same run')
+    known = progress.get('usage') or {}
+    if any(known.get(k,-1) < state.get('usage',{}).get(k,0) for k in ('calls','total_tokens','prompt_tokens','completion_tokens')):
+        raise ValueError('Tester usage predates state')
+    actual = subprocess.run(['git','diff','origin/main','--','tinydb'],cwd=repo_root,capture_output=True,text=True,check=True).stdout
+    if not actual.strip():
+        raise ValueError('no saved implementation source diff')
+    ok, msg = checks.check_build(repo_root, result['result']['files_changed'])
+    if not ok:
+        raise ValueError('saved implementation build failed: '+msg)
+    archive = art / ('tester_timeout_'+_sha(path.read_text())[:16]+'.json')
+    if not archive.exists():
+        archive.write_text(json.dumps({'progress':progress,'original_diff':old_diff,'original_task_sha256':tests[-1]['task_sha256']},indent=2))
+    state['usage'] = known
+    controller.set_stage(state,'implementation','passed',summary=result['result'].get('summary',''))
+    controller.record(state,'recovered accepted Developer finish from same-run Tester provenance; build rechecked; Tester spent steps and usage retained')
+    controller.save_state(repo_root,state)
+    return progress
+
+
 def stage_develop(repo_root, state, issue):
     """Implementation + testing with the bounded fix loop (ADR-002)."""
     for stage in ("implementation", "testing"):
@@ -408,6 +468,12 @@ def stage_develop(repo_root, state, issue):
     design = read_file(repo_root, os.path.join(config.ARTIFACTS_DIR,
                                                "design.md"))
     feedback = None
+    try:
+        tester_resume = tester_timeout_recovery(repo_root, state, spec)
+    except (ValueError, KeyError, OSError, json.JSONDecodeError) as exc:
+        return fail(repo_root,state,'testing','Tester timeout continuation refused: '+str(exc))
+    if tester_resume is not None:
+        usage = load_usage(state)
 
     while True:
         if state["stages"]["implementation"]["status"] != "passed" or feedback:
@@ -470,24 +536,26 @@ def stage_develop(repo_root, state, issue):
                 continue
             controller.set_stage(state, "implementation", "passed",
                                  summary=result.get("summary", ""))
-            diff = make_diff(repo_root)
+            diff = subprocess.run(['git','diff','origin/main','--','tinydb'],cwd=repo_root,capture_output=True,text=True,check=True).stdout
+            controller.save_state(repo_root,state)
             write_artifact(repo_root, "diff.patch", diff or "(no diff)")
 
         # ---- testing
         controller.set_stage(state, "testing", "running")
-        diff = read_file(repo_root, os.path.join(config.ARTIFACTS_DIR,
-                                                 "diff.patch"))
-        task = ("Write tests for this specification's acceptance criteria and "
-                "run the full suite.\n\n"
-                f"--- acceptance criteria (from spec.md) ---\n{spec}\n\n"
-                f"--- the change under test (diff) ---\n{diff[:20000]}\n"
-                "If tests_autose already exists after a failed attempt, inspect "
-                "and retain useful existing tests. Check every acceptance "
-                "criterion, add missing tests, run the suite, then finish. "
-                "Existing files are not proof that the tests pass.")
+        # Source-only comparison includes committed changes after timeout.
+        # Prior task/diff was verified and archived before this correction.
+        diff = subprocess.run(['git','diff','origin/main','--','tinydb'],cwd=repo_root,capture_output=True,text=True,check=True).stdout
+        write_artifact(repo_root,'diff.patch',diff)
+        task = tester_task(spec, diff)
+        def persist_tester():
+            store_usage(state, usage)
+            controller.save_state(repo_root,state)
+        controller.save_state(repo_root,state)
         result, transcript, err = agent.run_agent(
             "Tester", config.MODEL_TEST, prompts.TEST_SYSTEM, task, repo_root,
-            usage, stage="testing")
+            usage, stage="testing", on_progress=persist_tester,
+            resume_progress=tester_resume)
+        tester_resume = None
         store_usage(state, usage)
         write_transcript(repo_root, "testing", transcript)
         if err:
