@@ -29,7 +29,7 @@ hidden test content has been read or used for this series.
 | 23:29 | #37 | 45454572048 | FAILED at Stage 1 (16 min) | Same configuration. 2 calls, then 503 retries exhausted. |
 | 23:59 | #37 | 45460110589 | FAILED at Stage 1 (24 min) | Same configuration (started before ADR-022 merged). 7 calls, then 503. |
 | 00:26 | #37 | 45464842567 | FAILED at Stage 1 (31 min) | ADR-022 fallback tier gemini-3-flash-preview engaged; final error HTTP 429 free-tier quota on the AI Studio project. AI Studio key. |
-| 00:59 | #37 | 45470790181 | in progress when written | Repo secret switched to the student's ORION project key (different project and quota), flash-lite primary, preview fallback. |
+| 00:59 | #37 | 45470790181 | FAILED at Stage 1 (43 min) | 15 calls: SpecWriter finished attempt 1 (8 calls), strict A1 validation failed (missing topic gate, no explicit PASS/FAIL/N/A for T2...), correction attempt 2 made 7 calls, then 503 on both primary and fallback tiers until retries exhausted (about 31 min). First run past SpecWriter's first full output on the fresh series. Repo secret switched to the student's ORION project key (different project and quota), flash-lite primary, preview fallback. |
 
 ## Run environment change (not a harness change)
 

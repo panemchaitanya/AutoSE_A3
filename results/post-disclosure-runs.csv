@@ -7,4 +7,4 @@ run_id,issue,started_ist,furthest_stage,outcome,cause,config,scope
 45454572048,37,2026-11-24 23:29,requirements,failed,Gemini 503 after 15 min patience,flash-lite all roles; ADR-021; AI Studio key,post-disclosure
 45460110589,37,2026-11-24 23:59,requirements,failed,Gemini 503 after 15 min patience,flash-lite all roles; ADR-021; AI Studio key,post-disclosure
 45464842567,37,2026-11-25 00:26,requirements,failed,503 then fallback 429 free-tier quota,ADR-022 fallback gemini-3-flash-preview; AI Studio key,post-disclosure
-45470790181,37,2026-11-25 00:59,requirements,in_progress,pending,ADR-022 fallback; ORION project key,post-disclosure
+45470790181,37,2026-11-25 00:59,requirements,failed,A1 validation failed on attempt 1; 503 on primary and fallback during correction attempt 2,ADR-022 fallback; ORION project key,post-disclosure
