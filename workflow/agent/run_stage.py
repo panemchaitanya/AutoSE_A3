@@ -268,9 +268,16 @@ def stage_requirements(repo_root, state, issue):
             "Coverage topics must be covered/open/N-A with reason. Validation needs basis/gate "
             "counts, actual tool outcomes and human next steps when needed. "
             "Do not reject solely for absent MCP invocation or MCP-gap boilerplate. "
+            "Ground every objection in the original issue and applicable skill definitions "
+            "provided below. Name the document, item ID and conflicting text for each "
+            "real defect. An ASSUMED item at CLARIFY is not itself a defect. "
+            "Distinguish unsupported scope from an honestly recorded open question. "
             "Reject unsupported readiness or superficial PASS claims. An honest NOT READY "
             "verdict can meet documentation integrity if uncertainty is kept explicit.",
-            "\n\n".join(k+":\n"+v for k,v in adocs.items()), stage=stage) if aok else (False, 'A1 structural checks failed')
+            prompts.untrusted("ORIGINAL ISSUE", json.dumps(issue, ensure_ascii=False))
+            + "\n--- APPLICABLE SKILL DEFINITIONS (A3 PROFILE OVERRIDES MCP) ---\n"
+            + skill + "\n--- GENERATED DOCUMENTS TO AUDIT ---\n"
+            + "\n\n".join(k+":\n"+v for k,v in adocs.items()), stage=stage) if aok else (False, 'A1 structural checks failed')
         if not ajok:
             ok = False
             problems.append('A1 semantic validation: ' + ajreason)
@@ -289,8 +296,19 @@ def stage_requirements(repo_root, state, issue):
                                  summary=result.get("summary", ""))
             return True
         problems = problems + ([f"judge: {jreason}"] if not jok else [])
-        task = (original_task + "\nThe specification failed its checks. Read the existing spec.md, fix it, and finish."
-                "\nProblems:\n- " + "\n- ".join(problems))
+        check_report = {"stage": stage, "attempt": attempt,
+                        "passed": False, "problems": problems}
+        write_artifact(repo_root, f"requirements_checks_attempt{attempt}.json",
+                       json.dumps(check_report, indent=2))
+        print(f"[{stage}] attempt {attempt} checks failed: "
+              + json.dumps(problems, ensure_ascii=True), flush=True)
+        task = (original_task + "\nThe specification failed its checks across the requirements artifacts. "
+                "Read spec.md AND the selected versioned SRS, REGISTER and VALIDATION "
+                "under .autose/artifacts/. Fix each named defect in the actual failing "
+                "document(s), reconcile all four artifacts, and finish. Editing only "
+                "spec.md cannot repair a defect in SRS/REGISTER/VALIDATION. Preserve "
+                "earlier version history without adding a conflicting slug. Do not "
+                "claim PASS for unresolved defects.\nProblems:\n- " + "\n- ".join(problems))
         if attempt < CORRECTION_MAX_ATTEMPTS:
             save_correction(repo_root, {
                 "schema": CORRECTION_SCHEMA, "stage": stage,
