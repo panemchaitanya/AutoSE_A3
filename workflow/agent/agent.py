@@ -205,6 +205,7 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
                     print(f"[{role}] resume conversation at step={start_step}", flush=True)
             except (ValueError, KeyError, TypeError):
                 pass  # malformed checkpoints never authorize a stage pass
+    edited_artifact = False
     for step in range(start_step, config.MAX_AGENT_STEPS):
         # Save before the next model call, after the previous tool observation.
         # A provider failure does not discard successful prior model work.
@@ -253,8 +254,21 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
         with open(os.path.join(progress_dir, f"progress_{role.lower()}.json"),
                   "w", encoding="utf-8") as progress:
             json.dump({"transcript": transcript, "usage": usage.as_dict()}, progress)
+        if kind in ("write_file", "edit_file"):
+            edited_artifact = True
+        elif kind == "run_shell" and "python" in str(action.get("command", "")):
+            edited_artifact = True
         if kind == "finish":
             result = action.get("result")
+            if (role == "SpecWriter" and "failed its checks" in task
+                    and not edited_artifact):
+                contents.append({"role": "user", "parts": [{"text":
+                    "Finish rejected: this is a correction attempt and no file has been "
+                    "changed. Fix each named defect in the failing artifact with "
+                    "write_file or edit_file (full file for write_file), then finish. "
+                    "Reading files alone cannot repair them. Do not claim PASS for "
+                    "unresolved defects."}]})
+                continue
             if role == "Developer" and isinstance(result, dict) and not result.get("blocked"):
                 actual = subprocess.run(["git","diff","origin/main","--","tinydb"],
                     cwd=repo_root,capture_output=True,text=True).stdout
