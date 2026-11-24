@@ -9,7 +9,9 @@ A GitHub Actions prototype that takes a TinyDB issue through requirements, desig
 | Item | Location |
 | --- | --- |
 | Assignment report, seven pages | [report.pdf](report.pdf) |
-| Recorded browser walkthrough, about 76 seconds | [demo.mp4](demo.mp4) |
+| Recorded recovered-chain demo, 3m47s | [demo.mp4](demo.mp4) |
+
+The demo shows the actual issue4 outcome across disclosed timeout continuations and a mechanical test recheck. It is not one uninterrupted Actions attempt, so the literal single-run demo requirement remains a grading caveat. The posted review has an approve verdict in its body, GitHub state COMMENTED, and the generated PR remains open and unmerged.
 | Architecture and decisions | [ARCHITECTURE.md](ARCHITECTURE.md), [ADRs](architecture/decisions/) |
 | Workflow and model-role implementation | [workflow/](workflow/), [.github/workflows/](.github/workflows/) |
 | Experiment issues and definitions | [experiment/](experiment/) |
