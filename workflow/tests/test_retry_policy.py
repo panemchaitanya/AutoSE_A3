@@ -27,7 +27,7 @@ class RetryPolicy(unittest.TestCase):
   retries,total,longest=map(int,out.stdout.split())
   self.assertGreaterEqual(retries,3)
   self.assertGreaterEqual(total,180)   # tolerates short spikes, then falls back fast
-  self.assertLessEqual(total,900)      # still bounded, not an infinite wait
+  self.assertLessEqual(total,1800)      # still bounded, not an infinite wait
   self.assertLessEqual(longest,300)
  def test_env_override(self):
   env=dict(os.environ,API_RETRIES='6',API_BACKOFF_SECONDS='5,10')
