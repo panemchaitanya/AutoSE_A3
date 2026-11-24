@@ -10,6 +10,7 @@ skipped); exit code 1 = stage failed or stopped; the reason is always in the
 stage's artifact and in state.json (ADR-002, ADR-004).
 """
 
+from pathlib import Path
 import argparse
 import hashlib
 import json
@@ -365,6 +366,38 @@ def stage_design(repo_root, state, issue):
 
 
 # ------------------------------------------------------------- stages 3+4
+def developer_progress_resume(repo_root, task, state):
+    """Migrate legacy timeout evidence, preserving spent usage and steps.
+    Exact task hash from actual call provenance binds it to this task.
+    Never replay a tool action or silently restart an exhausted step budget.
+    """
+    art=os.path.join(repo_root, config.ARTIFACTS_DIR)
+    path=os.path.join(art, 'progress_developer.json')
+    if not os.path.isfile(path): return None
+    progress=json.loads(Path(path).read_text())
+    records=[json.loads(line) for line in Path(os.path.join(art,'calls.jsonl')).read_text().splitlines() if line.strip()]
+    calls=[x for x in records if x.get('role')=='Developer']
+    if not calls or calls[-1].get('task_sha256') != _sha(task):
+        raise ValueError('Developer progress task does not match current task')
+    rows=progress.get('transcript')
+    if not rows or any(x.get('role')!='Developer' or not isinstance(x.get('step'),int) for x in rows):
+        raise ValueError('Developer progress transcript invalid')
+    if [x['step'] for x in rows] != list(range(len(rows))):
+        raise ValueError('Developer progress steps not a complete prefix')
+    if max(x['step'] for x in rows)+1 >= config.MAX_AGENT_STEPS:
+        raise ValueError('Developer preserved step budget exhausted')
+    known=progress.get('usage') or {}
+    if known.get('total_tokens',-1) < state.get('usage',{}).get('total_tokens',0) or known.get('calls',-1) < state.get('usage',{}).get('calls',0):
+        raise ValueError('Developer progress usage predates state')
+    digest=_sha(json.dumps(progress,sort_keys=True))[:16]
+    saved=os.path.join(art,'progress_developer_timeout_'+digest+'.json')
+    if not os.path.exists(saved): Path(saved).write_text(json.dumps(progress,indent=2))
+    state['usage']=known
+    controller.record(state, 'Developer timeout continuation preserves '+str(len(rows))+' spent steps and known cumulative usage')
+    controller.save_state(repo_root,state)
+    return progress
+
+
 def stage_develop(repo_root, state, issue):
     """Implementation + testing with the bounded fix loop (ADR-002)."""
     for stage in ("implementation", "testing"):
@@ -394,9 +427,21 @@ def stage_develop(repo_root, state, issue):
             if feedback:
                 task += ("\n--- PREVIOUS ATTEMPT FAILED TESTING - fix it ---\n"
                          + feedback)
+            resume_progress = None
+            if not feedback:
+                try:
+                    resume_progress = developer_progress_resume(repo_root, task, state)
+                except (ValueError, OSError, json.JSONDecodeError) as exc:
+                    return fail(repo_root, state, "implementation", "bounded continuation refused: " + str(exc))
+                if resume_progress is not None:
+                    usage=load_usage(state)
+            def persist_developer():
+                store_usage(state, usage)
+                controller.save_state(repo_root,state)
             result, transcript, err = agent.run_agent(
                 "Developer", config.MODEL_DEVELOP, prompts.DEVELOP_SYSTEM,
-                task, repo_root, usage, stage="implementation")
+                task, repo_root, usage, stage="implementation",
+                on_progress=persist_developer, resume_progress=resume_progress)
             store_usage(state, usage)
             write_transcript(repo_root, "implementation", transcript)
             if err:
