@@ -14,6 +14,10 @@ from .utils import with_typehint
 TableBase: type[Table] = with_typehint(Table)
 
 
+from typing import Optional
+from .queries import QueryLike
+
+
 class TinyDB(TableBase):
     """
     The main class of TinyDB.
