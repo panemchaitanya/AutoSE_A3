@@ -79,3 +79,13 @@ judge inconsistency), NFR-001 ASSUMED yet linked to source S-02, and Q-1 blocks
 FR-003 while FR-003 is READY (rule C4, plausibly a real defect). Stage failed after the
 correction bound, as designed. Checks and bound unchanged. This run carried ADR-023
 but not ADR-024 (merged after it checked out main). Artifact: autose-issue-37-requirements.
+
+## Run 45490367204 (#37), 02:51 IST, ADR-022 + ADR-023 + ADR-024
+
+First fresh-series run past Stage 1. gate success; requirements success first attempt
+(02:52 to 03:11 IST, 8 calls); design success (03:11 to 03:28 IST, two attempts, 18
+calls in total); develop FAILED 03:28 to 03:32 IST: "step cap 40 reached" with no
+posted PR. Transcript: the same edit_file on tinydb/database.py three times (steps 8,
+12, 29) between read_file loops and no edit to tinydb/table.py. Cause analysis and the
+fix are in ADR-025 (merged after this run). Release and the independent review did not
+run. Run id 45490367204, https://github.com/panemchaitanya/AutoSE_A3/actions/runs/45490367204
