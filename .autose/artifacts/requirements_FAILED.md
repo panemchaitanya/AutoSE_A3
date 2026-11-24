@@ -1,10 +1,3 @@
 # Stage requirements failed
 
-agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
-
+checks failed after self-correction: A1 semantic validation: ASM-1 in the Register is marked as INFERRED (based on assumption label and text) yet CON-1, FR-001, FR-002, and NFR-001 all carry a READY gate. The property requires that ASSUMED/INFERRED items cannot be READY, but requirements and constraints derived from or tied to assumptions are marked READY without resolving the assumption.; Evidence Log is completely empty ('None'), yet validation claims tool outcomes and basis/gate counts without empirical tool execution evidence.; Missing tools are not explicitly acknowledged in the validation block beyond a generic 'None required' statement.
