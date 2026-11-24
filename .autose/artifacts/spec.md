@@ -1,12 +1,18 @@
-# Spec: Prevent search and query results from retaining in-memory mutations across calls
+# Spec: TinyDB Safe Search Retrieval
+
 ## Source
-"Searches sometimes return data that doesn't match what's in the db?? ... I search for something, tweak the returned dicts a bit for display purposes ..., and later when I run the SAME search again the old tweaked values show up even though I never called update or anything." (Issue #6)
+GitHub Issue #6: "Sometimes a search returns documents with values that's not what's stored." 
+Quotes: 
+- "Sometimes a search returns documents with values that are NOT what's stored."
+- "I search for something, tweak the returned dicts a bit for display purposes (like formatting a field), and later when I run the SAME search again the old tweaked values show up even though I never called update or anything."
+- "Can you make it so the documents you get back from search/all are just... normal dicts you can safely edit without side effects?"
 
 ## Requirements
-- FR-1: The search and retrieval methods (such as search, all, get) shall return deep copies or freshly constructed dictionary representations of stored documents such that subsequent mutations performed on returned dictionaries do not mutate the internal database cache or storage state.
+- FR-1: The database retrieval methods (`search` and `all`) shall return unshared copy instances of document dictionaries such that modifying a returned dictionary does not mutate cached database documents.
 
 ## Acceptance criteria
-- Given a document stored in TinyDB with a field value ``"original"``, when a user queries the document using ``search()`` or ``all()`` and modifies a field in the returned dictionary object to ``"modified"`` without calling any update method, then subsequent calls to ``search()`` or ``all()`` shall return dictionaries where the field value remains ``"original"``.
+- Given a document stored in a TinyDB table, when a user calls `search()` or `all()`, modifies a field of a returned document dictionary in place, and subsequently executes `search()` for the same document, then the newly returned dictionary contains the original stored value and not the modified value.
+- Given a document stored in a TinyDB table, when a user retrieves a document via `search()`, modifies a field in place, and subsequently retrieves all documents via `all()`, then the dictionary returned by `all()` contains the original stored value.
 
 ## Assumptions and open questions
-- Assumption: Returning deep copies (or isolating returned dictionaries) will not introduce unacceptable performance degradation, chosen because correctness and prevention of side effects take precedence over raw object reference sharing.
+- ASM-1: Deep-copying dictionaries upon retrieval is the chosen design default to prevent unintended in-place mutation side effects on database storage/caches. (Answers Q-1: How should side effects from modifying returned dicts be prevented?)

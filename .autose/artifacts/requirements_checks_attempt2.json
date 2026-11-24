@@ -1,0 +1,8 @@
+{
+  "stage": "requirements",
+  "attempt": 2,
+  "passed": false,
+  "problems": [
+    "A1 semantic validation: Gate and Priority violation in SRS: FR-1 has priority UNSET, yet the Validation Summary claims 'FR: 1 READY' and the SRS table marks FR-1 as CLARIFY while the validation check counts it as READY, violating the rule that unprioritized items cannot be READY and general consistency between tables and validation summary.; Epistemic Integrity violation in Validation Summary: E5 check claims 'PASS. Every default is an ASM linked to a Q', but ASM-1 in the REGISTER links to S-03 rather than a Q-id (Question ID), violating rule E5 ('Every default applied is an ASM linked to a Q')."
+  ]
+}

@@ -1,10 +1,3 @@
 # Stage requirements failed
 
-agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
-
+checks failed after self-correction: A1 semantic validation: Gate and Priority violation in SRS: FR-1 has priority UNSET, yet the Validation Summary claims 'FR: 1 READY' and the SRS table marks FR-1 as CLARIFY while the validation check counts it as READY, violating the rule that unprioritized items cannot be READY and general consistency between tables and validation summary.; Epistemic Integrity violation in Validation Summary: E5 check claims 'PASS. Every default is an ASM linked to a Q', but ASM-1 in the REGISTER links to S-03 rather than a Q-id (Question ID), violating rule E5 ('Every default applied is an ASM linked to a Q').

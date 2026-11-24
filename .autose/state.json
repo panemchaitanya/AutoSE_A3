@@ -65,6 +65,18 @@
     {
       "event": "operational recovery: no reviewer verdict exists",
       "ts": "2026-11-24T08:33:26.703985+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T08:33:35.164158+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-24T08:33:35.164172+00:00"
+    },
+    {
+      "event": "requirements -> failed (checks failed after self-correction: A1 semantic validation: Gate and Priority violation in SRS: FR-1 has priority UNSET, yet the Validation Summary claims 'FR: 1 READY' and the SRS table marks FR-1 as CLARIFY while the validation check counts it as READY, violating the rule that unprioritized items cannot be READY and general consistency between tables and validation summary.; Epistemic Integrity violation in Validation Summary: E5 check claims 'PASS. Every default is an ASM linked to a Q', but ASM-1 in the REGISTER links to S-03 rather than a Q-id (Question ID), violating rule E5 ('Every default applied is an ASM linked to a Q').)",
+      "ts": "2026-11-24T09:25:00.542164+00:00"
     }
   ],
   "issue": 6,
@@ -81,7 +93,7 @@
     },
     "requirements": {
       "artifact": ".autose/artifacts/spec.md",
-      "reason": "agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "reason": "checks failed after self-correction: A1 semantic validation: Gate and Priority violation in SRS: FR-1 has priority UNSET, yet the Validation Summary claims 'FR: 1 READY' and the SRS table marks FR-1 as CLARIFY while the validation check counts it as READY, violating the rule that unprioritized items cannot be READY and general consistency between tables and validation summary.; Epistemic Integrity violation in Validation Summary: E5 check claims 'PASS. Every default is an ASM linked to a Q', but ASM-1 in the REGISTER links to S-03 rather than a Q-id (Question ID), violating rule E5 ('Every default applied is an ASM linked to a Q').",
       "status": "failed",
       "summary": "Generated requirements specification for issue #6 ensuring search and retrieval results return isolated dictionary representations to prevent unwanted in-memory mutation side effects."
     },
@@ -93,13 +105,14 @@
     }
   },
   "usage": {
-    "calls": 19,
-    "completion_tokens": 1392,
-    "fallbacks": 0,
+    "calls": 36,
+    "completion_tokens": 5994,
+    "fallbacks": 13,
     "models": {
-      "gemini-3.5-flash-lite": 19
+      "gemini-3.5-flash": 4,
+      "gemini-3.5-flash-lite": 32
     },
-    "prompt_tokens": 82663,
-    "total_tokens": 84055
+    "prompt_tokens": 206600,
+    "total_tokens": 214577
   }
 }
