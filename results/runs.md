@@ -580,3 +580,13 @@ The17-row runs-final.csv is a recent selected recovery inventory, not an exhaust
 - AutoSE_A3_Alt autose 45085110210 startup_failure: https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45085110210
 - AutoSE_A3_Alt Python CI 45085092258 success: https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45085092258
 - AutoSE_A3_Alt ci 45085092149 success: https://github.com/panemchaitanya/AutoSE_A3_Alt/actions/runs/45085092149
+
+
+## Post-disclosure fresh-series runs (late work, separate from the frozen evaluation)
+
+Runs 45428682833, 45433683809, 45437784982, 45442883647, 45449108458, 45454572048,
+45460110589 and 45464842567 on issue #37 all FAILED at Stage 1 (requirements) from
+Gemini provider errors (HTTP 503 capacity, and 429 quota on the fallback tier in the
+last one). None reached a stage check. Run 45470790181 was in progress when this was
+written. Details, configurations and key changes: results/post-disclosure-rerun-log.md.
+E3 attempts (12, including 3 timeouts): experiment/e3/RESULTS.md.
