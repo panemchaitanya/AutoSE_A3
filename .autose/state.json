@@ -37,6 +37,18 @@
     {
       "event": "operational recovery: no reviewer verdict exists",
       "ts": "2026-11-24T07:30:46.176424+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T07:31:00.261123+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-24T07:31:00.261140+00:00"
+    },
+    {
+      "event": "requirements -> failed (checks failed after self-correction: VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; A1 basis/gate contradiction: NFR-001 is INFERRED but READY; retain uncertainty as CLARIFY/BLOCKED; A1 semantic validation: A1 structural checks failed)",
+      "ts": "2026-11-24T08:24:15.276981+00:00"
     }
   ],
   "issue": 5,
@@ -52,7 +64,7 @@
       "status": "pending"
     },
     "requirements": {
-      "reason": "agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "reason": "checks failed after self-correction: VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; A1 basis/gate contradiction: NFR-001 is INFERRED but READY; retain uncertainty as CLARIFY/BLOCKED; A1 semantic validation: A1 structural checks failed",
       "status": "failed"
     },
     "review": {
@@ -63,13 +75,14 @@
     }
   },
   "usage": {
-    "calls": 1,
-    "completion_tokens": 661,
-    "fallbacks": 0,
+    "calls": 28,
+    "completion_tokens": 20529,
+    "fallbacks": 7,
     "models": {
-      "gemini-3.5-flash-lite": 1
+      "gemini-3.5-flash": 20,
+      "gemini-3.5-flash-lite": 8
     },
-    "prompt_tokens": 5798,
-    "total_tokens": 6459
+    "prompt_tokens": 307774,
+    "total_tokens": 336445
   }
 }

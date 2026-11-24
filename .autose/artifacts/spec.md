@@ -1,22 +1,25 @@
-# Spec: Add default value parameter to db.get()
+# Spec: Let get() take a default value, like dict.get
 
 ## Source
-GitHub Issue #5: "Let get() take a default value, like dict.get"
-> db.get(...) returns None when nothing matches. In most of my code paths None is not a usable value... It would be cleaner if get accepted a default, the way dict.get does: db.get(doc_id=42, default={}) # {} instead of None when missing
+Issue #5: Let get() take a default value, like dict.get
+> "`db.get(...)` returns `None` when nothing matches. In most of my code paths `None` is not a usable value... It would be cleaner if `get` accepted a default, the way `dict.get` does: `db.get(doc_id=42, default={})`, `db.get(Query().name == 'x', default={})`. Behavior when the call does match should be exactly what it is today, and omitting `default` should keep returning `None`."
 
 ## Requirements
-- FR-1: The database `get` method shall accept an optional `default` parameter across all query invocation methods (by `doc_id`, by query condition, and by `doc_ids`). (Stated)
-- FR-2: When a single-document `get` call (via `doc_id` or query condition) finds no matching record, the method shall return the value provided to the `default` parameter instead of `None`. (Stated)
-- FR-3: When the `default` parameter is omitted in single-document `get` calls and no record matches, the method shall continue to return `None`. (Stated)
-- FR-4: When a single-document `get` call successfully matches a record, the method shall return the matched document regardless of whether a `default` parameter was provided. (Stated)
-- FR-5: When multi-document `get` calls (`doc_ids`) are used, the presence or absence of the `default` parameter shall not alter the existing empty-list or multi-result behavior for missing matches. (Stated)
+1. FR-1: `Table.get` shall support an optional `default` keyword parameter (or positional default if applicable) when querying single documents by condition or by `doc_id`.
+2. FR-2: When no document matches a single-document `Table.get` query and `default` is provided, `Table.get` shall return the provided `default` value.
+3. FR-3: When no document matches a single-document `Table.get` query and `default` is omitted, `Table.get` shall return `None`.
+4. FR-4: When a document matches a single-document `Table.get` query, `Table.get` shall return the matched document object regardless of whether `default` is specified.
+5. FR-5: `Table.get` queries using `doc_ids` shall retain their existing behavior returning a list of matched documents (or an empty list if none match), without modification by single-document `default` handling.
 
 ## Acceptance criteria
-- Given a database containing no document with `doc_id=42`, When calling `db.get(doc_id=42, default={})`, Then the return value equals `{}`.
-- Given a database containing no document matching `Query().name == 'x'`, When calling `db.get(Query().name == 'x', default=[])`, Then the return value equals `[]`.
-- Given a database containing a document with `doc_id=42` containing `{'a': 1}`, When calling `db.get(doc_id=42, default={})`, Then the return value equals `{'a': 1}`.
-- Given a database containing no document with `doc_id=42`, When calling `db.get(doc_id=42)`, Then the return value is `None`.
-- Given a database containing no documents for a list of IDs `[1, 2]`, When calling `db.get(doc_ids=[1, 2], default={})`, Then the return value equals `[]`.
+- Given a table without a document with `doc_id=42`, when calling `db.get(doc_id=42, default={})`, then the returned value is `{}`.
+- Given a table without a document matching `Query().name == 'x'`, when calling `db.get(Query().name == 'x', default=[])`, then the returned value is `[]`.
+- Given a table without a document with `doc_id=42`, when calling `db.get(doc_id=42)`, then the returned value is `None`.
+- Given a table containing document `{'id': 1, 'name': 'test'}` with `doc_id=1`, when calling `db.get(doc_id=1, default={})`, then the returned value is `{'id': 1, 'name': 'test'}`.
+- Given a table with documents with `doc_id` 1 and 2, when calling `db.get(doc_ids=[99])`, then the returned value is `[]`.
 
 ## Assumptions and open questions
-- ASM-1: The parameter name for the default fallback value is strictly `default` matching `dict.get` conventions (Assumed based on issue text).
+- Question: Should `doc_ids` queries use `default`?
+  - Default: No. The issue explicitly specifies: "for `doc_ids`, the default would apply to the list result only in the sense that today's empty-list behavior is already fine - no change needed there; the default matters for the single-document calls".
+- Question: What should default to if `default` is not passed?
+  - Default: `None`, matching Python `dict.get` standard semantics and current TinyDB behavior.

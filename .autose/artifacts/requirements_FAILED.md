@@ -1,10 +1,3 @@
 # Stage requirements failed
 
-agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {
-  "error": {
-    "code": 503,
-    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
-    "status": "UNAVAILABLE"
-  }
-}
-
+checks failed after self-correction: VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; A1 basis/gate contradiction: NFR-001 is INFERRED but READY; retain uncertainty as CLARIFY/BLOCKED; A1 semantic validation: A1 structural checks failed
