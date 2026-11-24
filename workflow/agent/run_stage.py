@@ -486,7 +486,7 @@ def recheck_completed_tester(repo_root, state, spec):
     delta = subprocess.run(['git','diff',calls[-1]['branch_head'],'--','tinydb'],cwd=repo_root,capture_output=True,text=True,check=True).stdout
     if delta.strip():
         raise ValueError('source changed since completed Tester')
-    files = sorted(str(p.relative_to(repo_root)) for p in (Path(repo_root)/'tests_autose').glob('*.py'))
+    files = sorted(p.relative_to(repo_root).as_posix() for p in (Path(repo_root)/'tests_autose').glob('*.py'))
     if not files or not set(result.get('tests_written') or []).issubset(set(files)):
         raise ValueError('completed Tester files absent')
     # Preserve every byte of the failed report and detour, with existing
