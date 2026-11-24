@@ -1,4 +1,5 @@
 {
+  "a1_bundle_verified": true,
   "branch": "autose/issue-4",
   "fix_cycles": 0,
   "history": [
@@ -15,23 +16,33 @@
       "ts": "2026-11-24T02:31:45.120701+00:00"
     },
     {
-      "ts": "2026-11-24T02:31:56.729346+00:00",
-      "event": "A3-profile A1 validation required; downstream checkpoints invalidated"
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T02:31:56.729346+00:00"
     },
     {
-      "ts": "2026-11-24T02:31:56.729361+00:00",
-      "event": "requirements -> running"
+      "event": "requirements -> running",
+      "ts": "2026-11-24T02:31:56.729361+00:00"
     },
     {
-      "ts": "2026-11-24T03:33:02.970868+00:00",
-      "event": "requirements -> passed"
+      "event": "requirements -> passed",
+      "ts": "2026-11-24T03:33:02.970868+00:00"
+    },
+    {
+      "ts": "2026-11-24T03:33:12.193442+00:00",
+      "event": "design -> running"
+    },
+    {
+      "ts": "2026-11-24T03:58:37.503709+00:00",
+      "event": "design -> passed"
     }
   ],
   "issue": 4,
   "review_rounds": 0,
   "stages": {
     "design": {
-      "status": "pending"
+      "status": "passed",
+      "artifact": ".autose/artifacts/design.md",
+      "summary": "Designed the implementation plan to add an optional limit parameter to Table.search and TinyDB.search."
     },
     "implementation": {
       "status": "pending"
@@ -40,8 +51,8 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "passed",
       "artifact": ".autose/artifacts/spec.md",
+      "status": "passed",
       "summary": "Completed requirements specification for adding a limit parameter to TinyDB search() method, including SRS, Register, and Validation artifacts following A1/A3 requirements-ledger standards."
     },
     "review": {
@@ -52,15 +63,14 @@
     }
   },
   "usage": {
-    "prompt_tokens": 171819,
-    "completion_tokens": 4746,
-    "total_tokens": 178264,
-    "calls": 21,
-    "fallbacks": 15,
+    "prompt_tokens": 353240,
+    "completion_tokens": 23557,
+    "total_tokens": 378840,
+    "calls": 30,
+    "fallbacks": 19,
     "models": {
-      "gemini-3.5-flash": 6,
-      "gemini-3.5-flash-lite": 15
+      "gemini-3.5-flash": 11,
+      "gemini-3.5-flash-lite": 19
     }
-  },
-  "a1_bundle_verified": true
+  }
 }
