@@ -1,4 +1,5 @@
 {
+  "a1_bundle_verified": true,
   "branch": "autose/issue-37",
   "fix_cycles": 0,
   "history": [
@@ -13,6 +14,18 @@
     {
       "event": "fresh start supersedes f93e06eb46662b6b2d0ea33c136da40a5ec15258",
       "ts": "2026-11-24T21:22:11.397176+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T21:22:22.544432+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-24T21:22:22.544447+00:00"
+    },
+    {
+      "event": "requirements -> passed",
+      "ts": "2026-11-24T21:41:04.246123+00:00"
     }
   ],
   "issue": 37,
@@ -28,7 +41,9 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "pending"
+      "artifact": ".autose/artifacts/spec.md",
+      "status": "passed",
+      "summary": "Produced requirements specification, register, validation report, and spec.md for adding an optional limit parameter to TinyDB table search()."
     },
     "review": {
       "status": "pending"
@@ -37,5 +52,15 @@
       "status": "pending"
     }
   },
-  "usage": {}
+  "usage": {
+    "calls": 10,
+    "completion_tokens": 2257,
+    "fallbacks": 1,
+    "models": {
+      "gemini-3-flash-preview": 1,
+      "gemini-3.5-flash-lite": 9
+    },
+    "prompt_tokens": 79709,
+    "total_tokens": 81966
+  }
 }
