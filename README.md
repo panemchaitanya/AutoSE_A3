@@ -10,10 +10,11 @@ A GitHub Actions prototype that takes a TinyDB issue through requirements, desig
 | --- | --- |
 | Assignment report, eight pages | [report.pdf](report.pdf) |
 | Recorded recovered-chain demo, 3m47s | [demo.mp4](demo.mp4) |
+| Single-run demo, 2m30s (post-disclosure run 45504039498, issue #36, issue page to posted review) | [demo_run16.mp4](demo_run16.mp4) |
 
 | Architecture and decisions | [ARCHITECTURE.md](ARCHITECTURE.md), [ADRs](architecture/decisions/) |
 
-The demo shows the actual issue 4 outcome across disclosed timeout continuations and a mechanical test recheck. It is not one uninterrupted Actions attempt, so the literal single-run demo requirement remains a grading caveat. The posted review has an approve verdict in its body, GitHub state COMMENTED, and the generated PR remains open and unmerged.
+The demo shows the actual issue 4 outcome across disclosed timeout continuations and a mechanical test recheck. It is not one uninterrupted Actions attempt. The later `demo_run16.mp4` covers one uninterrupted Actions run (45504039498, issue #36, no continuation or rerun): a walkthrough of that completed run's real GitHub pages with the actual stage timestamps, recorded after the run, post-disclosure work and not frozen-evaluation evidence. Its PR #57 is open, not merged. The posted review has an approve verdict in its body, GitHub state COMMENTED, and the generated PR remains open and unmerged.
 | Item | Location |
 | --- | --- |
 | Workflow and model-role implementation | [workflow/](workflow/), [.github/workflows/](.github/workflows/) |
