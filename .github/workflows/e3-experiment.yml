@@ -1,0 +1,39 @@
+# E3 hand-off experiment trials (post-disclosure). Durable execution of the
+# remaining trials; same runner, model, 600s per-trial cap as local trials.
+name: e3-experiment
+on:
+  push:
+    branches: [experiment/e3-handoff]
+    paths: [experiment/e3/trigger.txt]
+concurrency:
+  group: e3-experiment
+permissions:
+  contents: read
+jobs:
+  trials:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: run trials
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODEL_DESIGN: gemini-3.5-flash-lite
+          E3_REPO: ${{ github.workspace }}
+        run: |
+          git config --global user.email e3@example.invalid
+          git config --global user.name e3
+          for j in "sB C 2" "sB C 3" "sB F 3"; do
+            set -- $j
+            timeout 600 python3 experiment/e3/e3_runner.py $1 $2 $3 || echo "trial $j rc=$? (cap or error)"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e3-results
+          path: experiment/e3/results

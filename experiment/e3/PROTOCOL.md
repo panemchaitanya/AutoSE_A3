@@ -19,3 +19,4 @@ Scored runs are results/result_*.json. Interruptions are tool-timeout kills, not
 - 23:29 pipeline run 45449108458 failed Stage 1 (provider 503 after 15-min patience); #37 relabeled for a new run. E3 job continues serially (one call stream).
 - 23:43 sandbox restart killed the detached job after sA-F-3 completed; relaunched for sB-C-2, sB-C-3, sB-F-3 (restart interruption is orchestration, not a provider outcome).
 - 23:59 sandbox restart again killed the detached job during sB-C-2 (partial, no result; orchestration interruption). Remaining: sB-C-2, sB-C-3, sB-F-3.
+- 00:03 remaining trials moved to GitHub Actions workflow e3-experiment (survives sandbox lifecycle), same runner/model/600s cap.
