@@ -55,3 +55,14 @@ free limit until about 13:30 IST. The `GEMINI_API_KEY` secret was set to the ORI
 key. Configuration for run 45470790181 and later: ORION key, flash-lite primary,
 gemini-3-flash-preview fallback (ADR-022), ADR-021 patience. This is a separate
 configuration from the eight earlier runs. No billing is involved.
+
+## Run 45479843730 (#37), 01:50 IST, pre-ADR-023 configuration
+
+Started 20:20:54Z (01:50:54 IST), failed 20:56:39Z (02:26:39 IST), 36 min. No provider
+error: SpecWriter wrote its outputs (7 calls), A1 validation rejected attempt 1 and
+the self-correction attempt 2 (7 more calls) with the same three errors: VALIDATION
+missing required topic "gate"; basis/gate contradiction (NFR-001 INFERRED but READY);
+A1 structural checks failed. Stage 1 failed on content after the correction bound,
+as designed. Checks and bound unchanged. ADR-023 (merged 01:53 IST, after this run
+checked out main) states these validator requirements in the prompt. The next run
+is the first with ADR-023.
