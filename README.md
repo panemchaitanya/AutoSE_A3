@@ -133,6 +133,8 @@ COMMENT reviews contain explicit verdicts; they are not formal human GitHub appr
 | Final hidden evaluation | A3:1,1,4,1,1 /4. Alt:4,4,4,1,1 /4 | Four limited tests per task, not full suite or code quality |
 | E1 model tiers | No controlled comparison completed | Quality question unanswered |
 | E2 reviewer context | Ten local reviews: A 4/5 correct verdicts, B 1/5 | Authored stimulus, small N, not causal or final-hosted proof |
+| E3 Designer hand-off (post-disclosure) | Full spec 5/6 check_design pass, criteria-only 3/6, 3 timeouts counted; no token saving. ADR-003 kept | Mechanical check only, 6 attempts per arm, one model, not frozen-series evidence. [Results](experiment/e3/RESULTS.md) |
+| Post-disclosure fresh series (#35 to #39) | 0 of 5 past Stage 1 as of 01:30 IST; nine hosted runs on #37, eight failed on provider 503/429 | See [rerun log](results/post-disclosure-rerun-log.md), ADR-021, ADR-022. Late work, separate from the frozen evaluation |
 | Usage | Source cumulative snapshots retained, separate reviewer unallocated | Complete lifetime total unavailable |
 
 [Final summary](results/final-summary.md), [frozen targets](results/final-autonomous-targets.json), [final evaluation](results/final-evaluation-results.json), [recent selected runs](results/runs-final.csv), [full workflow inventory](results/final-workflow-inventory.json).
