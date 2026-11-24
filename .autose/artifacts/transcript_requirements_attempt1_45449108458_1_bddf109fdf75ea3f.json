@@ -1,0 +1,37 @@
+[
+  {
+    "step": 0,
+    "role": "SpecWriter",
+    "reply": "{\n  \"action\": \"run_shell\",\n  \"command\": \"git status\"\n}"
+  },
+  {
+    "step": 1,
+    "role": "SpecWriter",
+    "reply": "{\n  \"action\": \"run_shell\",\n  \"command\": \"find tinydb -name '*.py'\"\n}"
+  },
+  {
+    "step": 2,
+    "role": "SpecWriter",
+    "reply": "{\n  \"action\": \"run_shell\",\n  \"command\": \"python -m pytest\"\n}"
+  },
+  {
+    "step": 3,
+    "role": "SpecWriter",
+    "reply": "{\"action\": \"run_shell\", \"command\": \"python3 -m unittest discover tests\"}"
+  },
+  {
+    "step": 4,
+    "role": "SpecWriter",
+    "reply": "{\n  \"action\": \"run_shell\",\n  \"command\": \"pip install pytest\"\n}"
+  },
+  {
+    "step": 5,
+    "role": "SpecWriter",
+    "reply": "{\"action\": \"run_shell\", \"command\": \"python3 -m pytest\"}"
+  },
+  {
+    "step": 6,
+    "role": "SpecWriter",
+    "reply": "{\n  \"action\": \"list_files\",\n  \"path\": \".\"\n}"
+  }
+]
