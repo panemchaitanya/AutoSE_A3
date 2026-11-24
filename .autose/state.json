@@ -13,6 +13,18 @@
     {
       "event": "fresh start supersedes 3fde270bf65f490ea9521086569a709eca6ca440",
       "ts": "2026-11-24T18:29:41.074578+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T18:30:02.440093+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-24T18:30:02.440113+00:00"
+    },
+    {
+      "event": "requirements -> failed (agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n)",
+      "ts": "2026-11-24T18:54:55.865750+00:00"
     }
   ],
   "issue": 37,
@@ -28,7 +40,8 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "pending"
+      "reason": "agent error: model retries exhausted; last error type=_Transient: Gemini API error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "status": "failed"
     },
     "review": {
       "status": "pending"
@@ -37,5 +50,14 @@
       "status": "pending"
     }
   },
-  "usage": {}
+  "usage": {
+    "calls": 7,
+    "completion_tokens": 2507,
+    "fallbacks": 0,
+    "models": {
+      "gemini-3.5-flash-lite": 7
+    },
+    "prompt_tokens": 50831,
+    "total_tokens": 53338
+  }
 }
