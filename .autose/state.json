@@ -1,0 +1,135 @@
+{
+  "a1_bundle_verified": true,
+  "branch": "autose/issue-4",
+  "fix_cycles": 1,
+  "history": [
+    {
+      "event": "run created",
+      "ts": "2026-11-24T02:31:45.120671+00:00"
+    },
+    {
+      "event": "triggered by panemchaitanya via workflow_dispatch",
+      "ts": "2026-11-24T02:31:45.120697+00:00"
+    },
+    {
+      "event": "fresh start supersedes 47e9f776880685a2245cdc4e83ed7e491f8b6b44",
+      "ts": "2026-11-24T02:31:45.120701+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-24T02:31:56.729346+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-24T02:31:56.729361+00:00"
+    },
+    {
+      "event": "requirements -> passed",
+      "ts": "2026-11-24T03:33:02.970868+00:00"
+    },
+    {
+      "event": "design -> running",
+      "ts": "2026-11-24T03:33:12.193442+00:00"
+    },
+    {
+      "event": "design -> passed",
+      "ts": "2026-11-24T03:58:37.503709+00:00"
+    },
+    {
+      "event": "operational recovery: no reviewer verdict exists",
+      "ts": "2026-11-24T05:07:14.125719+00:00"
+    },
+    {
+      "event": "implementation -> running",
+      "ts": "2026-11-24T05:07:53.760203+00:00"
+    },
+    {
+      "event": "Developer timeout continuation preserves 20 spent steps and known cumulative usage",
+      "ts": "2026-11-24T05:07:53.763187+00:00"
+    },
+    {
+      "event": "operational recovery: no reviewer verdict exists",
+      "ts": "2026-11-24T06:13:15.226935+00:00"
+    },
+    {
+      "event": "implementation -> passed",
+      "ts": "2026-11-24T06:13:58.333762+00:00"
+    },
+    {
+      "event": "recovered accepted Developer finish from same-run Tester provenance; build rechecked; Tester spent steps and usage retained",
+      "ts": "2026-11-24T06:13:58.333778+00:00"
+    },
+    {
+      "event": "testing -> running",
+      "ts": "2026-11-24T06:13:58.334448+00:00"
+    },
+    {
+      "event": "fix cycle 1",
+      "ts": "2026-11-24T06:51:26.812947+00:00"
+    },
+    {
+      "event": "implementation -> running",
+      "ts": "2026-11-24T06:51:26.813190+00:00"
+    },
+    {
+      "event": "operational recovery: no reviewer verdict exists",
+      "ts": "2026-11-24T07:18:02.298549+00:00"
+    },
+    {
+      "event": "implementation -> passed",
+      "ts": "2026-11-24T07:18:44.981181+00:00"
+    },
+    {
+      "event": "testing -> passed",
+      "ts": "2026-11-24T07:18:44.981201+00:00"
+    },
+    {
+      "event": "completed Tester mechanically rechecked after stale harness test synchronization; prior fix cycles, spent Developer steps and usage preserved",
+      "ts": "2026-11-24T07:18:44.981205+00:00"
+    },
+    {
+      "event": "release -> passed",
+      "ts": "2026-11-24T07:19:05.225635+00:00"
+    }
+  ],
+  "issue": 4,
+  "review_rounds": 0,
+  "stages": {
+    "design": {
+      "artifact": ".autose/artifacts/design.md",
+      "status": "passed",
+      "summary": "Designed the implementation plan to add an optional limit parameter to Table.search and TinyDB.search."
+    },
+    "implementation": {
+      "status": "passed",
+      "summary": "saved accepted implementation build rechecked"
+    },
+    "release": {
+      "artifact": ".autose/artifacts/pr.md",
+      "status": "passed"
+    },
+    "requirements": {
+      "artifact": ".autose/artifacts/spec.md",
+      "status": "passed",
+      "summary": "Completed requirements specification for adding a limit parameter to TinyDB search() method, including SRS, Register, and Validation artifacts following A1/A3 requirements-ledger standards."
+    },
+    "review": {
+      "status": "pending"
+    },
+    "testing": {
+      "artifact": ".autose/artifacts/test_report.md",
+      "status": "passed"
+    }
+  },
+  "usage": {
+    "calls": 88,
+    "completion_tokens": 29133,
+    "fallbacks": 61,
+    "models": {
+      "gemini-3.5-flash": 27,
+      "gemini-3.5-flash-lite": 61
+    },
+    "prompt_tokens": 797652,
+    "total_tokens": 830906
+  }
+}

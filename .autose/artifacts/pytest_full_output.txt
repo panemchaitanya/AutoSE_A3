@@ -1,0 +1,48 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/runner/work/AutoSE_A3/AutoSE_A3
+configfile: pytest.ini
+plugins: cov-7.1.0
+collected 304 items
+
+tests/test_middlewares.py .........                                      [  2%]
+tests/test_operations.py ..............                                  [  7%]
+tests/test_queries.py ..................................                 [ 18%]
+tests/test_storages.py ...........s..                                    [ 23%]
+tests/test_tables.py ...............................                     [ 33%]
+tests/test_tinydb.py ................................................... [ 50%]
+...............................................................          [ 71%]
+tests/test_utils.py ............                                         [ 75%]
+tests_autose/test_limit_search.py ....                                   [ 76%]
+workflow/tests/test_a1_checks.py ............                            [ 80%]
+workflow/tests/test_call_log.py ...........                              [ 83%]
+workflow/tests/test_completed_tester.py ......                           [ 85%]
+workflow/tests/test_contracts.py .....                                   [ 87%]
+workflow/tests/test_conversation_recovery.py ....                        [ 88%]
+workflow/tests/test_developer_resume.py ...                              [ 89%]
+workflow/tests/test_retry_policy.py ....                                 [ 91%]
+workflow/tests/test_review_feedback.py .......                           [ 93%]
+workflow/tests/test_reviewer_bootstrap.py ..                             [ 94%]
+workflow/tests/test_stage_boundaries.py .....                            [ 95%]
+workflow/tests/test_stage_checkpoint.py ......                           [ 97%]
+workflow/tests/test_tester_resume.py ......                              [ 99%]
+workflow/tests/test_testing_coverage.py .                                [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.16-final-0 _______________
+
+Name                    Stmts   Miss Branch BrPart  Cover
+---------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         57      0     10      0   100%
+tinydb/middlewares.py      44      3     14      3    90%
+tinydb/mypy_plugin.py      26     26      2      0     0%
+tinydb/operations.py       26      0      0      0   100%
+tinydb/queries.py         130      2     30      4    96%
+tinydb/storages.py         57      0      8      0   100%
+tinydb/table.py           248      1    114      8    98%
+tinydb/utils.py            78      1     18      1    98%
+tinydb/version.py           1      0      0      0   100%
+---------------------------------------------------------
+TOTAL                     672     33    196     16    94%
+======================== 303 passed, 1 skipped in 2.51s ========================
