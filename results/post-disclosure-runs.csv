@@ -1,0 +1,10 @@
+run_id,issue,started_ist,furthest_stage,outcome,cause,config,scope
+45428682833,37,2026-11-24 21:12,requirements,failed,Gemini 503 retries exhausted,flash for roles; ADR-018 retries; earlier key,post-disclosure
+45433683809,37,2026-11-24 21:38,requirements,failed,Gemini 503 retries exhausted,AI Studio key; ADR-018,post-disclosure
+45437784982,37,2026-11-24 21:59,requirements,failed,Gemini 503 retries exhausted,AI Studio key; ADR-018,post-disclosure
+45442883647,37,2026-11-24 22:26,requirements,failed,Gemini 503 four attempts no alternate tier,flash-lite all roles; ADR-018,post-disclosure
+45449108458,37,2026-11-24 22:59,requirements,failed,Gemini 503 after 15 min patience,flash-lite all roles; ADR-021; AI Studio key,post-disclosure
+45454572048,37,2026-11-24 23:29,requirements,failed,Gemini 503 after 15 min patience,flash-lite all roles; ADR-021; AI Studio key,post-disclosure
+45460110589,37,2026-11-24 23:59,requirements,failed,Gemini 503 after 15 min patience,flash-lite all roles; ADR-021; AI Studio key,post-disclosure
+45464842567,37,2026-11-25 00:26,requirements,failed,503 then fallback 429 free-tier quota,ADR-022 fallback gemini-3-flash-preview; AI Studio key,post-disclosure
+45470790181,37,2026-11-25 00:59,requirements,in_progress,pending,ADR-022 fallback; ORION project key,post-disclosure
