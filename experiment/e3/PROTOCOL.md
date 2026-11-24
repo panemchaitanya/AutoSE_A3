@@ -20,3 +20,4 @@ Scored runs are results/result_*.json. Interruptions are tool-timeout kills, not
 - 23:43 sandbox restart killed the detached job after sA-F-3 completed; relaunched for sB-C-2, sB-C-3, sB-F-3 (restart interruption is orchestration, not a provider outcome).
 - 23:59 sandbox restart again killed the detached job during sB-C-2 (partial, no result; orchestration interruption). Remaining: sB-C-2, sB-C-3, sB-F-3.
 - 00:03 remaining trials moved to GitHub Actions workflow e3-experiment (survives sandbox lifecycle), same runner/model/600s cap.
+- 00:47 Actions run 45460176153 finished: sB-C-2 done (432s), sB-C-3 and sB-F-3 hit the 600s cap. Experiment complete, 12 of 12 attempts recorded.

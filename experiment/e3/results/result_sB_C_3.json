@@ -1,0 +1,10 @@
+{
+ "spec": "sB",
+ "arm": "C",
+ "trial": "3",
+ "model": "gemini-3.5-flash-lite",
+ "outcome": "timeout_600s_cap",
+ "design_written": false,
+ "check_pass": false,
+ "note": "provider call stalled at step 3 (write_file), wall cap exceeded, no design; GitHub Actions run 45460176153"
+}

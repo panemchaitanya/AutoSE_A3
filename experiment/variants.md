@@ -73,3 +73,7 @@ replacement for original E1 coding-quality experiment. It supports bounded
 backoff for this incident, not a model-quality conclusion. Raw sanitized
 responses in results/probes/new-free-model-probes.json; verified-free source
 https://ai.google.dev/gemini-api/docs/pricing read22:10 IST.
+
+## E3 hand-off to the Designer (ADR-003), post-disclosure
+
+Second tested ADR experiment. Arm F full spec.md vs arm C title plus acceptance criteria, both with ARCHITECTURE.md, flash-lite, 2 specs x 3 trials. Protocol and attempt log: experiment/e3/PROTOCOL.md. Results table including 3 timeouts: experiment/e3/RESULTS.md. Outcome: F 5/6 check_design pass, C 3/6; token saving none (C +8%). Preset rule not met, ADR-003 kept. Separate identity from E1 (still unanswered) and E2.
