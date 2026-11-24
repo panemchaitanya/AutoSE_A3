@@ -1,0 +1,30 @@
+# Spec: Limit parameter for Table.search()
+
+## Source
+Issue #37: Add a limit parameter to search()
+- "`db.search(cond)` always returns every match."
+- "Could `search` take an optional `limit`?"
+- "`limit=None` (default) keeps today's behavior - all matches, in document id order."
+- "`limit=N` returns at most the first N matches, in document id order."
+- "A limit larger than the number of matches just returns all matches."
+
+## Requirements
+- FR-1: `Table.search` shall accept an optional parameter `limit` of type `Optional[int]` with a default value of `None`.
+- FR-2: When `limit` is `None`, `Table.search` shall return all matching documents in ascending document ID order.
+- FR-3: When `limit` is a positive integer `N`, `Table.search` shall return at most the first `N` matching documents in ascending document ID order.
+- FR-4: When `limit` is an integer `N` greater than or equal to the total number of matching documents, `Table.search` shall return all matching documents in ascending document ID order.
+- FR-5: When `limit` is `0`, `Table.search` shall return an empty list.
+
+## Acceptance criteria
+- Given a table containing 5 matching documents, when `Table.search(cond)` or `Table.search(cond, limit=None)` is called, then exactly 5 matching documents are returned in ascending document ID order.
+- Given a table containing 5 matching documents with document IDs 1, 2, 3, 4, 5, when `Table.search(cond, limit=3)` is called, then a list containing exactly the first 3 matching documents (IDs 1, 2, 3) is returned in ascending document ID order.
+- Given a table containing 3 matching documents, when `Table.search(cond, limit=10)` is called, then all 3 matching documents are returned in ascending document ID order.
+- Given a table containing 5 matching documents, when `Table.search(cond, limit=0)` is called, then an empty list `[]` is returned.
+
+## Assumptions and open questions
+- Question Q-1: How should `search()` handle `limit=0`?
+  - Default (ASM-1): `limit=0` returns an empty list `[]` because requesting at most 0 matches yields 0 items.
+- Question Q-2: How should `search()` handle negative `limit` values (e.g., `limit=-1`) or non-integer types?
+  - Default (ASM-2): Negative limits raise a `ValueError` as negative match limits are invalid.
+- Question Q-3: Should `limit` affect query caching or slice after cache?
+  - Default (ASM-3): Query cache can retain full query results or cache per query/limit key; slicing cached results maintains consistency.
