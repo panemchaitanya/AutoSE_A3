@@ -337,7 +337,12 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
                     with open(full, encoding="utf-8") as f:
                         text = f.read()
                     if text.count(old) != 1:
-                        obs = "ERROR: old_text must match exactly once; read correct range"
+                        if new and old != new and text.count(new) == 1:
+                            obs = ("ERROR: old_text no longer matches because this edit "
+                                   "was already applied (new_text is present once). Do "
+                                   "not repeat it; move on to the next change.")
+                        else:
+                            obs = "ERROR: old_text must match exactly once; read correct range"
                     else:
                         obs = _tool_write_file(repo_root, path, text.replace(old, new, 1))
         elif kind == "run_shell":
@@ -345,6 +350,12 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
         else:
             obs = (f"ERROR: unknown action {kind!r}. Use read_file, "
                    f"list_files, write_file, run_shell or finish.")
+        if kind in ("write_file", "edit_file") and action_ledger:
+            # Only the last four action pairs are kept, so record each
+            # mutation's outcome in the durable ledger (ADR-025).
+            entry = json.loads(action_ledger[-1])
+            entry["result"] = "applied" if not obs.startswith("ERROR") else obs[:90]
+            action_ledger[-1] = json.dumps(entry)
         if len(obs) > 12000:
             obs = obs[:12000] + "\n[bounded observation; use narrower file ranges or commands]"
         contents.append({"role": "user",
