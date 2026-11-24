@@ -89,3 +89,16 @@ posted PR. Transcript: the same edit_file on tinydb/database.py three times (ste
 12, 29) between read_file loops and no edit to tinydb/table.py. Cause analysis and the
 fix are in ADR-025 (merged after this run). Release and the independent review did not
 run. Run id 45490367204, https://github.com/panemchaitanya/AutoSE_A3/actions/runs/45490367204
+
+## Run 45497498216 (#37), 03:34 IST, ADR-022 to ADR-025
+
+Started 22:05:18Z, requirements FAILED 22:25:02Z (03:55 IST), 21 calls, no provider
+error. The relabel reran Stage 1 on branch autose/issue-37, which already held the
+passing v1 requirements bundle from run 45490367204. The SpecWriter wrote a v2 bundle
+without a REGISTER v2 and without result lines in VALIDATION, so the A1 bundle check
+(components are never mixed across versions) and 21 VALIDATION-line checks failed
+after both correction attempts. Checks unchanged. ADR-025 was in force but is a
+Developer-stage change, so no effect on it is tested. Lesson recorded: relabeling an
+issue whose branch already has a passing bundle starts a versioned revision cycle
+that has its own failure mode; the next run uses a clean issue (#38) instead of
+relabeling #37 again.
