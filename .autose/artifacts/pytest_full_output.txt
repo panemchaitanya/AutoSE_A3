@@ -3,135 +3,31 @@ platform linux -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0
 rootdir: /home/runner/work/AutoSE_A3/AutoSE_A3
 configfile: pytest.ini
 plugins: cov-7.1.0
-collected 289 items
+collected 304 items
 
-tests/test_middlewares.py .........                                      [  3%]
+tests/test_middlewares.py .........                                      [  2%]
 tests/test_operations.py ..............                                  [  7%]
-tests/test_queries.py ..................................                 [ 19%]
-tests/test_storages.py ...........s..                                    [ 24%]
-tests/test_tables.py ...............................                     [ 35%]
-tests/test_tinydb.py ................................................... [ 52%]
-...............................................................          [ 74%]
-tests/test_utils.py ............                                         [ 78%]
-tests_autose/test_limit_search.py ....                                   [ 80%]
-workflow/tests/test_a1_checks.py ............                            [ 84%]
-workflow/tests/test_call_log.py ...........                              [ 88%]
-workflow/tests/test_contracts.py .....                                   [ 89%]
-workflow/tests/test_conversation_recovery.py ....                        [ 91%]
-workflow/tests/test_retry_policy.py ....                                 [ 92%]
-workflow/tests/test_review_feedback.py .......                           [ 95%]
-workflow/tests/test_reviewer_bootstrap.py ..                             [ 95%]
-workflow/tests/test_stage_boundaries.py .....                            [ 97%]
-workflow/tests/test_stage_checkpoint.py ......                           [ 99%]
-workflow/tests/test_testing_coverage.py F                                [100%]
+tests/test_queries.py ..................................                 [ 18%]
+tests/test_storages.py ...........s..                                    [ 23%]
+tests/test_tables.py ...............................                     [ 33%]
+tests/test_tinydb.py ................................................... [ 50%]
+...............................................................          [ 71%]
+tests/test_utils.py ............                                         [ 75%]
+tests_autose/test_limit_search.py ....                                   [ 76%]
+workflow/tests/test_a1_checks.py ............                            [ 80%]
+workflow/tests/test_call_log.py ...........                              [ 83%]
+workflow/tests/test_completed_tester.py ......                           [ 85%]
+workflow/tests/test_contracts.py .....                                   [ 87%]
+workflow/tests/test_conversation_recovery.py ....                        [ 88%]
+workflow/tests/test_developer_resume.py ...                              [ 89%]
+workflow/tests/test_retry_policy.py ....                                 [ 91%]
+workflow/tests/test_review_feedback.py .......                           [ 93%]
+workflow/tests/test_reviewer_bootstrap.py ..                             [ 94%]
+workflow/tests/test_stage_boundaries.py .....                            [ 95%]
+workflow/tests/test_stage_checkpoint.py ......                           [ 97%]
+workflow/tests/test_tester_resume.py ......                              [ 99%]
+workflow/tests/test_testing_coverage.py .                                [100%]
 
-=================================== FAILURES ===================================
-_____ TestingCoverage.test_explicit_untested_criterion_blocks_testing_gate _____
-
-self = <test_testing_coverage.TestingCoverage testMethod=test_explicit_untested_criterion_blocks_testing_gate>
-
-    def test_explicit_untested_criterion_blocks_testing_gate(self):
-        with tempfile.TemporaryDirectory() as root:
-            artifacts = Path(root) / '.autose/artifacts'
-            artifacts.mkdir(parents=True)
-            for name in ('spec.md', 'design.md', 'diff.patch'):
-                (artifacts / name).write_text('offline fixture')
-            generated = Path(root) / 'tests_autose'
-            generated.mkdir()
-            (generated / 'test_fixture.py').write_text('def test_fixture(): pass\n')
-            state = controller.init_state(3, 'autose/issue-3')
-            state['stages']['implementation']['status'] = 'passed'
-            result = {'criteria_untestable': ['AC-2 needs a defined boundary'],
-                      'tests_written': ['tests_autose/test_fixture.py'], 'all_pass': True}
-            with patch.object(run_stage.agent, 'run_agent', return_value=(result, [], None)), \
-                 patch.object(run_stage.checks, 'run_tests', return_value=(True, 'all tests pass', 'green subset')), \
-                 patch.object(run_stage.checks, 'baseline_regression_check') as baseline:
->               self.assertFalse(run_stage.stage_develop(root, state, {'number': 3}))
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-workflow/tests/test_testing_coverage.py:30: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-workflow/agent/run_stage.py:547: in stage_develop
-    diff = subprocess.run(['git','diff','origin/main','--','tinydb'],cwd=repo_root,capture_output=True,text=True,check=True).stdout
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-input = None, capture_output = True, timeout = None, check = True
-popenargs = (['git', 'diff', 'origin/main', '--', 'tinydb'],)
-kwargs = {'cwd': '/tmp/tmp1sppkbur', 'text': True, 'stdout': -1, 'stderr': -1}
-
-    def run(*popenargs,
-            input=None, capture_output=False, timeout=None, check=False, **kwargs):
-        """Run command with arguments and return a CompletedProcess instance.
-    
-        The returned instance will have attributes args, returncode, stdout and
-        stderr. By default, stdout and stderr are not captured, and those attributes
-        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
-        or pass capture_output=True to capture both.
-    
-        If check is True and the exit code was non-zero, it raises a
-        CalledProcessError. The CalledProcessError object will have the return code
-        in the returncode attribute, and output & stderr attributes if those streams
-        were captured.
-    
-        If timeout (seconds) is given and the process takes too long,
-         a TimeoutExpired exception will be raised.
-    
-        There is an optional argument "input", allowing you to
-        pass bytes or a string to the subprocess's stdin.  If you use this argument
-        you may not also use the Popen constructor's "stdin" argument, as
-        it will be used internally.
-    
-        By default, all communication is in bytes, and therefore any "input" should
-        be bytes, and the stdout and stderr will be bytes. If in text mode, any
-        "input" should be a string, and stdout and stderr will be strings decoded
-        according to locale encoding, or by "encoding" if set. Text mode is
-        triggered by setting any of text, encoding, errors or universal_newlines.
-    
-        The other arguments are the same as for the Popen constructor.
-        """
-        if input is not None:
-            if kwargs.get('stdin') is not None:
-                raise ValueError('stdin and input arguments may not both be used.')
-            kwargs['stdin'] = PIPE
-    
-        if capture_output:
-            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
-                raise ValueError('stdout and stderr arguments may not be used '
-                                 'with capture_output.')
-            kwargs['stdout'] = PIPE
-            kwargs['stderr'] = PIPE
-    
-        with Popen(*popenargs, **kwargs) as process:
-            try:
-                stdout, stderr = process.communicate(input, timeout=timeout)
-            except TimeoutExpired as exc:
-                process.kill()
-                if _mswindows:
-                    # Windows accumulates the output in a single blocking
-                    # read() call run on child threads, with the timeout
-                    # being done in a join() on those threads.  communicate()
-                    # _after_ kill() is required to collect that and add it
-                    # to the exception.
-                    exc.stdout, exc.stderr = process.communicate()
-                else:
-                    # POSIX _communicate already populated the output so
-                    # far into the TimeoutExpired exception.
-                    process.wait()
-                raise
-            except:  # Including KeyboardInterrupt, communicate handled that.
-                process.kill()
-                # We don't call process.wait() as .__exit__ does that for us.
-                raise
-            retcode = process.poll()
-            if check and retcode:
->               raise CalledProcessError(retcode, process.args,
-                                         output=stdout, stderr=stderr)
-E               subprocess.CalledProcessError: Command '['git', 'diff', 'origin/main', '--', 'tinydb']' returned non-zero exit status 1.
-
-/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/subprocess.py:571: CalledProcessError
------------------------------ Captured stdout call -----------------------------
-[implementation] already passed, skipping
 ================================ tests coverage ================================
 _______________ coverage: platform linux, python 3.12.16-final-0 _______________
 
@@ -149,6 +45,4 @@ tinydb/utils.py            78      1     18      1    98%
 tinydb/version.py           1      0      0      0   100%
 ---------------------------------------------------------
 TOTAL                     672     33    196     16    94%
-=========================== short test summary info ============================
-FAILED workflow/tests/test_testing_coverage.py::TestingCoverage::test_explicit_untested_criterion_blocks_testing_gate - subprocess.CalledProcessError: Command '['git', 'diff', 'origin/main', '--', 'tinydb']' returned non-zero exit status 1.
-=================== 1 failed, 287 passed, 1 skipped in 1.41s ===================
+======================== 303 passed, 1 skipped in 2.51s ========================
