@@ -102,3 +102,26 @@ Developer-stage change, so no effect on it is tested. Lesson recorded: relabelin
 issue whose branch already has a passing bundle starts a versioned revision cycle
 that has its own failure mode; the next run uses a clean issue (#38) instead of
 relabeling #37 again.
+
+## Run 45501304497 (#38), 03:58 IST, ADR-022 to ADR-025
+
+Requirements FAILED at 22:30Z (04:00 IST) after the SpecWriter finished in 8 calls and
+committed the bundle: `git push` was rejected by GitHub with Internal Server Error.
+Infrastructure failure, no check involved. Retried on the same issue (next run).
+
+## Run 45501659488 (#38 retry), 04:01 IST, ADR-022 to ADR-025
+
+Requirements FAILED 22:35Z (04:05 IST). Attempt 1 failed the semantic check (priority
+UNSET on all requirements yet gate READY). The correction attempt wrote a new partial
+v2 bundle instead of fixing v1 because the correction text said to preserve version
+history; the bundle check rejected it. Same root cause as run 45497498216. Fixed by
+ADR-026 (PR #56): correction edits the current version in place. Branch autose/issue-38
+now holds this residue and needs a clean branch for a later rerun.
+
+## Run 45504039498 (#36), 04:16 IST, ADR-022 to ADR-026 (main e88f489)
+
+FULL CHAIN PASSED. gate 22:46:32Z; requirements 22:51:17Z (04:21 IST); design
+22:52:43Z; develop 23:39:55Z (05:09 IST); release 23:40:27Z, PR #57 opened and left
+open (no auto-merge); independent review run 45511951611 posted a review on PR #57 at
+23:40:52Z (05:10 IST), verdict approve. Post-disclosure work, not frozen-evaluation
+evidence; hidden tests were not run against it. ADR-026's effect is one pass.
