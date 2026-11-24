@@ -129,6 +129,25 @@ def _tool_run_shell(repo_root, command):
     return f"exit={proc.returncode}\n{out}"
 
 
+def _requirements_digest(repo_root):
+    """Content hash of the requirements artifacts a correction must repair
+    (spec.md and the versioned SRS, REGISTER, VALIDATION files). Compared
+    before and after: a finish is only held back when none changed. This is
+    separate from the semantic validator, which still decides pass or fail."""
+    base = os.path.join(repo_root, config.ARTIFACTS_DIR)
+    h = hashlib.sha256()
+    try:
+        names = sorted(os.listdir(base))
+    except OSError:
+        return h.hexdigest()
+    for name in names:
+        if name == "spec.md" or any(k in name for k in ("_SRS_", "_REGISTER_", "_VALIDATION_")):
+            h.update(name.encode())
+            with open(os.path.join(base, name), "rb") as f:
+                h.update(f.read())
+    return h.hexdigest()
+
+
 def run_agent(role, model, system_prompt, task, repo_root, usage,
               read_only=False, extra_context=None, stage=None,
               on_progress=None, resume_progress=None):
@@ -205,7 +224,7 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
                     print(f"[{role}] resume conversation at step={start_step}", flush=True)
             except (ValueError, KeyError, TypeError):
                 pass  # malformed checkpoints never authorize a stage pass
-    edited_artifact = False
+    initial_digest = _requirements_digest(repo_root)
     for step in range(start_step, config.MAX_AGENT_STEPS):
         # Save before the next model call, after the previous tool observation.
         # A provider failure does not discard successful prior model work.
@@ -254,17 +273,13 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
         with open(os.path.join(progress_dir, f"progress_{role.lower()}.json"),
                   "w", encoding="utf-8") as progress:
             json.dump({"transcript": transcript, "usage": usage.as_dict()}, progress)
-        if kind in ("write_file", "edit_file"):
-            edited_artifact = True
-        elif kind == "run_shell" and "python" in str(action.get("command", "")):
-            edited_artifact = True
         if kind == "finish":
             result = action.get("result")
             if (role == "SpecWriter" and "failed its checks" in task
-                    and not edited_artifact):
+                    and _requirements_digest(repo_root) == initial_digest):
                 contents.append({"role": "user", "parts": [{"text":
-                    "Finish rejected: this is a correction attempt and no file has been "
-                    "changed. Fix each named defect in the failing artifact with "
+                    "Finish rejected: this is a correction attempt and none of spec.md, "
+                    "SRS, REGISTER or VALIDATION has changed content. Fix each named defect in the failing artifact with "
                     "write_file or edit_file (full file for write_file), then finish. "
                     "Reading files alone cannot repair them. Do not claim PASS for "
                     "unresolved defects."}]})
