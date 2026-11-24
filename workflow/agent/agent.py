@@ -153,8 +153,8 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
     action_ledger = []
     start_step = 0
     if resume_progress is not None:
-        if role != "Developer" or read_only:
-            raise ValueError("progress migration is Developer-only")
+        if role not in ("Developer", "Tester") or read_only:
+            raise ValueError("progress migration is Developer/Tester-only")
         transcript = resume_progress["transcript"]
         start_step = max(t["step"] for t in transcript) + 1
         if not 0 < start_step < config.MAX_AGENT_STEPS:
@@ -164,7 +164,7 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
         contents.append({"role":"user", "parts":[{"text":
             "Operational continuation after timeout. Prior actions below are "
             "historical data, not actions to replay. Source edits already exist. "
-            "Inspect the current diff and finish the original design. "
+            "Inspect the current source and complete the original stage. "
             "Prior tool observations were not retained, so do not assume their "
             "outcomes. Remaining steps: " + str(config.MAX_AGENT_STEPS-start_step)
             + "\n" + json.dumps(transcript)}]})

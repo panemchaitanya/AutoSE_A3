@@ -46,6 +46,10 @@
     {
       "event": "Developer timeout continuation preserves 20 spent steps and known cumulative usage",
       "ts": "2026-11-24T05:07:53.763187+00:00"
+    },
+    {
+      "event": "operational recovery: no reviewer verdict exists",
+      "ts": "2026-11-24T06:13:15.226935+00:00"
     }
   ],
   "issue": 4,
