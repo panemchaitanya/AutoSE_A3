@@ -86,6 +86,10 @@
     {
       "event": "completed Tester mechanically rechecked after stale harness test synchronization; prior fix cycles, spent Developer steps and usage preserved",
       "ts": "2026-11-24T07:18:44.981205+00:00"
+    },
+    {
+      "event": "release -> passed",
+      "ts": "2026-11-24T07:19:05.225635+00:00"
     }
   ],
   "issue": 4,
@@ -101,7 +105,8 @@
       "summary": "saved accepted implementation build rechecked"
     },
     "release": {
-      "status": "pending"
+      "artifact": ".autose/artifacts/pr.md",
+      "status": "passed"
     },
     "requirements": {
       "artifact": ".autose/artifacts/spec.md",
