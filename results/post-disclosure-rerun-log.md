@@ -206,3 +206,18 @@ failed at develop (step cap). Run 27 showed the daily free quota on both approve
 is spent on the AI Studio key (retry delay says reset at 08:00:00Z, 13:30 IST). Run 28 was
 cancelled by us before any stage ran. Only run 16 (#36, PR #57, automated approve, not
 merged) is a full chain in the post-disclosure series. No billing or paid tier was used.
+
+## Runs 29 to 31 (10:28 to 10:44 IST): different model configurations
+
+After run 27 showed the free daily quota spent on gemini-3.5-flash-lite and gemini-3-flash-preview
+(provider retry delay: reset 08:00:00Z, 13:30 IST), the repository's model variables were changed
+(no code change, reversible) to models that still had quota. Each is a distinct configuration.
+- Run 29 and 30: gemini-3.1-flash-lite for all roles (review and fallback gemini-3.1-flash-lite-preview in run 29).
+  No 429s, fast, but it either omitted the words gate and basis from VALIDATION (the A1 skill requires
+  a gate and basis count summary; the harness checks the words) or finished before writing the A1 files.
+  The checks stopped both runs. No check was changed.
+- Run 31: gemini-4-hydrogen for the SpecWriter. It wrote files, then hit its daily quota
+  (20 per day class limit) and 503s; the fallback model ended without writing files.
+Result: no full chain from runs 21 to 31. All three used free-tier keys. Next resume point: after the
+quota reset, about 13:30 IST, with the original gemini-3.5-flash-lite configuration that produced the
+only full chain (run 16). The model variables currently set are the run 31 values.
