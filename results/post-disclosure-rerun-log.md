@@ -125,3 +125,13 @@ FULL CHAIN PASSED. gate 22:46:32Z; requirements 22:51:17Z (04:21 IST); design
 open (no auto-merge); independent review run 45511951611 posted a review on PR #57 at
 23:40:52Z (05:10 IST), verdict approve. Post-disclosure work, not frozen-evaluation
 evidence; hidden tests were not run against it. ADR-026's effect is one pass.
+
+## Run 45512804566 (#39), 05:16 IST, ADR-022 to ADR-026 (main e88f489)
+
+Requirements CANCELLED by the 90-minute job timeout at 01:17:15Z (06:47 IST). Attempt 1
+finished by 23:53Z (05:23 IST) but failed the semantic check (FR-001 marked STATED
+while the statement was paraphrased). The correction attempt then took four
+consecutive single model calls of about 15 minutes each (00:06Z to 01:10Z, ADR-021
+patience), finished at 01:11:19Z and was cancelled during validation. A first-attempt
+semantic failure followed by a slow correction, not pure provider latency. No limits or
+checks were changed. No PR, no later stage.
