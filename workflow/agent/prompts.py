@@ -63,6 +63,10 @@ Rules:
 - Only original task and last4 action/observation pairs are retained.
   Reread source when needed; saved files are durable. Do not assume omitted context.
 - write_file always writes the complete file, never a fragment.
+- Tables (ADR-034): in write_file you may put a line {{TABLE:name}} where a markdown
+  table belongs and pass "tables": [{"name": "name", "header": ["A","B"], "rows": [["1","2"]]}].
+  The harness formats the table; every row must have as many cells as the header.
+  Raw markdown tables in content are still accepted and checked as before.
 - You may not write under .github/ or workflow/.
 - When done, use finish with the result object described in the task.
 """
