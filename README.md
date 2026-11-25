@@ -3,6 +3,8 @@
 A GitHub Actions prototype that takes a TinyDB issue through requirements, design, implementation, testing, pull-request creation and a separate review job. The workflow does **not** merge generated pull requests.
 
 > **Final artifact package, partial workflow outcomes.** Autonomous work stopped on 24 November 2026 at 18:42 IST. A3 issue 4 alone completed the corrected six-stage chain across disclosed recoveries. Limited sealed evaluation passed 4/4 checks on 4 of 10 frozen branches, not all ten. E1 remains unanswered; the recovered demo and late work are grading limitations.
+>
+> **Post-disclosure update (25 November 2026, after the sealed evaluation, not unseen-test evidence).** Fresh issues #35 to #39 are being run one at a time with fixes ADR-021 to ADR-026. Status is kept in [results/post-disclosure-runs.csv](results/post-disclosure-runs.csv). So far one fresh issue (#36, run 45504039498) completed the full chain to a posted automated review (approve verdict, PR #57 open and not merged by a human); the others are pending or failed, as logged.
 
 ## Start here
 
@@ -11,7 +13,6 @@ A GitHub Actions prototype that takes a TinyDB issue through requirements, desig
 | Assignment report, eight pages | [report.pdf](report.pdf) |
 | Recorded recovered-chain demo, 3m47s | [demo.mp4](demo.mp4) |
 | Single-run demo, 2m30s (post-disclosure run 45504039498, issue #36, issue page to posted review) | [demo_run16.mp4](demo_run16.mp4) |
-
 | Architecture and decisions | [ARCHITECTURE.md](ARCHITECTURE.md), [ADRs](architecture/decisions/) |
 
 The demo shows the actual issue 4 outcome across disclosed timeout continuations and a mechanical test recheck. It is not one uninterrupted Actions attempt. The later `demo_run16.mp4` covers one uninterrupted Actions run (45504039498, issue #36, no continuation or rerun): a walkthrough of that completed run's real GitHub pages with the actual stage timestamps, recorded after the run, post-disclosure work and not frozen-evaluation evidence. Its PR #57 is open, not merged. The posted review has an approve verdict in its body, GitHub state COMMENTED, and the generated PR remains open and unmerged.
