@@ -1,0 +1,9 @@
+{
+  "stage": "requirements",
+  "attempt": 1,
+  "passed": false,
+  "problems": [
+    "A1 semantic validation: FR-001 has basis STATED but the statement in section 1 is derived/interpreted rather than directly quoted word-for-word from a single source statement, violating E1/E4.; NFR-001 has basis ASSUMED, but according to rule E2 no READY item has basis INFERRED or ASSUMED (and the overall verdict is PARTIALLY READY containing this item).; EV-01 in the Evidence log uses repository-local analysis instead of the required MCP, but the evidence log claims an existing TinyDB mechanism without citing an inspected repository file path or actual code lines as required by the A3 profile.",
+    "judge: The second acceptance criterion contains an unresolved placeholder 'TBD milliseconds', making it impossible for a developer to turn it into a concrete pass/fail test without further clarification."
+  ]
+}
