@@ -78,3 +78,12 @@ class A1Checks(unittest.TestCase):
   import prompts
   self.assertIn('INFERRED/ASSUMED cannot be READY',prompts.SPEC_SYSTEM)
   self.assertIn('Do not invent numeric performance targets',prompts.SPEC_SYSTEM)
+
+
+def test_malformed_table_row_is_reported_with_line():
+    from a1_checks import table_format_errors
+    text = "| A | B |\n|---|---|>\n| 1 | 2 |\n"
+    errs = table_format_errors("SRS", text)
+    assert len(errs) == 1 and "line 2" in errs[0]
+    assert table_format_errors("SRS", "| A | B |\n|---|---|\n| 1 | 2 |\n") == []
+    assert table_format_errors("SRS", "plain text | with pipe\n") == []

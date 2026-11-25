@@ -44,6 +44,16 @@ def basis_gate_errors(srs):
                           ' is '+row['basis']+' but READY; retain uncertainty as CLARIFY/BLOCKED')
     return errors
 
+def table_format_errors(kind, text):
+    """ADR-029: a table row must start and end with a pipe. Deterministic, so the
+    correction names the exact line instead of relying on a model judge's wording."""
+    errors=[]
+    for n,line in enumerate((text or '').splitlines(),1):
+        s=line.strip()
+        if s.startswith('|') and not s.endswith('|'):
+            errors.append(f'A1 {kind} line {n}: malformed table row (must end with a pipe): '+s[-40:])
+    return errors
+
 def check_a1_bundle(root):
     errors=[];docs={}
     found=_scan(root)
@@ -80,4 +90,6 @@ def check_a1_bundle(root):
     if not re.search(r'\b(?:READY|PARTIALLY READY|NOT READY)\b',val):errors.append('VALIDATION lacks readiness verdict')
     if docs.get('SRS') and not re.search(r'\bS-\d+',docs['SRS']):errors.append('SRS lacks source statement links')
     errors += basis_gate_errors(docs.get('SRS',''))
+    for kind in A1_KINDS:
+        errors += table_format_errors(kind, docs.get(kind,''))
     return not errors,errors,docs

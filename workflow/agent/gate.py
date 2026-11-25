@@ -7,6 +7,7 @@ GITHUB_REPOSITORY, GITHUB_REPOSITORY_OWNER, GITHUB_OUTPUT, GH_TOKEN.
 
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -28,6 +29,27 @@ def sh(*args, check=True):
 def gh_api(path):
     out = sh("gh", "api", path).stdout
     return json.loads(out)
+
+
+def branch_for(issue_number, explicit="", suffix=""):
+    """ADR-028: the work branch for an issue. Default autose/issue-N (unchanged).
+    A suffix (repo variable AUTOSE_BRANCH_SUFFIX) selects a new unique branch
+    autose/issue-N-<suffix>, so a new run never touches an older branch. An
+    explicit branch (continuation dispatch) must belong to the same issue."""
+    base = f"autose/issue-{int(issue_number)}"
+    explicit = (explicit or "").strip()
+    suffix = (suffix or "").strip()
+    if explicit:
+        if explicit == base or re.fullmatch(re.escape(base) + r"-[A-Za-z0-9]+",
+                                            explicit):
+            return explicit
+        raise ValueError(f"branch {explicit!r} does not belong to issue "
+                         f"{issue_number}")
+    if suffix:
+        if not re.fullmatch(r"[A-Za-z0-9]+", suffix):
+            raise ValueError(f"invalid branch suffix {suffix!r}")
+        return f"{base}-{suffix}"
+    return base
 
 
 def output(name, value):
@@ -75,7 +97,8 @@ def main():
     else:
         return skip(f"unsupported event {event_name}")
 
-    branch = f"autose/issue-{issue_number}"
+    branch = branch_for(issue_number, os.environ.get("INPUT_BRANCH", ""),
+                        os.environ.get("AUTOSE_BRANCH_SUFFIX", ""))
     issue = gh_api(f"repos/{repo}/issues/{issue_number}")
     issue_json = {
         "number": issue["number"],

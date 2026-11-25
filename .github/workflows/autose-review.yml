@@ -13,11 +13,17 @@ on:
       issue:
         required: true
         type: number
+      branch:
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       issue:
         required: true
         type: number
+      branch:
+        required: false
+        type: string
       pr_number:
         required: false
         type: number
@@ -46,9 +52,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE: ${{ inputs.issue || github.event.inputs.issue }}
+          INPUT_BRANCH: ${{ inputs.branch || github.event.inputs.branch }}
         run: |
           set -e
-          BRANCH="autose/issue-$ISSUE"
+          BRANCH="${INPUT_BRANCH:-autose/issue-$ISSUE}"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
           PR=$(gh pr list --head "$BRANCH" --json number,headRefOid --jq '.[0] | "\(.number) \(.headRefOid)"')
           if [ -z "$PR" ]; then
             echo "No open PR for $BRANCH; nothing to review."
@@ -120,10 +128,11 @@ jobs:
           ISSUE=${{ inputs.issue || github.event.inputs.issue }}
           ROUNDS=${{ steps.budget.outputs.rounds }}
           CLASS=${{ steps.post.outputs.classification }}
+          BRANCH=${{ steps.locate.outputs.branch }}
           NEXT_ROUND=$((ROUNDS + 1))
           if [ "$CLASS" = "approach" ]; then ENTRY="design"; else ENTRY="implementation"; fi
           gh pr comment "$PR" --body "AutoSE reviewer requested changes (round $NEXT_ROUND of 2, classification: $CLASS). Sending work back to the **$ENTRY** stage."
-          gh workflow run autose.yml -f issue="$ISSUE" -f entry="$ENTRY"
+          gh workflow run autose.yml -f issue="$ISSUE" -f entry="$ENTRY" -f branch="$BRANCH"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
