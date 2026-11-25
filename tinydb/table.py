@@ -4,6 +4,7 @@ data in TinyDB.
 """
 
 from collections.abc import Callable, Iterable, Iterator, Mapping, MutableMapping
+import copy
 from typing import (
     NoReturn,
     Optional,
