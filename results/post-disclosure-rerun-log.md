@@ -184,3 +184,25 @@ Residue notes: the harness gate archives a superseded branch tip under
 refs/autose-archive/<branch>-<sha12> before any lease push (6938e90 is archived for #39);
 tags evidence/issue-39-run-17 (6938e90) and evidence/issue-39-run-20 (1115060) also exist.
 Run 19's lease push failure cause is undiagnosed (the gate swallows git stderr).
+
+## Runs 21 to 28 (09:03 to 10:19 IST), AI Studio key, ADR-028 to ADR-033
+
+Every run below is post-disclosure and a different configuration from the frozen evaluation.
+Harness changes, each an ADR plus a PR merged between runs, no check weakened:
+- ADR-028 (PR #65): branch suffix variable AUTOSE_BRANCH_SUFFIX, so each retry uses a new
+  branch (autose/issue-N-rNN) instead of deleting or force-updating residue.
+- ADR-029 (PR #65): deterministic malformed-table-row check; the judge must quote text.
+- ADR-030, ADR-031 (PR #66): no-op edit returns an error; reminder text for table separators.
+- ADR-032 (PR #67): table column-count checks. Scanned bundles of runs 17 to 24, zero false positives.
+- ADR-033 (PR #68, main d24fc6a): 429 quota id and retry delay logged; a per-minute 429
+  stays on the primary model. Run 27 is the first run with it.
+
+Transport finding: the malformed separator rows (for example `|---|---|---| p`) are in the
+raw model reply itself (run 24 transcript); the write tool stores content unchanged. It is
+model generation, not truncation.
+
+Outcome so far: 0 full chains in runs 21 to 28. Run 22 passed requirements and design and
+failed at develop (step cap). Run 27 showed the daily free quota on both approved models
+is spent on the AI Studio key (retry delay says reset at 08:00:00Z, 13:30 IST). Run 28 was
+cancelled by us before any stage ran. Only run 16 (#36, PR #57, automated approve, not
+merged) is a full chain in the post-disclosure series. No billing or paid tier was used.
