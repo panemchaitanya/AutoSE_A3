@@ -241,11 +241,23 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
             # Full transcript remains an artifact. Agents can reread file ranges.
             sent = contents if len(contents) <= 9 else contents[:1] + contents[-8:]
             if action_ledger:
+                nudge = ""
+                if role == "Developer" and not read_only and step >= 12:
+                    # ADR-030: factual feedback only; no check or limit changes.
+                    diff = subprocess.run(["git", "diff", "origin/main", "--", "tinydb"],
+                                          cwd=repo_root, capture_output=True,
+                                          text=True).stdout
+                    if not diff.strip():
+                        nudge = (" NOTE: no source change exists yet (git diff against "
+                                 "origin/main for tinydb is empty) and "
+                                 + str(config.MAX_AGENT_STEPS - step)
+                                 + " steps remain. Reading more will not change that; "
+                                 "make the edit now with write_file or edit_file.")
                 sent = sent + [{"role":"user","parts":[{"text":
                     "Exact prior action index (not reasoning):\n" + "\n".join(action_ledger) +
                     "\nAvoid rereading the same ranges. After enough inspection, implement "
                     "the design. Saved files are durable. Current step " + str(step) +
-                    " of " + str(config.MAX_AGENT_STEPS) + "."}]}]
+                    " of " + str(config.MAX_AGENT_STEPS) + "." + nudge}]}]
             reply = gemini.generate(model, system_prompt, sent, usage,
                                     context=call_context)
         except (gemini.BudgetExhausted, gemini.QuotaExhausted) as e:
@@ -333,6 +345,9 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
                 new = action.get("new_text", "")
                 if not full or not os.path.isfile(full) or not old:
                     obs = "ERROR: edit requires existing file and nonempty old_text"
+                elif old == new:
+                    obs = ("ERROR: edit_file made no change (old_text equals "
+                           "new_text). Nothing was modified; make the real change.")
                 else:
                     with open(full, encoding="utf-8") as f:
                         text = f.read()
