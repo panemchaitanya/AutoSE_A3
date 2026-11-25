@@ -4,7 +4,7 @@ A GitHub Actions prototype that takes a TinyDB issue through requirements, desig
 
 > **Final artifact package, partial workflow outcomes.** Autonomous work stopped on 24 November 2026 at 18:42 IST. A3 issue 4 alone completed the corrected six-stage chain across disclosed recoveries. Limited sealed evaluation passed 4/4 checks on 4 of 10 frozen branches, not all ten. E1 remains unanswered; the recovered demo and late work are grading limitations.
 >
-> **Post-disclosure update (25 November 2026, after the sealed evaluation, not unseen-test evidence).** Fresh issues #35 to #39 are being run one at a time with fixes ADR-021 to ADR-026. Status is kept in [results/post-disclosure-runs.csv](results/post-disclosure-runs.csv). So far one fresh issue (#36, run 45504039498) completed the full chain to a posted automated review (approve verdict, PR #57 open and not merged by a human); the others are pending or failed, as logged.
+> **Post-disclosure update (25 November 2026, after the sealed evaluation, not unseen-test evidence).** Fresh issues #35 to #39 are being run one at a time with fixes ADR-021 to ADR-033, each merged between runs. Status is kept in [results/post-disclosure-runs.csv](results/post-disclosure-runs.csv). As of 10:20 IST one fresh issue (#36, run 45504039498) completed the full chain to a posted automated review (approve verdict, PR #57 open and not merged by a human). Runs 21 to 27 on #35, #37 and #39 failed at requirements or develop (model table defects, then the free daily quota on both approved models); run 28 was cancelled before any stage. The four remaining chains resume after the quota reset (about 13:30 IST, from the provider's retry delay). Nothing here is a claim that the assignment is finished.
 
 ## Start here
 
@@ -136,7 +136,7 @@ COMMENT reviews contain explicit verdicts; they are not formal human GitHub appr
 | E1 model tiers | No controlled comparison completed | Quality question unanswered |
 | E2 reviewer context | Ten local reviews: A 4/5 correct verdicts, B 1/5 | Authored stimulus, small N, not causal or final-hosted proof |
 | E3 Designer hand-off (post-disclosure) | Full spec 5/6 check_design pass, criteria-only 3/6, 3 timeouts counted; no token saving. ADR-003 kept | Mechanical check only, 6 attempts per arm, one model, not frozen-series evidence. [Results](experiment/e3/RESULTS.md) |
-| Post-disclosure fresh series (#35 to #39) | 0 of 5 past Stage 1 as of 01:30 IST; nine hosted runs on #37, eight failed on provider 503/429 | See [rerun log](results/post-disclosure-rerun-log.md), ADR-021, ADR-022. Late work, separate from the frozen evaluation |
+| Post-disclosure fresh series (#35 to #39) | 1 of 5 full chain (#36); runs 17 to 27 failed, timed out or stopped at requirements or develop (provider 503/429, table-row generation defects, Developer step cap, daily free quota); run 28 cancelled | See [rerun log](results/post-disclosure-rerun-log.md), ADR-021 to ADR-033. Late work, separate from the frozen evaluation; updated 10:20 IST |
 | Usage | Source cumulative snapshots retained, separate reviewer unallocated | Complete lifetime total unavailable |
 
 [Final summary](results/final-summary.md), [frozen targets](results/final-autonomous-targets.json), [final evaluation](results/final-evaluation-results.json), [recent selected runs](results/runs-final.csv), [full workflow inventory](results/final-workflow-inventory.json).
