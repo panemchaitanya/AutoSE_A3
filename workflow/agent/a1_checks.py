@@ -44,14 +44,44 @@ def basis_gate_errors(srs):
                           ' is '+row['basis']+' but READY; retain uncertainty as CLARIFY/BLOCKED')
     return errors
 
+def _cells(row):
+    inner=row.strip()
+    inner=inner[1:] if inner.startswith('|') else inner
+    inner=inner[:-1] if inner.endswith('|') else inner
+    return [c.strip() for c in re.split(r'(?<!\\)\|',inner)]
+
+_SEP_CELL=re.compile(r'^:?-{3,}:?$')
+
 def table_format_errors(kind, text):
-    """ADR-029: a table row must start and end with a pipe. Deterministic, so the
-    correction names the exact line instead of relying on a model judge's wording."""
-    errors=[]
+    """ADR-029/032: every table row starts and ends with a pipe, the separator row is
+    complete, and every row has as many cells as its header. Deterministic, so the
+    correction names the exact line and counts instead of relying on judge wording."""
+    errors=[]; header=None; expected=0; state=None
     for n,line in enumerate((text or '').splitlines(),1):
         s=line.strip()
-        if s.startswith('|') and not s.endswith('|'):
+        if not s.startswith('|'):
+            header=None; state=None
+            continue
+        if not s.endswith('|'):
             errors.append(f'A1 {kind} line {n}: malformed table row (must end with a pipe): '+s[-40:])
+            if state=='sep':state='rows'
+            continue
+        cells=_cells(s)
+        if state is None:
+            header=n; expected=len(cells); state='sep'
+            continue
+        if state=='sep':
+            state='rows'
+            if all(_SEP_CELL.match(c) for c in cells):
+                if len(cells)!=expected:
+                    errors.append(f'A1 {kind} line {n}: table separator has {len(cells)} cells but header (line {header}) has {expected}')
+                continue
+            errors.append(f'A1 {kind} line {n}: table header (line {header}) is not followed by a separator row of dashes')
+            continue
+        if all(_SEP_CELL.match(c) for c in cells):
+            continue
+        if len(cells)!=expected:
+            errors.append(f'A1 {kind} line {n}: table row has {len(cells)} cells but header (line {header}) has {expected}')
     return errors
 
 def check_a1_bundle(root):
