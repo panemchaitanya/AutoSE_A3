@@ -151,3 +151,22 @@ No checks or limits were changed during the run. Fix: ADR-027 (PR #62, merged 2d
 at about 08:34 IST) switches to the fallback after 2 consecutive 429s; later runs use a
 new harness identity and are a different configuration. Run 19 (#39) started 03:04:43Z
 (08:34 IST).
+
+## Run 45537422704 (#39), 08:34 IST, ADR-022 to ADR-027
+
+Failed at the gate in 27 s: the git push with force-with-lease to the residue branch
+autose/issue-39 (run 17 commit 6938e90) was rejected. Branch state, not a model or
+harness result. Residue preserved as tag evidence/issue-39-run-17 (no PR had used the
+branch); the branch was removed and recreated by run 20.
+
+## Run 45538092589 (#39), 08:40 IST, ADR-022 to ADR-027 (main 2d671e6)
+
+Requirements FAILED at 03:29:24Z (08:59 IST), 19 min after start. 20 call records:
+gemini-3-flash-preview 7 ok + 9 rate_limited; gemini-3.5-flash-lite 1 ok + 2 rate_limited
++ 1 transient. ADR-027 worked as designed: after two consecutive 429s on flash-lite
+(03:11:08Z, 03:12:08Z) the fallback answered at 03:12:16Z, about 2 minutes after the first
+429, instead of after the 15.5 minute ladder. The fallback then also hit its free-tier
+daily quota (limit 20 per day for gemini-3-flash) and its ladder ran 03:14Z to 03:29Z
+before failing. Both approved models are daily-quota exhausted on this key until the
+reset (flash-lite reset about 13:30 IST per the 08:00 probe; preview reset not verified).
+No checks or limits were changed. Account tier: Free (AI Studio console, 08:08 IST).
