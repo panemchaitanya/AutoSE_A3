@@ -55,5 +55,34 @@ class RetryPolicy(unittest.TestCase):
     gemini.generate('gemini-primary-x','system',[],gemini.Usage())
   self.assertEqual(calls,['gemini-primary-x']*4+[config.MODEL_FALLBACK]*4)
 
+ def test_consecutive_429_switches_to_fallback_early(self):
+  calls=[]
+  def fake_post(model,payload,key):
+   calls.append(model)
+   if model=='gemini-primary-x':raise gemini._RateLimited('429')
+   return ok_payload()
+  with patch.object(gemini,'_post',side_effect=fake_post),patch.object(gemini.time,'sleep') as slp:
+   text=gemini.generate('gemini-primary-x','system',[],gemini.Usage())
+  self.assertIn('finish',text)
+  self.assertEqual(calls,['gemini-primary-x']*config.RATE_LIMIT_SWITCH_AFTER+[config.MODEL_FALLBACK])
+  self.assertEqual([c.args[0] for c in slp.call_args_list if c.args[0]>5],[30])
+ def test_503_still_uses_full_ladder(self):
+  calls=[]
+  def fake_post(model,payload,key):
+   calls.append(model)
+   if len(calls)<4:raise gemini._Transient('503')
+   return ok_payload()
+  with patch.object(gemini,'_post',side_effect=fake_post),patch.object(gemini.time,'sleep'):
+   gemini.generate('gemini-primary-x','system',[],gemini.Usage())
+  self.assertEqual(calls,['gemini-primary-x']*4)
+ def test_429_on_fallback_tier_not_cut_short(self):
+  calls=[]
+  def fake_post(model,payload,key):
+   calls.append(model);raise gemini._RateLimited('429')
+  with patch.object(gemini,'_post',side_effect=fake_post),patch.object(gemini.time,'sleep'):
+   with self.assertRaises(gemini.QuotaExhausted):
+    gemini.generate('gemini-primary-x','system',[],gemini.Usage())
+  self.assertEqual(calls,['gemini-primary-x']*config.RATE_LIMIT_SWITCH_AFTER+[config.MODEL_FALLBACK]*4)
+
 if __name__=='__main__':
  unittest.main()

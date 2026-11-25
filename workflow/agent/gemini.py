@@ -206,7 +206,8 @@ def generate(model, system_prompt, contents, usage, temperature=0.2,
         models_to_try.append(config.MODEL_FALLBACK)
 
     last_err = None
-    for active_model in models_to_try:
+    for tier_index, active_model in enumerate(models_to_try):
+        consecutive_429 = 0
         for attempt in range(config.API_RETRIES + 1):
             try:
                 data = _post(active_model, payload, api_key)
@@ -254,11 +255,19 @@ def generate(model, system_prompt, contents, usage, temperature=0.2,
                 return text
             except (_RateLimited, _Transient) as e:
                 last_err = e
+                # ADR-027: repeated 429 on a tier with a fallback tier left
+                # moves to the fallback after RATE_LIMIT_SWITCH_AFTER
+                # consecutive 429s instead of waiting out the whole ladder.
+                consecutive_429 = (consecutive_429 + 1
+                                   if isinstance(e, _RateLimited) else 0)
                 if not getattr(e, "_logged", False):
                     call_log.record(
                         context, model, active_model, "error",
                         usage_metadata=None,
                         error=call_log.categorize_error(e))
+                if (consecutive_429 >= config.RATE_LIMIT_SWITCH_AFTER
+                        and tier_index < len(models_to_try) - 1):
+                    break
                 if attempt < config.API_RETRIES:
                     time.sleep(
                         config.API_BACKOFF_SECONDS[
