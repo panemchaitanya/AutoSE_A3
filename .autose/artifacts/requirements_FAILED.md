@@ -1,0 +1,3 @@
+# Stage requirements failed
+
+checks failed after self-correction: judge: Acceptance criterion 2 references 'TBD milliseconds as defined in Q-01', but Q-01 is listed as an open question and contains an unresolved placeholder/ambiguity ('TBD milliseconds as defined in Q-01' vs the text in Q-01), making it non-testable for an independent developer without clarification.
