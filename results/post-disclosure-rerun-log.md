@@ -135,3 +135,19 @@ consecutive single model calls of about 15 minutes each (00:06Z to 01:10Z, ADR-0
 patience), finished at 01:11:19Z and was cancelled during validation. A first-attempt
 semantic failure followed by a slow correction, not pure provider latency. No limits or
 checks were changed. No PR, no later stage.
+
+## Run 45526034077 (#35), 06:58 IST, ADR-022 to ADR-026
+
+Requirements CANCELLED by the 90-minute job timeout at 02:59:11Z (08:29 IST). Attempt 1
+failed the semantic check (judge: an acceptance criterion tested existing behaviour and
+FR-3 non-matching ids were not covered). The correction then ran into rate limits.
+Artifact calls.jsonl has 59 call records (each retry is its own record, not a distinct
+logical call): 10 flash-lite ok, 4 gemini-3-flash-preview ok, 44 flash-lite rate_limited,
+1 flash-lite transient. The 429 body names the free-tier daily quota (500 requests/day for
+flash-lite), exhausted; the full backoff ladder was spent before the fallback each time.
+Billing check (read-only, 08:08 IST): the ORION project "Default Gemini Project" shows
+Free tier, no billing attached. The exact key-to-project tail match was not done.
+No checks or limits were changed during the run. Fix: ADR-027 (PR #62, merged 2d671e6
+at about 08:34 IST) switches to the fallback after 2 consecutive 429s; later runs use a
+new harness identity and are a different configuration. Run 19 (#39) started 03:04:43Z
+(08:34 IST).
