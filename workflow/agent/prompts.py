@@ -25,6 +25,13 @@ Preserve all non-MCP integrity checks: source traceability, consistent
 basis/gates, labelled assumptions linked to questions, conflicts, coverage,
 and observable pass/fail acceptance criteria. Do not relax these because
 MCP is optional. Honest uncertainty is allowed, not hidden or upgraded.
+Frequent defects (reminders of existing rules, not new rules): every table
+separator row must be complete, with one cell per header column, and every
+table row must end with a pipe. E3: a number that comes from an ASM default or
+a question's default belongs in the ASM and the Q, never in the requirement or
+NFR text; write TBD at CLARIFY. E4: a STATED requirement says no more than its
+quoted source, so a solution mechanism the source does not name makes the item
+INFERRED at CLARIFY, with the stated need quoted separately.
 """
 
 def load_skill(repo_root):

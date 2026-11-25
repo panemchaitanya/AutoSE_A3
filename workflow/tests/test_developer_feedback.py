@@ -57,3 +57,10 @@ def test_no_diff_nudge_appears_after_step_12_only_for_developer():
         with patch.object(agent.gemini, 'generate', side_effect=gen2):
             agent.run_agent('Developer', 'm', 's', 't', d, gemini.Usage())
     assert 'no source change exists yet' not in seen[14]
+
+
+def test_profile_reminds_of_frequent_spec_defects():
+    import prompts
+    p = prompts.A3_REUSE_PROFILE
+    assert "end with a pipe" in p and "E3:" in p and "E4:" in p
+    assert "not new rules" in p
