@@ -1,0 +1,10 @@
+{
+  "stage": "requirements",
+  "attempt": 2,
+  "passed": false,
+  "problems": [
+    "VALIDATION missing required topic: gate",
+    "VALIDATION missing required topic: basis",
+    "A1 semantic validation: A1 structural checks failed"
+  ]
+}

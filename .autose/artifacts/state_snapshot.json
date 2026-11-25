@@ -1,0 +1,59 @@
+{
+  "branch": "autose/issue-38-r29",
+  "fix_cycles": 0,
+  "history": [
+    {
+      "event": "run created",
+      "ts": "2026-11-25T04:58:41.501947+00:00"
+    },
+    {
+      "event": "triggered by panemchaitanya via issues",
+      "ts": "2026-11-25T04:58:41.501967+00:00"
+    },
+    {
+      "ts": "2026-11-25T04:58:51.889137+00:00",
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated"
+    },
+    {
+      "ts": "2026-11-25T04:58:51.889152+00:00",
+      "event": "requirements -> running"
+    },
+    {
+      "ts": "2026-11-25T05:00:39.349527+00:00",
+      "event": "requirements -> failed (checks failed after self-correction: VALIDATION missing required topic: gate; VALIDATION missing required topic: basis; A1 semantic validation: A1 structural checks failed)"
+    }
+  ],
+  "issue": 38,
+  "review_rounds": 0,
+  "stages": {
+    "design": {
+      "status": "pending"
+    },
+    "implementation": {
+      "status": "pending"
+    },
+    "release": {
+      "status": "pending"
+    },
+    "requirements": {
+      "status": "failed",
+      "reason": "checks failed after self-correction: VALIDATION missing required topic: gate; VALIDATION missing required topic: basis; A1 semantic validation: A1 structural checks failed"
+    },
+    "review": {
+      "status": "pending"
+    },
+    "testing": {
+      "status": "pending"
+    }
+  },
+  "usage": {
+    "prompt_tokens": 87411,
+    "completion_tokens": 3473,
+    "total_tokens": 90884,
+    "calls": 13,
+    "fallbacks": 0,
+    "models": {
+      "gemini-3.1-flash-lite": 13
+    }
+  }
+}
