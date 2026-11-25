@@ -1,0 +1,9 @@
+{
+  "stage": "requirements",
+  "attempt": 1,
+  "passed": false,
+  "problems": [
+    "A1 SRS line 42: malformed table row (must end with a pipe): |---|---|---| p",
+    "A1 semantic validation: A1 structural checks failed"
+  ]
+}

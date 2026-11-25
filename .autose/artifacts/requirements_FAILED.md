@@ -1,0 +1,3 @@
+# Stage requirements failed
+
+checks failed after self-correction: A1 semantic validation: Section 6 Acceptance criteria table has an extra pipe and malformed markdown header separator: | AC-id | Requirement | Criterion (given/when/then or measurable) | vs 4 columns in rows like | AC-001-1 | FR-001 | Given... | ... |; Coverage topic check C1 fails: Coverage checklist does not cover all required topics from section 4.1 (e.g. integrations, deployment and hosting, security and privacy, legal and compliance, availability and recovery, observability and operations, usability and accessibility, maintainability and extensibility, autonomy and human oversight, success measures, scope exclusions, delivery constraints are marked as N/A without valid justification or omitted).
