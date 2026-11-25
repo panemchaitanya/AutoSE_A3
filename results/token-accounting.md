@@ -56,21 +56,24 @@ What this does and does not show:
   used more than one key (ORION's project was also used as a fallback), so the two numbers are different scopes. The provider
   figure is higher than the logged subtotal, consistent with unlogged calls, failed calls and non-A3 use, but that is a
   consistency check, not a proof.
-- The ORION project (orionxai.core, gen-lang-client-0930771108) has its own usage page. See the ORION paragraph below.
+- The ORION project (orionxai.core, "Default Gemini Project", key labelled "Orion", the fallback key): Free tier, one key,
+no billing linked to the project (read 25 Nov 08:08 IST). The same Google account also owns a separate Cloud billing
+account that is not linked to the Gemini project (its identifier is not published here). Console usage read 25 Nov 18:52 IST,
+UTC-8, screenshot `results/probes/ai-studio-usage-ORION-7d-2026-11-25-1852IST.png`:
 
-Spend cap: the Spend page for this project says there is no billing set up for it, the Billing page says "No billing account",
-and the Projects page shows Free tier with no monthly spend. A Gemini API project in that state cannot be charged. This is the
-current state. The console does not show whether billing was ever attached earlier, so it does not prove the state
-before the first A3 run, and a free tier is not a provider-set "hard spending limit" in the brief's sense. It is reported as
-the available evidence, not as a met requirement.
+| Console window | Input tokens | Output tokens | Requests |
+|---|---|---|---|
+| 1 day | 3,328,224 | 88,133 | 572 |
+| 7 days | 9,787,570 | 274,668 | 2,398 |
+| 28 days | 9,787,570 | 274,668 | 2,398 |
 
-Google Cloud side of the same account (read 25 Nov 18:36 IST): the Cloud console billing page for that Google account shows no
-billing accounts, and it still asks to accept the Cloud terms, so no Cloud project or billing account has been set up there.
-This supports "no billing was linked to this key's project". It is a current-state reading. Zero charges or no billing account
-now cannot show that a limit was installed beforehand, and the console gave no history of billing-link changes.
+The 7-day and 28-day figures are the same; the chart shows bars on 23 and 24 Nov only. As with the other project, this is a
+window total for everything that used the key, not an A3-only count.
 
-ORION project (orionxai.core, "Default Gemini Project", used for fallback keys): read on 25 Nov 08:08 IST, Free tier, one key,
-no billing linked to the project. The Google account also owns a separate Cloud billing account (not linked to the Gemini
-project) that requires prepay and shows no use. Its usage totals were not captured, and a later attempt to read them needed a
-sign-in approval that was not completed, so the tokens spent on that key are **not measured** here. The brief's
-total-token figure is therefore a measured lower-level set of figures, not a complete count.
+Calculated comparison, different scopes, not reconciled:
+- Provider console, 7-day windows: AI Studio project 8,724,125 (8,535,319 input plus 188,806 output) plus ORION project
+  10,062,238 (9,787,570 plus 274,668) = 18,786,363 tokens.
+- Repository, call-logged A3 runs: 6,941,374 exact (provider-reported per call) plus E2 local trials 597,542 = 7,538,916.
+The two figures cover different things (all traffic on two projects in a console window versus the call-logged runs and E2).
+The reason for the difference is not known. The logged subtotal remains an exact count of what the call logs recorded. The
+exact A3-only total is still not available.
