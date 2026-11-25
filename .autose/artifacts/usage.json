@@ -1,0 +1,14 @@
+{
+  "scope": "cumulative branch state including prior recovered stages",
+  "stage": "requirements",
+  "usage": {
+    "prompt_tokens": 243174,
+    "completion_tokens": 7309,
+    "total_tokens": 250483,
+    "calls": 30,
+    "fallbacks": 0,
+    "models": {
+      "gemini-3.5-flash-lite": 30
+    }
+  }
+}
