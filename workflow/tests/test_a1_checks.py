@@ -87,3 +87,19 @@ def test_malformed_table_row_is_reported_with_line():
     assert len(errs) == 1 and "line 2" in errs[0]
     assert table_format_errors("SRS", "| A | B |\n|---|---|\n| 1 | 2 |\n") == []
     assert table_format_errors("SRS", "plain text | with pipe\n") == []
+
+
+def test_separator_and_row_cell_counts_are_checked():
+    from a1_checks import table_format_errors
+    ok = "| A | B | C |\n|---|---|---|\n| 1 | 2 | 3 |\n"
+    assert table_format_errors("SRS", ok) == []
+    bad_sep = "| A | B | C |\n|---|---|---|---|\n| 1 | 2 | 3 |\n"
+    e = table_format_errors("SRS", bad_sep)
+    assert len(e) == 1 and "line 2" in e[0] and "4 cells" in e[0] and "has 3" in e[0]
+    bad_row = "| A | B |\n|---|---|\n| 1 | 2 | 3 |\n"
+    e = table_format_errors("SRS", bad_row)
+    assert len(e) == 1 and "line 3" in e[0]
+    trunc = "| A | B | C |\n|---|---|---| p\n| 1 | 2 | 3 |\n"
+    e = table_format_errors("SRS", trunc)
+    assert len(e) == 1 and "must end with a pipe" in e[0]
+    assert table_format_errors("SRS", "| a \\| b | c |\n|---|---|\n| 1 | 2 |\n") == []
