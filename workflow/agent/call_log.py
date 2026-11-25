@@ -68,7 +68,9 @@ def categorize_error(exc):
     else:
         category = "error"
     return {"category": category, "http_status": status,
-            "finish_reason": finish}
+            "finish_reason": finish,
+            "quota_id": getattr(exc, "quota_id", None),
+            "retry_delay_s": getattr(exc, "retry_delay_s", None)}
 
 
 def harness_digest():
@@ -193,7 +195,8 @@ def record(context, requested_model, attempted_model, status,
     try:
         if error is not None:
             error = {k: error.get(k) for k in
-                     ("category", "http_status", "finish_reason")}
+                     ("category", "http_status", "finish_reason",
+                      "quota_id", "retry_delay_s")}
         rec = base_record(context, requested_model)
         rec.update({
             "attempted_model": attempted_model,

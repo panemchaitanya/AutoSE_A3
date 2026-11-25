@@ -121,7 +121,8 @@ def test_failure_records_without_token_zeros_and_fallback_marked():
         for r in errs:
             assert r["usage"] is None  # no invented zero tokens
             assert set(r["error"]) == {"category", "http_status",
-                                       "finish_reason"}
+                                       "finish_reason", "quota_id",
+                                       "retry_delay_s"}
             assert r["provider_model_version"] is None
         assert oks[0]["attempted_model"] == config.MODEL_FALLBACK
         assert oks[0]["fallback"] is True
@@ -201,7 +202,8 @@ def test_secret_in_exception_message_never_logged():
         r = recs[0]
         assert r["status"] == "error"
         assert r["error"] == {"category": "http_client_error",
-                              "http_status": 403, "finish_reason": None}
+                              "http_status": 403, "finish_reason": None,
+                              "quota_id": None, "retry_delay_s": None}
         raw = (pathlib.Path(tmp) / config.ARTIFACTS_DIR /
                "calls.jsonl").read_text()
         assert "SECRETKEY123" not in raw

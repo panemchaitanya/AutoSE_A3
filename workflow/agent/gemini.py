@@ -60,6 +60,34 @@ class Usage:
         }
 
 
+def _quota_info(raw):
+    """ADR-033: non-secret quota identity from a 429 body: (quotaId, retry seconds).
+    Either may be None. Never raises."""
+    try:
+        details = json.loads(raw).get("error", {}).get("details", [])
+    except (ValueError, AttributeError):
+        return None, None
+    quota_id = None
+    delay = None
+    for d in details if isinstance(details, list) else []:
+        if not isinstance(d, dict):
+            continue
+        for v in d.get("violations") or []:
+            if isinstance(v, dict) and v.get("quotaId") and quota_id is None:
+                quota_id = str(v["quotaId"])[:120]
+        rd = d.get("retryDelay")
+        if isinstance(rd, str) and rd.endswith("s"):
+            try:
+                delay = float(rd[:-1])
+            except ValueError:
+                pass
+    return quota_id, delay
+
+
+def _per_minute(err):
+    return "PerMinute" in (getattr(err, "quota_id", None) or "")
+
+
 def _post(model, payload, api_key):
     global _LAST_REQUEST
     time.sleep(max(0.0, 5.0 - (time.monotonic() - _LAST_REQUEST)))
@@ -78,10 +106,12 @@ def _post(model, payload, api_key):
         with urllib.request.urlopen(req, timeout=60) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", "replace")[:500]
+        raw = e.read().decode("utf-8", "replace")
+        body = raw[:500]
         if e.code == 429:
             err = _RateLimited(body)
             err.http_status = 429
+            err.quota_id, err.retry_delay_s = _quota_info(raw)
             raise err
         if 500 <= e.code < 600:
             err = _Transient(f"Gemini API error {e.code}: {body}")
@@ -273,17 +303,23 @@ def generate(model, system_prompt, contents, usage, temperature=0.2,
                         context, model, active_model, "error",
                         usage_metadata=None,
                         error=call_log.categorize_error(e))
+                # ADR-033: a per-minute 429 clears within the minute, so keep the
+                # primary and honour the provider's retry delay; only daily-quota
+                # or unidentified 429s switch tiers (the fallback has a small
+                # daily budget and must not be spent on a one-minute burst).
                 if (consecutive_429 >= config.RATE_LIMIT_SWITCH_AFTER
+                        and not _per_minute(e)
                         and tier_index < len(models_to_try) - 1):
                     _TIER_COOLDOWN_UNTIL[active_model] = (
                         time.monotonic() + config.RATE_LIMIT_COOLDOWN_SECONDS)
                     break
                 if attempt < config.API_RETRIES:
-                    time.sleep(
-                        config.API_BACKOFF_SECONDS[
-                            min(attempt, len(config.API_BACKOFF_SECONDS) - 1)
-                        ]
-                    )
+                    wait = config.API_BACKOFF_SECONDS[
+                        min(attempt, len(config.API_BACKOFF_SECONDS) - 1)]
+                    delay = getattr(e, "retry_delay_s", None)
+                    if _per_minute(e) and delay:
+                        wait = min(wait, max(5.0, delay + 2.0))
+                    time.sleep(wait)
             except Exception as e:
                 # Non-retryable failures (client-error HTTP, decode errors,
                 # anything else) are still attempts: record the category,
