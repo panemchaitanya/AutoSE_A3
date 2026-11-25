@@ -12,18 +12,18 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 
 src, csvp, out, cutoff = sys.argv[1:5]
 ss = getSampleStyleSheet()
-H = ParagraphStyle("H", parent=ss["Heading2"], fontSize=12, spaceBefore=8, spaceAfter=3)
+H = ParagraphStyle("H", parent=ss["Heading2"], fontSize=12, spaceBefore=8, spaceAfter=3, keepWithNext=1)
 B = ParagraphStyle("B", parent=ss["BodyText"], fontSize=8.6, leading=11)
-S = ParagraphStyle("S", parent=B, fontSize=7, leading=8.4)
+S = ParagraphStyle("S", parent=B, fontSize=7, leading=8.6, wordWrap="CJK")
 def P(t, st=B): return Paragraph(t, st)
 rows = list(csv.DictReader(open(csvp)))
 post = [r for r in rows if int(r["run_id"]) >= 45504039498]
 data = [[P("<b>Run</b>", S), P("<b>Issue</b>", S), P("<b>Started IST</b>", S), P("<b>Furthest stage / outcome</b>", S), P("<b>Cause and configuration</b>", S)]]
 for r in post:
-    cause = r["cause"][:210] + ("..." if len(r["cause"]) > 210 else "")
+    cause = r["cause"]
     data.append([P(r["run_id"], S), P("#" + r["issue"], S), P(r["started_ist"][5:], S),
-                 P(f'{r["furthest_stage"]} / {r["outcome"]}', S), P(f'{cause} <i>[{r["config"][:70]}]</i>', S)])
-t = Table(data, colWidths=[56, 26, 52, 70, 310], repeatRows=1)
+                 P(f'{r["furthest_stage"]} / {r["outcome"]}', S), P(f'{cause} <i>[{r["config"]}]</i>', S)])
+t = Table(data, colWidths=[54, 26, 46, 62, 326], repeatRows=1)
 t.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.3, colors.grey), ("VALIGN", (0, 0), (-1, -1), "TOP"),
                        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8e8e8")),
                        ("LEFTPADDING", (0, 0), (-1, -1), 3), ("RIGHTPADDING", (0, 0), (-1, -1), 3)]))
@@ -47,15 +47,15 @@ el = [P("<b>Appendix A. Post-disclosure update (late work, not part of the 8-pag
         "logging of the quota id. ADR-034 (proposed, see the repository for its status) structured table data rendered by the harness. No check, judge, step cap "
         "or token limit was loosened in any of them. Each run after a harness or model change is a different configuration and is labelled so in the CSV."),
       P("A.3 Tokens", H),
-      P("Exact for call-logged Actions runs: 6,631,297 provider-reported tokens (AutoSE_A3 5,981,990; AutoSE_A3_Alt 649,307); 1,053 call records carry no usage because the call failed. "
+      P("Exact for call-logged Actions runs: 6,941,374 provider-reported tokens (AutoSE_A3 6,292,067; AutoSE_A3_Alt 649,307), through run 31; 1,058 call records carry no usage because the call failed. "
         "E2 local trials: 597,542 (121,609 plus 475,933). Actions runs before the call log existed: only overlapping per-branch snapshots, at most 4,812,201 for that scope. "
         "The exact lifetime total is unavailable and no lifetime upper bound is proven: manual probes, runs without artifacts and later runs are not included "
-        "(results/token-accounting.md lists the omissions). All keys were free-tier Gemini keys; two projects were shown as Free tier on 25 Nov, which does not prove every historical call was free."),
+        "(results/token-accounting.md lists the omissions). The keys were Gemini keys with no billing set up by us. Two projects were shown as Free tier in the Google console on 25 Nov; that does not prove every historical call on every earlier key was free."),
       P("A.4 Rubric status", H),
       P("Deliverables present: ADRs (more than 8), three views, five issues with hidden tests held outside the repo, five seeded PRs, README with pinned commit "
-        "edff96a and AI-use disclosure, results files, demo (3:47) and a labelled single-run demo (2:30), submission file. Design-before-code: the ADR and view commit is the parent of "
-        "the workflow commit, but both carry the same timestamp. Unmet or partly met: exact total token count, a provider-set hard spending limit for all history, "
-        "and E1 (incomplete, confounded, labelled). The brief states no number of successful chains; the observed count is reported as found. See results/rubric-matrix.md."),
+        "edff96a and AI-use disclosure, results files, the canonical one-run demo demo_run16.mp4 (2:30, run 45504039498, issue page to posted review; frames checked), the earlier recovered-chain demo.mp4 (3:47, labelled as not one uninterrupted run), submission file. Design-before-code: the ADR and view commit is the parent of "
+        "the workflow commit, but both carry the same timestamp. Unmet or partly met: exact total token count and a verifiable hard spending limit for all history; "
+        "and the unanswered E1 question (ADR-006 model tiers: incomplete and confounded, labelled). E1 is not itself a brief requirement, because the brief asks for two tested ADRs and E2 and E3 are those. The brief states no number of successful chains; the observed count is reported as found. See results/rubric-matrix.md."),
       P("A.5 Added limitations", H),
       P("(1) Most post-disclosure runs used one small model for the SpecWriter; its table and file-writing defects are model-generation defects, not harness faults, and the stage check correctly stopped them. "
         "(2) The wording-level check for the words gate and basis in VALIDATION is a proxy for the A1 skill's required summary content, not a test of correctness. "
@@ -65,7 +65,7 @@ doc.build(el)
 body = PdfReader(src)
 app = PdfReader(io.BytesIO(buf.getvalue()))
 w = PdfWriter()
-for p in body.pages: w.add_page(p)
+for p in body.pages[:8]: w.add_page(p)  # frozen 8-page body only
 for p in app.pages: w.add_page(p)
 w.write(open(out, "wb"))
-print("pages", len(body.pages), "+", len(app.pages))
+print("body 8 + appendix", len(app.pages))

@@ -10,9 +10,9 @@ A GitHub Actions prototype that takes a TinyDB issue through requirements, desig
 
 | Item | Location |
 | --- | --- |
-| Assignment report, eight pages | [report.pdf](report.pdf) |
-| Recorded recovered-chain demo, 3m47s | [demo.mp4](demo.mp4) |
-| Single-run demo, 2m30s (post-disclosure run 45504039498, issue #36, issue page to posted review) | [demo_run16.mp4](demo_run16.mp4) |
+| Assignment report: eight-page body (frozen) plus a two-page post-disclosure Appendix A | [report.pdf](report.pdf) |
+| **Canonical demo: one complete run, issue page to posted review, 2m30s** (run 45504039498, issue #36, no continuation or rerun) | [demo_run16.mp4](demo_run16.mp4) |
+| Earlier recorded recovered-chain demo, 3m47s (issue #4, disclosed timeout continuations; not one uninterrupted run) | [demo.mp4](demo.mp4) |
 | Architecture and decisions | [ARCHITECTURE.md](ARCHITECTURE.md), [ADRs](architecture/decisions/) |
 
 The demo shows the actual issue 4 outcome across disclosed timeout continuations and a mechanical test recheck. It is not one uninterrupted Actions attempt. The later `demo_run16.mp4` covers one uninterrupted Actions run (45504039498, issue #36, no continuation or rerun): a walkthrough of that completed run's real GitHub pages with the actual stage timestamps, recorded after the run, post-disclosure work and not frozen-evaluation evidence. Its PR #57 is open, not merged. The posted review has an approve verdict in its body, GitHub state COMMENTED, and the generated PR remains open and unmerged.
