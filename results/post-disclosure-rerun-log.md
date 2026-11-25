@@ -170,3 +170,17 @@ daily quota (limit 20 per day for gemini-3-flash) and its ladder ran 03:14Z to 0
 before failing. Both approved models are daily-quota exhausted on this key until the
 reset (flash-lite reset about 13:30 IST per the 08:00 probe; preview reset not verified).
 No checks or limits were changed. Account tier: Free (AI Studio console, 08:08 IST).
+
+## Execution configuration change (09:02 IST, before run 21)
+
+Both approved models were daily-quota exhausted on the ORION key (run 20 evidence). At
+03:32:48Z (09:02 IST) the repository secret GEMINI_API_KEY was replaced with the user's
+existing AI Studio key (Free tier project, no billing, no new account, no code change).
+Tiny probe with that key: gemini-3.5-flash-lite 200; gemini-3-flash-preview 429 (20 per day,
+retry about 4h27m, about 13:30 IST). Runs from run 21 (45540758298, #39, 03:33:06Z) are a
+distinct execution configuration (key provenance) from runs 14 to 20, same harness code
+(main 2d671e6). The preview fallback has no quota on either key until about 13:30 IST.
+Residue notes: the harness gate archives a superseded branch tip under
+refs/autose-archive/<branch>-<sha12> before any lease push (6938e90 is archived for #39);
+tags evidence/issue-39-run-17 (6938e90) and evidence/issue-39-run-20 (1115060) also exist.
+Run 19's lease push failure cause is undiagnosed (the gate swallows git stderr).
