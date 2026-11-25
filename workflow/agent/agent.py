@@ -92,6 +92,60 @@ def _tool_list_files(repo_root, path):
     return "\n".join(sorted(out))
 
 
+TABLE_PLACEHOLDER_RE = re.compile(r"^[ \t]*\{\{TABLE:([A-Za-z0-9_\-]+)\}\}[ \t]*$", re.M)
+
+
+def render_tables(content, tables):
+    """ADR-034: deterministic markdown rendering of model-supplied table data.
+
+    The model supplies header and rows as JSON arrays and marks the position with a
+    line `{{TABLE:<name>}}`. This function only formats: cells are never invented,
+    dropped or reworded. Returns (text, error); error is a plain string for the
+    observation when the data cannot be rendered faithfully.
+    """
+    tables = tables or []
+    if not isinstance(tables, list):
+        return None, "ERROR: tables must be a list of {name, header, rows}"
+    by_name = {}
+    for t in tables:
+        if not isinstance(t, dict) or not isinstance(t.get("name"), str):
+            return None, "ERROR: each table needs a name, header and rows"
+        header, rows = t.get("header"), t.get("rows")
+        if (not isinstance(header, list) or not header or not isinstance(rows, list)
+                or not all(isinstance(c, str) for c in header)):
+            return None, f"ERROR: table {t['name']}: header must be a non-empty list of strings and rows a list"
+        for i, r in enumerate(rows):
+            if not isinstance(r, list) or not all(isinstance(c, str) for c in r):
+                return None, f"ERROR: table {t['name']} row {i + 1}: each row must be a list of strings"
+            if len(r) != len(header):
+                return None, (f"ERROR: table {t['name']} row {i + 1} has {len(r)} cells, "
+                              f"header has {len(header)}; fix the row, nothing was written")
+        by_name[t["name"]] = (header, rows)
+
+    def cell(c):
+        return " ".join(c.replace("|", "\\|").split())
+
+    used = set()
+    def repl(m):
+        name = m.group(1)
+        if name not in by_name:
+            raise KeyError(name)
+        used.add(name)
+        header, rows = by_name[name]
+        lines = ["| " + " | ".join(cell(c) for c in header) + " |",
+                 "|" + "|".join("---" for _ in header) + "|"]
+        lines += ["| " + " | ".join(cell(c) for c in r) + " |" for r in rows]
+        return "\n".join(lines)
+    try:
+        text = TABLE_PLACEHOLDER_RE.sub(repl, content)
+    except KeyError as e:
+        return None, f"ERROR: placeholder {{{{TABLE:{e.args[0]}}}}} has no matching entry in tables"
+    unused = sorted(set(by_name) - used)
+    if unused:
+        return None, f"ERROR: tables not placed in content: {', '.join(unused)}"
+    return text, None
+
+
 def _tool_write_file(repo_root, path, content):
     norm = path.replace("\\", "/").lstrip("/")
     for prefix in config.PROTECTED_WRITE_PREFIXES:
@@ -333,8 +387,13 @@ def run_agent(role, model, system_prompt, task, repo_root, usage,
                 if "content" not in action or not isinstance(action["content"], str):
                     obs = "ERROR: write_file requires the complete file text in content"
                 else:
-                    obs = _tool_write_file(repo_root, action.get("path", ""),
-                                           action["content"])
+                    content, terr = action["content"], None
+                    if action.get("tables"):
+                        content, terr = render_tables(content, action["tables"])
+                    elif TABLE_PLACEHOLDER_RE.search(content):
+                        terr = "ERROR: content has a {{TABLE:name}} line but no tables were supplied"
+                    obs = terr or _tool_write_file(repo_root, action.get("path", ""),
+                                                   content)
         elif kind == "edit_file":
             if read_only:
                 obs = "ERROR: reviewer cannot edit files"
