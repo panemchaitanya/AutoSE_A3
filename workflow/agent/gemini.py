@@ -97,6 +97,9 @@ def _post(model, payload, api_key):
         raise err from e
 
 
+_TIER_COOLDOWN_UNTIL = {}
+
+
 class _RateLimited(Exception):
     pass
 
@@ -207,6 +210,11 @@ def generate(model, system_prompt, contents, usage, temperature=0.2,
 
     last_err = None
     for tier_index, active_model in enumerate(models_to_try):
+        # ADR-027: a tier that was just moved off after repeated 429s is
+        # skipped while it cools down, as long as a later tier remains.
+        if (tier_index < len(models_to_try) - 1
+                and time.monotonic() < _TIER_COOLDOWN_UNTIL.get(active_model, 0.0)):
+            continue
         consecutive_429 = 0
         for attempt in range(config.API_RETRIES + 1):
             try:
@@ -267,6 +275,8 @@ def generate(model, system_prompt, contents, usage, temperature=0.2,
                         error=call_log.categorize_error(e))
                 if (consecutive_429 >= config.RATE_LIMIT_SWITCH_AFTER
                         and tier_index < len(models_to_try) - 1):
+                    _TIER_COOLDOWN_UNTIL[active_model] = (
+                        time.monotonic() + config.RATE_LIMIT_COOLDOWN_SECONDS)
                     break
                 if attempt < config.API_RETRIES:
                     time.sleep(

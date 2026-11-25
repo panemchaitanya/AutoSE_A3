@@ -33,6 +33,7 @@ MAX_OUTPUT_TOKENS = int(os.environ.get("MAX_OUTPUT_TOKENS", "4096"))
 API_RETRIES = int(os.environ.get("API_RETRIES", "6"))
 # ADR-027: consecutive 429s on a tier before moving to the fallback tier.
 RATE_LIMIT_SWITCH_AFTER = int(os.environ.get("RATE_LIMIT_SWITCH_AFTER", "2"))
+RATE_LIMIT_COOLDOWN_SECONDS = int(os.environ.get("RATE_LIMIT_COOLDOWN_SECONDS", "600"))
 API_BACKOFF_SECONDS = [
     int(x)
     for x in os.environ.get("API_BACKOFF_SECONDS", "30,60,120,180,240,300").split(",")
