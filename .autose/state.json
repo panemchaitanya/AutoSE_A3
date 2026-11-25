@@ -9,6 +9,14 @@
     {
       "event": "triggered by panemchaitanya via issues",
       "ts": "2026-11-25T01:28:50.265706+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-25T01:28:58.942942+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-25T01:28:58.942958+00:00"
     }
   ],
   "issue": 35,
@@ -24,7 +32,7 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "pending"
+      "status": "running"
     },
     "review": {
       "status": "pending"
@@ -33,5 +41,15 @@
       "status": "pending"
     }
   },
-  "usage": {}
+  "usage": {
+    "calls": 14,
+    "completion_tokens": 2848,
+    "fallbacks": 4,
+    "models": {
+      "gemini-3-flash-preview": 4,
+      "gemini-3.5-flash-lite": 10
+    },
+    "prompt_tokens": 109504,
+    "total_tokens": 113608
+  }
 }
