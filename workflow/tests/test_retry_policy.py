@@ -121,3 +121,40 @@ class RetryPolicy(unittest.TestCase):
 
 if __name__=='__main__':
  unittest.main()
+
+
+class QuotaAware(unittest.TestCase):
+ def setUp(self):
+  gemini._TIER_COOLDOWN_UNTIL.clear()
+  os.environ['GEMINI_API_KEY']='offline-fixture'
+  self.saved=(config.API_RETRIES,list(config.API_BACKOFF_SECONDS))
+  config.API_RETRIES=3
+  config.API_BACKOFF_SECONDS=[30,60,120]
+ def tearDown(self):
+  gemini._TIER_COOLDOWN_UNTIL.clear()
+  config.API_RETRIES,config.API_BACKOFF_SECONDS=self.saved
+ def _err(self,qid,delay):
+  e=gemini._RateLimited('429'); e.quota_id=qid; e.retry_delay_s=delay; return e
+ def test_quota_info_parses_provider_body(self):
+  raw=json.dumps({'error':{'details':[{'violations':[{'quotaId':'GenerateRequestsPerDayPerProjectPerModel-FreeTier'}]},{'retryDelay':'16046s'}]}})
+  self.assertEqual(gemini._quota_info(raw),('GenerateRequestsPerDayPerProjectPerModel-FreeTier',16046.0))
+  self.assertEqual(gemini._quota_info('not json'),(None,None))
+ def test_per_minute_429_stays_on_primary_and_uses_provider_delay(self):
+  calls=[]
+  def fake_post(model,payload,key):
+   calls.append(model)
+   if len(calls)<=3:raise self._err('GenerateRequestsPerMinutePerProjectPerModel-FreeTier',12)
+   return ok_payload()
+  with patch.object(gemini,'_post',side_effect=fake_post),patch.object(gemini.time,'sleep') as slp:
+   gemini.generate('gemini-primary-x','system',[],gemini.Usage())
+  self.assertEqual(calls,['gemini-primary-x']*4)
+  self.assertEqual([c.args[0] for c in slp.call_args_list if c.args[0]>5],[14.0,14.0,14.0])
+ def test_daily_429_still_switches_early(self):
+  calls=[]
+  def fake_post(model,payload,key):
+   calls.append(model)
+   if model=='gemini-primary-x':raise self._err('GenerateRequestsPerDayPerProjectPerModel-FreeTier',16000)
+   return ok_payload()
+  with patch.object(gemini,'_post',side_effect=fake_post),patch.object(gemini.time,'sleep'):
+   gemini.generate('gemini-primary-x','system',[],gemini.Usage())
+  self.assertEqual(calls,['gemini-primary-x']*config.RATE_LIMIT_SWITCH_AFTER+[config.MODEL_FALLBACK])
