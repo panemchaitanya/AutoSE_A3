@@ -24,6 +24,11 @@ on:
         required: false
         default: ""
         type: string
+      branch:
+        description: "Work branch for a continuation (ADR-028); empty = derived from issue and suffix"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: write
@@ -61,6 +66,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INPUT_ISSUE: ${{ inputs.issue }}
           INPUT_ENTRY: ${{ inputs.entry }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+          AUTOSE_BRANCH_SUFFIX: ${{ vars.AUTOSE_BRANCH_SUFFIX }}
         run: python workflow/agent/gate.py
 
   requirements:
@@ -237,4 +244,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE: ${{ needs.gate.outputs.issue }}
-        run: gh workflow run autose-review.yml --ref main -f issue="$ISSUE"
+          BRANCH: ${{ needs.gate.outputs.branch }}
+        run: gh workflow run autose-review.yml --ref main -f issue="$ISSUE" -f branch="$BRANCH"

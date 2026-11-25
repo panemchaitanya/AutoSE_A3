@@ -273,7 +273,11 @@ def stage_requirements(repo_root, state, issue):
             "real defect. An ASSUMED item at CLARIFY is not itself a defect. "
             "Distinguish unsupported scope from an honestly recorded open question. "
             "Reject unsupported readiness or superficial PASS claims. An honest NOT READY "
-            "verdict can meet documentation integrity if uncertainty is kept explicit.",
+            "verdict can meet documentation integrity if uncertainty is kept explicit. "
+            "Report a defect only if you can quote the exact offending text from the "
+            "document and name the item ID and the rule it breaks. Do not put deliberation "
+            "in reasons. If, after checking the rule text, the item is allowed (for example "
+            "an INFERRED item at CLARIFY), it is not a defect and must not appear in reasons.",
             prompts.untrusted("ORIGINAL ISSUE", json.dumps(issue, ensure_ascii=False))
             + "\n--- APPLICABLE SKILL DEFINITIONS (A3 PROFILE OVERRIDES MCP) ---\n"
             + skill + "\n--- GENERATED DOCUMENTS TO AUDIT ---\n"
