@@ -9,6 +9,18 @@
     {
       "event": "triggered by panemchaitanya via issues",
       "ts": "2026-11-25T05:08:08.306052+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-25T05:08:18.494139+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-25T05:08:18.494154+00:00"
+    },
+    {
+      "event": "requirements -> failed (checks failed after self-correction: missing versioned A1 SRS artifact; missing versioned A1 REGISTER artifact; missing versioned A1 VALIDATION artifact; VALIDATION lacks explicit PASS/FAIL/N/A result for C1; VALIDATION lacks explicit PASS/FAIL/N/A result for C2; VALIDATION lacks explicit PASS/FAIL/N/A result for C3; VALIDATION lacks explicit PASS/FAIL/N/A result for C4; VALIDATION lacks explicit PASS/FAIL/N/A result for K1; VALIDATION lacks explicit PASS/FAIL/N/A result for K2; VALIDATION lacks explicit PASS/FAIL/N/A result for K3; VALIDATION lacks explicit PASS/FAIL/N/A result for R-1; VALIDATION lacks explicit PASS/FAIL/N/A result for R-2; VALIDATION lacks explicit PASS/FAIL/N/A result for R-3; VALIDATION lacks explicit PASS/FAIL/N/A result for F1; VALIDATION lacks explicit PASS/FAIL/N/A result for F2; VALIDATION lacks explicit PASS/FAIL/N/A result for T1; VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for T4; VALIDATION lacks explicit PASS/FAIL/N/A result for E1; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; VALIDATION lacks explicit PASS/FAIL/N/A result for E5; VALIDATION lacks readiness verdict; A1 semantic validation: A1 structural checks failed)",
+      "ts": "2026-11-25T05:13:43.761338+00:00"
     }
   ],
   "issue": 39,
@@ -24,7 +36,8 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "pending"
+      "reason": "checks failed after self-correction: missing versioned A1 SRS artifact; missing versioned A1 REGISTER artifact; missing versioned A1 VALIDATION artifact; VALIDATION lacks explicit PASS/FAIL/N/A result for C1; VALIDATION lacks explicit PASS/FAIL/N/A result for C2; VALIDATION lacks explicit PASS/FAIL/N/A result for C3; VALIDATION lacks explicit PASS/FAIL/N/A result for C4; VALIDATION lacks explicit PASS/FAIL/N/A result for K1; VALIDATION lacks explicit PASS/FAIL/N/A result for K2; VALIDATION lacks explicit PASS/FAIL/N/A result for K3; VALIDATION lacks explicit PASS/FAIL/N/A result for R-1; VALIDATION lacks explicit PASS/FAIL/N/A result for R-2; VALIDATION lacks explicit PASS/FAIL/N/A result for R-3; VALIDATION lacks explicit PASS/FAIL/N/A result for F1; VALIDATION lacks explicit PASS/FAIL/N/A result for F2; VALIDATION lacks explicit PASS/FAIL/N/A result for T1; VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for T4; VALIDATION lacks explicit PASS/FAIL/N/A result for E1; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; VALIDATION lacks explicit PASS/FAIL/N/A result for E5; VALIDATION lacks readiness verdict; A1 semantic validation: A1 structural checks failed",
+      "status": "failed"
     },
     "review": {
       "status": "pending"
@@ -33,5 +46,15 @@
       "status": "pending"
     }
   },
-  "usage": {}
+  "usage": {
+    "calls": 21,
+    "completion_tokens": 1245,
+    "fallbacks": 3,
+    "models": {
+      "gemini-3.1-flash-lite": 4,
+      "gemini-4-hydrogen": 17
+    },
+    "prompt_tokens": 266744,
+    "total_tokens": 269737
+  }
 }

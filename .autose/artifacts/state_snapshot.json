@@ -1,0 +1,60 @@
+{
+  "branch": "autose/issue-39-r31",
+  "fix_cycles": 0,
+  "history": [
+    {
+      "event": "run created",
+      "ts": "2026-11-25T05:08:08.306031+00:00"
+    },
+    {
+      "event": "triggered by panemchaitanya via issues",
+      "ts": "2026-11-25T05:08:08.306052+00:00"
+    },
+    {
+      "ts": "2026-11-25T05:08:18.494139+00:00",
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated"
+    },
+    {
+      "ts": "2026-11-25T05:08:18.494154+00:00",
+      "event": "requirements -> running"
+    },
+    {
+      "ts": "2026-11-25T05:13:43.761338+00:00",
+      "event": "requirements -> failed (checks failed after self-correction: missing versioned A1 SRS artifact; missing versioned A1 REGISTER artifact; missing versioned A1 VALIDATION artifact; VALIDATION lacks explicit PASS/FAIL/N/A result for C1; VALIDATION lacks explicit PASS/FAIL/N/A result for C2; VALIDATION lacks explicit PASS/FAIL/N/A result for C3; VALIDATION lacks explicit PASS/FAIL/N/A result for C4; VALIDATION lacks explicit PASS/FAIL/N/A result for K1; VALIDATION lacks explicit PASS/FAIL/N/A result for K2; VALIDATION lacks explicit PASS/FAIL/N/A result for K3; VALIDATION lacks explicit PASS/FAIL/N/A result for R-1; VALIDATION lacks explicit PASS/FAIL/N/A result for R-2; VALIDATION lacks explicit PASS/FAIL/N/A result for R-3; VALIDATION lacks explicit PASS/FAIL/N/A result for F1; VALIDATION lacks explicit PASS/FAIL/N/A result for F2; VALIDATION lacks explicit PASS/FAIL/N/A result for T1; VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for T4; VALIDATION lacks explicit PASS/FAIL/N/A result for E1; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; VALIDATION lacks explicit PASS/FAIL/N/A result for E5; VALIDATION lacks readiness verdict; A1 semantic validation: A1 structural checks failed)"
+    }
+  ],
+  "issue": 39,
+  "review_rounds": 0,
+  "stages": {
+    "design": {
+      "status": "pending"
+    },
+    "implementation": {
+      "status": "pending"
+    },
+    "release": {
+      "status": "pending"
+    },
+    "requirements": {
+      "status": "failed",
+      "reason": "checks failed after self-correction: missing versioned A1 SRS artifact; missing versioned A1 REGISTER artifact; missing versioned A1 VALIDATION artifact; VALIDATION lacks explicit PASS/FAIL/N/A result for C1; VALIDATION lacks explicit PASS/FAIL/N/A result for C2; VALIDATION lacks explicit PASS/FAIL/N/A result for C3; VALIDATION lacks explicit PASS/FAIL/N/A result for C4; VALIDATION lacks explicit PASS/FAIL/N/A result for K1; VALIDATION lacks explicit PASS/FAIL/N/A result for K2; VALIDATION lacks explicit PASS/FAIL/N/A result for K3; VALIDATION lacks explicit PASS/FAIL/N/A result for R-1; VALIDATION lacks explicit PASS/FAIL/N/A result for R-2; VALIDATION lacks explicit PASS/FAIL/N/A result for R-3; VALIDATION lacks explicit PASS/FAIL/N/A result for F1; VALIDATION lacks explicit PASS/FAIL/N/A result for F2; VALIDATION lacks explicit PASS/FAIL/N/A result for T1; VALIDATION lacks explicit PASS/FAIL/N/A result for T2; VALIDATION lacks explicit PASS/FAIL/N/A result for T3; VALIDATION lacks explicit PASS/FAIL/N/A result for T4; VALIDATION lacks explicit PASS/FAIL/N/A result for E1; VALIDATION lacks explicit PASS/FAIL/N/A result for E2; VALIDATION lacks explicit PASS/FAIL/N/A result for E3; VALIDATION lacks explicit PASS/FAIL/N/A result for E4; VALIDATION lacks explicit PASS/FAIL/N/A result for E5; VALIDATION lacks readiness verdict; A1 semantic validation: A1 structural checks failed"
+    },
+    "review": {
+      "status": "pending"
+    },
+    "testing": {
+      "status": "pending"
+    }
+  },
+  "usage": {
+    "prompt_tokens": 266744,
+    "completion_tokens": 1245,
+    "total_tokens": 269737,
+    "calls": 21,
+    "fallbacks": 3,
+    "models": {
+      "gemini-4-hydrogen": 17,
+      "gemini-3.1-flash-lite": 4
+    }
+  }
+}
