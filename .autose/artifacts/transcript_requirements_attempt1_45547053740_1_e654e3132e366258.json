@@ -1,0 +1,17 @@
+[
+  {
+    "step": 0,
+    "role": "SpecWriter",
+    "reply": "{\"action\": \"run_shell\", \"command\": \"git status\"}"
+  },
+  {
+    "step": 1,
+    "role": "SpecWriter",
+    "reply": "{\"action\": \"run_shell\", \"command\": \"find . -maxdepth 3 -not -path '*/.*' -not -path './venv*'\" }"
+  },
+  {
+    "step": 2,
+    "role": "SpecWriter",
+    "reply": "{\"action\": \"read_file\", \"path\": \"tinydb/table.py\"}"
+  }
+]

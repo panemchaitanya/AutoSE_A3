@@ -9,6 +9,18 @@
     {
       "event": "triggered by panemchaitanya via issues",
       "ts": "2026-11-25T04:28:57.130952+00:00"
+    },
+    {
+      "event": "A3-profile A1 validation required; downstream checkpoints invalidated",
+      "ts": "2026-11-25T04:29:12.192248+00:00"
+    },
+    {
+      "event": "requirements -> running",
+      "ts": "2026-11-25T04:29:12.192265+00:00"
+    },
+    {
+      "event": "requirements -> failed (agent error: model retries exhausted; last error type=_RateLimited: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3-flash, description: Generate content requests per day limit exceeded on Free Tier. See h)",
+      "ts": "2026-11-25T04:45:53.233904+00:00"
     }
   ],
   "issue": 37,
@@ -24,7 +36,8 @@
       "status": "pending"
     },
     "requirements": {
-      "status": "pending"
+      "reason": "agent error: model retries exhausted; last error type=_RateLimited: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3-flash, description: Generate content requests per day limit exceeded on Free Tier. See h",
+      "status": "failed"
     },
     "review": {
       "status": "pending"
@@ -33,5 +46,15 @@
       "status": "pending"
     }
   },
-  "usage": {}
+  "usage": {
+    "calls": 3,
+    "completion_tokens": 71,
+    "fallbacks": 1,
+    "models": {
+      "gemini-3-flash-preview": 1,
+      "gemini-3.5-flash-lite": 2
+    },
+    "prompt_tokens": 22477,
+    "total_tokens": 23165
+  }
 }
