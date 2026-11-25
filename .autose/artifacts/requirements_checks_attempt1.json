@@ -1,0 +1,8 @@
+{
+  "stage": "requirements",
+  "attempt": 1,
+  "passed": false,
+  "problems": [
+    "judge: The acceptance criterion regarding performance (\"query execution time increases by no more than 15% compared to returning uncopied references, measured on standard reference hardware\") lacks precise definitions for 'standard reference hardware' and the baseline uncopied references implementation, making it non-deterministic and hard to turn into a strict pass/fail test for an independent developer."
+  ]
+}
